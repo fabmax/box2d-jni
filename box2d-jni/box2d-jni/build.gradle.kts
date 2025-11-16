@@ -24,27 +24,17 @@ webidl {
 
     generateJni {
         javaClassesOutputDirectory.set(file("$projectDir/src/main/generated/box2d"))
-        nativeGlueCodeOutputFile.set(file("${rootDir}/../src/webidlbindings/jni/box2dGlue.h"))
+        nativeGlueCodeOutputFile.set(file("${rootDir}/../box2d-native/src/webidlbindings/jni/box2dGlue.h"))
 
         packagePrefix.set("box2d")
         onClassLoadStatement.set("de.fabmax.box2djni.Loader.load();")
-        nativeIncludeDir.set(file("$rootDir/../build/_deps/box2d-src/include/box2d"))
+        nativeIncludeDir.set(file("$rootDir/../box2d-native/build/_deps/box2d-src/include/box2d"))
     }
 
 //    generateCompactWebIdl {
 //        outputFile.set(file("${rootDir}/PhysX/physx/source/webidlbindings/src/wasm/PhysXWasm.idl"))
 //    }
 }
-
-//tasks {
-//    withType<Test>().configureEach {
-//        useJUnitPlatform()
-//        testLogging {
-//            showStandardStreams = true
-//            //exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-//        }
-//    }
-//}
 
 tasks.test {
     useJUnitPlatform()

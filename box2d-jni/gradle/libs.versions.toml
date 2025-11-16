@@ -1,5 +1,5 @@
 [versions]
-junitBom = "5.9.1"
+junitBom = "5.14.1"
 lwjgl = "3.3.6"
 
 [libraries]

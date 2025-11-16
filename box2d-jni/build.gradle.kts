@@ -5,9 +5,9 @@ subprojects {
     if (name != "box2d-jni-android") {
         apply(plugin = "java-library")
 
-//        tasks["jar"].apply {
-//            this as Jar
-//            from("$rootDir/LICENSE", "$rootDir/NOTICE.md")
-//        }
+        tasks["jar"].apply {
+            this as Jar
+            from("$rootDir/LICENSE", "$rootDir/NOTICE.md")
+        }
     }
 }

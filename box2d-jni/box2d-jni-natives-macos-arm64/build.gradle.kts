@@ -38,7 +38,7 @@ tasks.register("copyNativeLibMacosArm64") {
     }
     doLast {
         copy {
-            from("$rootDir/../build/")
+            from("$rootDir/../box2d-native/build/")
             include("*.dylib")
             into(resourcesDir)
         }
