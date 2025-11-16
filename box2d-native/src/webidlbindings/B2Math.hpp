@@ -4,5 +4,5 @@
 
 class B2Math {
     public:
-    static float dot(b2Vec2 a, b2Vec2 b) { return b2Dot(a, b); }
+    static inline float dot(b2Vec2 a, b2Vec2 b) { return b2Dot(a, b); }
 };

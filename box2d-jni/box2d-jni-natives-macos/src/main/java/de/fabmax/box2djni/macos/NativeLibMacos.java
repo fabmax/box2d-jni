@@ -1,11 +1,11 @@
-package de.fabmax.box2djni.macosarm;
+package de.fabmax.box2djni.macos;
 
 import de.fabmax.box2djni.NativeLib;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NativeLibMacosArm64 extends NativeLib {
+public class NativeLibMacos extends NativeLib {
 
     private static final String version = "1.0.0";
 

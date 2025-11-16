@@ -4,6 +4,36 @@ project(box2d_project)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Platform detection and architecture configuration
+if(APPLE)
+    message(STATUS "Building for macOS")
+    
+    # Set architectures for universal binary on macOS
+    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+    message(STATUS "Building universal binary for architectures: ${CMAKE_OSX_ARCHITECTURES}")
+    
+    # Set minimum macOS version
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
+    message(STATUS "Minimum macOS deployment target: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
+    
+elseif(WIN32)
+    message(STATUS "Building for Windows")
+    
+elseif(UNIX AND NOT APPLE)
+    message(STATUS "Building for Linux")
+    
+    # Detect architecture on Linux
+    execute_process(
+        COMMAND uname -m
+        OUTPUT_VARIABLE ARCH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    message(STATUS "Detected architecture: ${ARCH}")
+    
+else()
+    message(STATUS "Building for unknown platform")
+endif()
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -13,7 +43,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(box2d)
 
-# WebIDL Bindings shared library
 set(JAVA_AWT_LIBRARY NotNeeded)
 set(JAVA_JVM_LIBRARY NotNeeded)
 find_package(JNI REQUIRED)
@@ -23,8 +52,29 @@ add_library(Box2dJniBindings SHARED
 )
 
 target_include_directories(Box2dJniBindings PRIVATE
+    ${JNI_INCLUDE_DIRS}
     src/webidlbindings/jni
-     ${JNI_INCLUDE_DIRS}
 )
 
 target_link_libraries(Box2dJniBindings PRIVATE box2d)
+
+# Platform-specific configurations
+if(APPLE)
+    # Set proper install name and rpath for macOS
+    set_target_properties(Box2dJniBindings PROPERTIES
+        MACOSX_RPATH ON
+        INSTALL_RPATH "@loader_path"
+        BUILD_WITH_INSTALL_RPATH ON
+    )
+    
+    # Ensure we're building a universal binary
+    set_target_properties(Box2dJniBindings PROPERTIES
+        OSX_ARCHITECTURES "${CMAKE_OSX_ARCHITECTURES}"
+    )
+endif()
+
+# Set output directory for better organization
+set_target_properties(Box2dJniBindings PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)

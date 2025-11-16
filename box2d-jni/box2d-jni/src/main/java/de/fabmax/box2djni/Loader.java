@@ -36,7 +36,6 @@ public class Loader {
                         PlatformChecks.setPlatformBit(PlatformChecks.PLATFORM_WINDOWS);
                         break;
                     case MACOS:
-                    case MACOS_ARM64:
                         PlatformChecks.setPlatformBit(PlatformChecks.PLATFORM_MACOS);
                         break;
                 }

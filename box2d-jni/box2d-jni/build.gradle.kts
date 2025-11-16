@@ -46,8 +46,7 @@ dependencies {
 
 //    testRuntimeOnly(project(":box2d-jni-natives-windows"))
 //    testRuntimeOnly(project(":box2d-jni-natives-linux"))
-//    testRuntimeOnly(project(":box2d-jni-natives-macos"))
-    testRuntimeOnly(project(":box2d-jni-natives-macos-arm64"))
+    testRuntimeOnly(project(":box2d-jni-natives-macos"))
 
     testImplementation(libs.lwjgl.core)
     val os = org.gradle.internal.os.OperatingSystem.current()
