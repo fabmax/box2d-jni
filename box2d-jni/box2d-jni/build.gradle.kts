@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.webidl)
-    //alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.mavenPublish)
 }
 
 java {
@@ -32,6 +32,11 @@ webidl {
     }
 }
 
+tasks.javadoc {
+    val opts = options as StandardJavadocDocletOptions
+    opts.addStringOption("Xdoclint:none", "-quiet")
+}
+
 tasks.test {
     useJUnitPlatform()
     testLogging {
@@ -58,4 +63,57 @@ dependencies {
         else -> "natives-windows"
     }
     testRuntimeOnly("${libs.lwjgl.core.get()}:$lwjglPlatform")
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+    if (!version.toString().endsWith("-SNAPSHOT")) {
+        signAllPublications()
+    }
+
+    coordinates(group.toString(), name, version.toString())
+
+    pom {
+        name.set("box2d-jni")
+        description.set("JNI bindings for Box2D.")
+        inceptionYear.set("2025")
+        url.set("https://github.com/fabmax/box2d-bindings")
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+                distribution.set("https://opensource.org/licenses/MIT")
+            }
+        }
+        developers {
+            developer {
+                id.set("fabmax")
+                name.set("Max Thiele")
+                url.set("https://github.com/fabmax/")
+            }
+        }
+        scm {
+            url.set("https://github.com/fabmax/box2d-bindings/")
+            connection.set("scm:git:git://github.com/fabmax/box2d-bindings.git")
+            developerConnection.set("scm:git:ssh://git@github.com/fabmax/box2d-bindings.git")
+        }
+    }
+}
+
+afterEvaluate {
+    tasks["generateMetadataFileForMavenPublication"].dependsOn("plainJavadocJar")
+
+    publishing.publications["maven"].apply {
+        this as MavenPublication
+
+//        artifact(project(":box2d-jni-natives-windows").tasks["jar"]).apply {
+//            classifier = "natives-windows"
+//        }
+//        artifact(project(":box2d-jni-natives-linux").tasks["jar"]).apply {
+//            classifier = "natives-linux"
+//        }
+        artifact(project(":box2d-jni-natives-macos").tasks["jar"]).apply {
+            classifier = "natives-macos"
+        }
+    }
 }

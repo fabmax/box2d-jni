@@ -1,5 +1,5 @@
 subprojects {
-    group = "de.fabmax"
+    group = "de.fabmax.box2d-jni"
     version = "1.0.0"
 
     if (name != "box2d-jni-android") {
