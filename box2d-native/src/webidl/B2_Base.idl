@@ -1,6 +1,7 @@
 [NoDelete]
 interface B2_Base {
     [Value] static b2Version getVersion();
+    static long getByteCount();
 };
 
 interface b2Version {

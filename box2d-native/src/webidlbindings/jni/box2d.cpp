@@ -2,6 +2,7 @@
 
 #include "../B2_Base.hpp"
 #include "../B2_Body.hpp"
+#include "../B2_CharacterMover.hpp"
 #include "../B2_Geometry.hpp"
 #include "../B2_Math.hpp"
 #include "../B2_Shape.hpp"

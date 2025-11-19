@@ -1,0 +1,28 @@
+[NoDelete]
+interface B2_CharacterMover {
+    //static void solvePlanes([Value] b2Vec2 targetDelta, b2CollisionPlane planes, int count, [Ref] b2PlaneSolverResult result)
+    //static void clipVector([Value] b2Vec2 vector, [Const] b2CollisionPlane planes, int count, [Ref] b2Vec2 result)
+};
+
+[StackAllocatable]
+interface b2PlaneResult {
+    void b2PlaneResult();
+    attribute boolean hit;
+    [Value] attribute b2Plane plane;
+};
+
+[StackAllocatable]
+interface b2CollisionPlane {
+    void b2CollisionPlane();
+    attribute boolean clipVelocity;
+    [Value] attribute b2Plane plane;
+    attribute float push;
+    attribute float pushLimit;
+};
+
+[StackAllocatable]
+interface b2PlaneSolverResult {
+    void b2PlaneSolverResult();
+    attribute long iterationCount;
+    [Value] attribute b2Vec2 translation;
+};
