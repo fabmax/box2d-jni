@@ -150,6 +150,7 @@ interface b2QueryFilter {
     attribute unsigned long long maskBits;
 };
 
+[StackAllocatable]
 interface b2ShapeId {
     void b2ShapeId();
     attribute unsigned short generation;
@@ -157,6 +158,7 @@ interface b2ShapeId {
     attribute unsigned short world0;
 };
 
+[StackAllocatable]
 interface b2ChainId {
     void b2ChainId();
     attribute unsigned short generation;

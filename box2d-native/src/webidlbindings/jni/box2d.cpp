@@ -8,5 +8,15 @@
 #include "../B2_Shape.hpp"
 #include "../B2_World.hpp"
 
+#include "../B2_Joint.hpp"
+#include "../B2_DistanceJoint.hpp"
+#include "../B2_FilterJoint.hpp"
+#include "../B2_MotorJoint.hpp"
+#include "../B2_MouseJoint.hpp"
+#include "../B2_PrismaticJoint.hpp"
+#include "../B2_RevoluteJoint.hpp"
+#include "../B2_WeldJoint.hpp"
+#include "../B2_WheelJoint.hpp"
+
 #include <new>
 #include "box2dGlue.h"

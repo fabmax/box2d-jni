@@ -65,11 +65,13 @@ interface B2_World {
     static void enableSpeculative([Value] b2WorldId worldId, boolean flag);
 };
 
+[StackAllocatable]
 interface b2BodyEvents {
     attribute long moveCount;
     attribute b2BodyMoveEvent moveEvents;
 };
 
+[StackAllocatable]
 interface b2BodyMoveEvent {
     [Value] attribute b2BodyId bodyId;
     attribute boolean fellAsleep;
@@ -77,6 +79,7 @@ interface b2BodyMoveEvent {
     attribute VoidPtr userData;
 };
 
+[StackAllocatable]
 interface b2SensorEvents {
     attribute long beginCount;
     attribute b2SensorBeginTouchEvent beginEvents;
@@ -84,16 +87,19 @@ interface b2SensorEvents {
     attribute b2SensorEndTouchEvent endEvents;
 };
 
+[StackAllocatable]
 interface b2SensorBeginTouchEvent {
     [Value] attribute b2ShapeId sensorShapeId;
     [Value] attribute b2ShapeId visitorShapeId;
 };
 
+[StackAllocatable]
 interface b2SensorEndTouchEvent {
     [Value] attribute b2ShapeId sensorShapeId;
     [Value] attribute b2ShapeId visitorShapeId;
 };
 
+[StackAllocatable]
 interface b2ContactEvents {
     attribute long beginCount;
     attribute b2ContactBeginTouchEvent beginEvents;
@@ -103,17 +109,20 @@ interface b2ContactEvents {
     attribute b2ContactHitEvent hitEvents;
 };
 
+[StackAllocatable]
 interface b2ContactBeginTouchEvent {
     [Value] attribute b2Manifold manifold;
     [Value] attribute b2ShapeId shapeIdA;
     [Value] attribute b2ShapeId shapeIdB;
 };
 
+[StackAllocatable]
 interface b2ContactEndTouchEvent {
     [Value] attribute b2ShapeId shapeIdA;
     [Value] attribute b2ShapeId shapeIdB;
 };
 
+[StackAllocatable]
 interface b2ContactHitEvent {
     attribute float approachSpeed;
     [Value] attribute b2Vec2 normal;
@@ -122,6 +131,7 @@ interface b2ContactHitEvent {
     [Value] attribute b2ShapeId shapeIdB;
 };
 
+[StackAllocatable]
 interface b2Manifold {
     [Value] attribute b2Vec2 normal;
     attribute long pointCount;
@@ -129,6 +139,7 @@ interface b2Manifold {
     attribute float rollingImpulse;
 };
 
+[StackAllocatable]
 interface b2ManifoldPoint {
     [Value] attribute b2Vec2 anchorA;
     [Value] attribute b2Vec2 anchorB;
@@ -140,6 +151,44 @@ interface b2ManifoldPoint {
     attribute float separation;
     attribute float tangentImpulse;
     attribute float totalNormalImpulse;
+};
+
+[StackAllocatable]
+interface b2ExplosionDef {
+    void b2ExplosionDef();
+    attribute float falloff;
+    attribute float impulsePerLength;
+    attribute unsigned long long maskBits;
+    [Value] attribute b2Vec2 position;
+    attribute float radius;
+};
+
+[StackAllocatable]
+interface b2WorldDef {
+    void b2WorldDef();
+    [Value] attribute b2Vec2 gravity;
+    attribute float restitutionThreshold;
+    attribute float hitEventThreshold;
+    attribute float contactHertz;
+    attribute float contactDampingRatio;
+    attribute float maxContactPushSpeed;
+    attribute float maximumLinearSpeed;
+    // b2FrictionCallback * 	frictionCallback
+    // b2RestitutionCallback * 	restitutionCallback
+    attribute boolean enableSleep;
+    attribute boolean enableContinuous;
+    // attribute long workerCount;
+    // b2EnqueueTaskCallback * 	enqueueTask
+    // b2FinishTaskCallback * 	finishTask
+    // attribute VoidPtr userTaskContext;
+    attribute VoidPtr userData;
+};
+
+[StackAllocatable]
+interface b2WorldId {
+    void b2WorldId();
+    attribute unsigned short generation;
+    attribute unsigned short index1;
 };
 
 interface b2Counters {
@@ -155,16 +204,6 @@ interface b2Counters {
     attribute long byteCount;
     attribute long taskCount;
     attribute long[] colorCounts;
-};
-
-[StackAllocatable]
-interface b2ExplosionDef {
-    void b2ExplosionDef();
-    attribute float falloff;
-    attribute float impulsePerLength;
-    attribute unsigned long long maskBits;
-    [Value] attribute b2Vec2 position;
-    attribute float radius;
 };
 
 interface b2Profile {
@@ -191,31 +230,4 @@ interface b2Profile {
     attribute float bullets;
     attribute float sleepIslands;
     attribute float sensors;
-};
-
-[StackAllocatable]
-interface b2WorldDef {
-    void b2WorldDef();
-    [Value] attribute b2Vec2 gravity;
-    attribute float restitutionThreshold;
-    attribute float hitEventThreshold;
-    attribute float contactHertz;
-    attribute float contactDampingRatio;
-    attribute float maxContactPushSpeed;
-    attribute float maximumLinearSpeed;
-    // b2FrictionCallback * 	frictionCallback
-    // b2RestitutionCallback * 	restitutionCallback
-    attribute boolean enableSleep;
-    attribute boolean enableContinuous;
-    // attribute long workerCount;
-    // b2EnqueueTaskCallback * 	enqueueTask
-    // b2FinishTaskCallback * 	finishTask
-    // attribute VoidPtr userTaskContext;
-    attribute VoidPtr userData;
-};
-
-interface b2WorldId {
-    void b2WorldId();
-    attribute unsigned short generation;
-    attribute unsigned short index1;
 };

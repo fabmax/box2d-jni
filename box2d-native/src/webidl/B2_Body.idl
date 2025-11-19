@@ -124,6 +124,7 @@ interface b2BodyDef {
     attribute boolean allowFastRotation;
 };
 
+[StackAllocatable]
 interface b2BodyId {
     void b2BodyId();
     attribute unsigned short generation;
