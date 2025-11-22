@@ -70,9 +70,9 @@ interface B2_Shape {
     static unsigned long long getParentChain(unsigned long long shapeId);
 
     // Shape contact and sensor data
-    // static long getContactCapacity(unsigned long long shapeId);
+    static long getContactCapacity(unsigned long long shapeId);
     // static long getContactData(unsigned long long shapeId, b2ContactData contactData, long capacity);
-    // static long getSensorCapacity(unsigned long long shapeId);
+    static long getSensorCapacity(unsigned long long shapeId);
     // static long getSensorOverlaps(unsigned long long shapeId, b2ShapeId overlaps, long capacity);
 
     // Shape AABB and mass

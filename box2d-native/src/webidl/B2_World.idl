@@ -8,7 +8,7 @@ interface B2_World {
 
     // Simulation
     static void step(unsigned long long world, float timeStep, long subStepCount);
-    // static void draw(unsigned long long worldId, b2DebugDraw draw);
+    static void draw(unsigned long long worldId, b2DebugDraw draw, b2DebugDrawCallbacks callbacks);
 
     // Event handling
     [Value] static b2BodyEvents getBodyEvents(unsigned long long worldId);
@@ -16,13 +16,13 @@ interface B2_World {
     [Value] static b2ContactEvents getContactEvents(unsigned long long worldId);
 
     // Query and collision detection
-    // [Value] static b2TreeStats overlapAABB(unsigned long long worldId, [Value] b2AABB aabb, [Value] b2QueryFilter filter, b2OverlapResultFcn fcn, VoidPtr context);
-    // [Value] static b2TreeStats overlapShape(unsigned long long worldId, [Const] b2ShapeProxy proxy, [Value] b2QueryFilter filter, b2OverlapResultFcn fcn, VoidPtr context);
-    // [Value] static b2TreeStats castRay(unsigned long long worldId, [Value] b2Vec2 origin, [Value] b2Vec2 translation, [Value] b2QueryFilter filter, b2CastResultFcn fcn, VoidPtr context);
-    // [Value] static b2RayResult castRayClosest(unsigned long long worldId, [Value] b2Vec2 origin, [Value] b2Vec2 translation, [Value] b2QueryFilter filter);
-    // [Value] static b2TreeStats castShape(unsigned long long worldId, [Const] b2ShapeProxy proxy, [Value] b2Vec2 translation, [Value] b2QueryFilter filter, b2CastResultFcn fcn, VoidPtr context);
-    // static float castMover(unsigned long long worldId, [Const] b2Capsule mover, [Value] b2Vec2 translation, [Value] b2QueryFilter filter);
-    // static void collideMover(unsigned long long worldId, [Const] b2Capsule mover, [Value] b2QueryFilter filter, b2PlaneResultFcn fcn, VoidPtr context);
+    [Value] static b2TreeStats overlapAABB(unsigned long long worldId, [Value] b2AABB aabb, [Value] b2QueryFilter filter, b2OverlapResultFcnI fcn);
+    [Value] static b2TreeStats overlapShape(unsigned long long worldId, [Const] b2ShapeProxy proxy, [Value] b2QueryFilter filter, b2OverlapResultFcnI fcn);
+    [Value] static b2TreeStats castRay(unsigned long long worldId, [Value] b2Vec2 origin, [Value] b2Vec2 translation, [Value] b2QueryFilter filter, b2CastResultFcnI fcn);
+    [Value] static b2RayResult castRayClosest(unsigned long long worldId, [Value] b2Vec2 origin, [Value] b2Vec2 translation, [Value] b2QueryFilter filter);
+    [Value] static b2TreeStats castShape(unsigned long long worldId, [Const] b2ShapeProxy proxy, [Value] b2Vec2 translation, [Value] b2QueryFilter filter, b2CastResultFcnI fcn);
+    static float castMover(unsigned long long worldId, [Const] b2Capsule mover, [Value] b2Vec2 translation, [Value] b2QueryFilter filter);
+    static void collideMover(unsigned long long worldId, [Const] b2Capsule mover, [Value] b2QueryFilter filter, b2PlaneResultFcnI fcn);
 
     // World settings
     static void enableSleeping(unsigned long long worldId, boolean flag);
@@ -37,10 +37,10 @@ interface B2_World {
     [Value] static b2Vec2 getGravity(unsigned long long worldId);
 
     // Callbacks
-    // static void setCustomFilterCallback(unsigned long long worldId, b2CustomFilterFcn fcn, VoidPtr context);
-    // static void setPreSolveCallback(unsigned long long worldId, b2PreSolveFcn fcn, VoidPtr context);
-    // static void setFrictionCallback(unsigned long long worldId, b2FrictionCallback callback);
-    // static void setRestitutionCallback(unsigned long long worldId, b2RestitutionCallback callback);
+    static void setCustomFilterCallback(unsigned long long worldId, b2CustomFilterFcnI fcn);
+    static void setPreSolveCallback(unsigned long long worldId, b2PreSolveFcnI fcn);
+    static void setFrictionCallback(unsigned long long worldId, b2FrictionCallbackI callback);
+    static void setRestitutionCallback(unsigned long long worldId, b2RestitutionCallbackI callback);
 
     // Advanced features
     static void explode(unsigned long long worldId, [Const] b2ExplosionDef explosionDef);
@@ -153,6 +153,21 @@ interface b2ManifoldPoint {
     attribute float totalNormalImpulse;
 };
 
+interface b2RayResult {
+    attribute float fraction;
+    attribute boolean hit;
+    attribute long leafVisits;
+    attribute long nodeVisits;
+    [Value] attribute b2Vec2 normal;
+    [Value] attribute b2Vec2 point;
+    [Value] attribute b2ShapeId shapeId;
+};
+
+interface b2TreeStats {
+    attribute long leafVisits;
+    attribute long nodeVisits;
+};
+
 [StackAllocatable]
 interface b2ExplosionDef {
     void b2ExplosionDef();
@@ -173,8 +188,6 @@ interface b2WorldDef {
     attribute float contactDampingRatio;
     attribute float maxContactPushSpeed;
     attribute float maximumLinearSpeed;
-    // b2FrictionCallback * 	frictionCallback
-    // b2RestitutionCallback * 	restitutionCallback
     attribute boolean enableSleep;
     attribute boolean enableContinuous;
     // attribute long workerCount;
@@ -182,6 +195,91 @@ interface b2WorldDef {
     // b2FinishTaskCallback * 	finishTask
     // attribute VoidPtr userTaskContext;
     attribute VoidPtr userData;
+};
+
+[StackAllocatable]
+interface b2DebugDraw {
+    void b2DebugDraw();
+    [Value] attribute b2AABB drawingBounds;
+    attribute boolean useDrawingBounds;
+    attribute boolean drawShapes;
+    attribute boolean drawJoints;
+    attribute boolean drawJointExtras;
+    attribute boolean drawBounds;
+    attribute boolean drawMass;
+    attribute boolean drawBodyNames;
+    attribute boolean drawContacts;
+    attribute boolean drawGraphColors;
+    attribute boolean drawContactNormals;
+    attribute boolean drawContactImpulses;
+    attribute boolean drawContactFeatures;
+    attribute boolean drawFrictionImpulses;
+    attribute boolean drawIslands;
+};
+
+interface b2DebugDrawCallbacks { };
+interface b2CustomFilterFcnI { };
+interface b2PreSolveFcnI { };
+interface b2FrictionCallbackI { };
+interface b2RestitutionCallbackI { };
+interface b2OverlapResultFcnI { };
+interface b2CastResultFcnI { };
+interface b2PlaneResultFcnI { };
+
+[JSImplementation="b2DebugDrawCallbacks"]
+interface b2DebugDrawCallbacksImpl {
+    void b2DebugDrawCallbacksImpl();
+    void drawPolygon([Const] b2Vec2 vertices, long vertexCount, long color);
+    void drawSolidPolygon([Value] b2Transform transform, [Const] b2Vec2 vertices, long vertexCount, float radius, long color);
+    void drawCircle([Value] b2Vec2 center, float radius, long color);
+    void drawSolidCircle([Value] b2Transform transform, float radius, long color);
+    void drawSolidCapsule([Value] b2Vec2 p1, [Value] b2Vec2 p2, float radius, long color);
+    void drawSegment([Value] b2Vec2 p1, [Value] b2Vec2 p2, long color);
+    void drawTransform([Value] b2Transform transform);
+    void drawPoint([Value] b2Vec2 p, float size, long color);
+    void drawString([Value] b2Vec2 p, DOMString s, long color);
+};
+
+[JSImplementation="b2CustomFilterFcnI"]
+interface b2CustomFilterFcnImpl {
+    void b2CustomFilterFcnImpl();
+    boolean customFilterFcn(unsigned long long shapeIdA, unsigned long long shapeIdB);
+};
+
+[JSImplementation="b2PreSolveFcnI"]
+interface b2PreSolveFcnImpl {
+    void b2PreSolveFcnImpl();
+    boolean preSolveFcn(unsigned long long shapeIdA, unsigned long long shapeIdB, b2Manifold manifold);
+};
+
+[JSImplementation="b2FrictionCallbackI"]
+interface b2FrictionCallbackImpl {
+    void b2FrictionCallbackImpl();
+    float frictionCallback(float frictionA, long userMaterialIdA, float frictionB, long userMaterialIdB);
+};
+
+[JSImplementation="b2RestitutionCallbackI"]
+interface b2RestitutionCallbackImpl {
+    void b2RestitutionCallbackImpl();
+    float restitutionCallback(float restitutionA, long userMaterialIdA, float restitutionB, long userMaterialIdB);
+};
+
+[JSImplementation="b2OverlapResultFcnI"]
+interface b2OverlapResultFcnImpl {
+    void b2OverlapResultFcnImpl();
+    boolean overlapResultFcn(unsigned long long shapeId);
+};
+
+[JSImplementation="b2CastResultFcnI"]
+interface b2CastResultFcnImpl {
+    void b2CastResultFcnImpl();
+    boolean castResultFcn(unsigned long long shapeId, [Value] b2Vec2 point, [Value] b2Vec2 normal, float fraction);
+};
+
+[JSImplementation="b2PlaneResultFcnI"]
+interface b2PlaneResultFcnImpl {
+    void b2PlaneResultFcnImpl();
+    boolean planeResultFcn(unsigned long long shapeId, [Const] b2PlaneResult plane);
 };
 
 interface b2Counters {

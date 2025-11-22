@@ -2,6 +2,27 @@
 
 #include <box2d/box2d.h>
 
+class b2CustomFilterFcnI;
+class b2PreSolveFcnI;
+class b2FrictionCallbackI;
+class b2RestitutionCallbackI;
+class b2DebugDrawCallbacks;
+class b2OverlapResultFcnI;
+class b2CastResultFcnI;
+class b2PlaneResultFcnI;
+
+static bool b2CustomFilterFcnWrapper(b2ShapeId shapeIdA, b2ShapeId shapeIdB, void *context);
+static bool b2PreSolveFcnWrapper(b2ShapeId shapeIdA, b2ShapeId shapeIdB, b2Manifold *manifold, void *context);
+static float b2FrictionCallbackWrapper(float frictionA, int userMaterialIdA, float frictionB, int userMaterialIdB);
+static float b2RestitutionCallbackWrapper(float restitutionA, int userMaterialIdA, float restitutionB, int userMaterialIdB);
+static void installDebugDrawCallbacks(b2DebugDraw* draw, b2DebugDrawCallbacks *callbacks);
+static bool b2OverlapResultFcnWrapper(b2ShapeId shapeId, void* context);
+static float b2CastResultFcnWrapper(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float fraction, void* context);
+static bool b2PlaneResultFcnWrapper(b2ShapeId shapeId, const b2PlaneResult* plane, void* context);
+
+static b2FrictionCallbackI* g_frictionCallback = nullptr;
+static b2RestitutionCallbackI* g_restitutionCallback = nullptr;
+
 class B2_World {
     public:
 
@@ -37,7 +58,8 @@ class B2_World {
     }
 
     /// Call this to draw shapes and other debug draw data
-    static inline void draw(uint64_t worldId, b2DebugDraw* draw) {
+    static inline void draw(uint64_t worldId, b2DebugDraw* draw, b2DebugDrawCallbacks* callbacks) {
+        installDebugDrawCallbacks(draw, callbacks);
         b2World_Draw(b2LoadWorldId(worldId), draw); 
     }
 
@@ -57,13 +79,13 @@ class B2_World {
     }
 
     /// Overlap test for all shapes that *potentially* overlap the provided AABB
-    static inline b2TreeStats overlapAABB(uint64_t worldId, b2AABB aabb, b2QueryFilter filter, b2OverlapResultFcn* fcn, void* context) {
-        return b2World_OverlapAABB(b2LoadWorldId(worldId), aabb, filter, fcn, context); 
+    static inline b2TreeStats overlapAABB(uint64_t worldId, b2AABB aabb, b2QueryFilter filter, b2OverlapResultFcnI* fcn) {
+        return b2World_OverlapAABB(b2LoadWorldId(worldId), aabb, filter, &b2OverlapResultFcnWrapper, fcn);
     }
 
     /// Overlap test for all shapes that overlap the provided shape proxy.
-    static inline b2TreeStats overlapShape(uint64_t worldId, const b2ShapeProxy* proxy, b2QueryFilter filter, b2OverlapResultFcn* fcn, void* context) {
-        return b2World_OverlapShape(b2LoadWorldId(worldId), proxy, filter, fcn, context); 
+    static inline b2TreeStats overlapShape(uint64_t worldId, const b2ShapeProxy* proxy, b2QueryFilter filter, b2OverlapResultFcnI* fcn) {
+        return b2World_OverlapShape(b2LoadWorldId(worldId), proxy, filter, b2OverlapResultFcnWrapper, fcn);
     }
 
     /// Cast a ray into the world to collect shapes in the path of the ray.
@@ -76,8 +98,8 @@ class B2_World {
     /// @param fcn A user implemented callback function
     /// @param context A user context that is passed along to the callback function
     ///	@return traversal performance counters
-    static inline b2TreeStats castRay(uint64_t worldId, b2Vec2 origin, b2Vec2 translation, b2QueryFilter filter, b2CastResultFcn* fcn, void* context) {
-        return b2World_CastRay(b2LoadWorldId(worldId), origin, translation, filter, fcn, context); 
+    static inline b2TreeStats castRay(uint64_t worldId, b2Vec2 origin, b2Vec2 translation, b2QueryFilter filter, b2CastResultFcnI* fcn) {
+        return b2World_CastRay(b2LoadWorldId(worldId), origin, translation, filter, b2CastResultFcnWrapper, fcn);
     }
 
     /// Cast a ray into the world to collect the closest hit. This is a convenience function. Ignores initial overlap.
@@ -88,8 +110,8 @@ class B2_World {
 
     /// Cast a shape through the world. Similar to a cast ray except that a shape is cast instead of a point.
     ///	@see b2World_CastRay
-    static inline b2TreeStats castShape(uint64_t worldId, const b2ShapeProxy* proxy, b2Vec2 translation, b2QueryFilter filter, b2CastResultFcn* fcn, void* context) {
-        return b2World_CastShape(b2LoadWorldId(worldId), proxy, translation, filter, fcn, context); 
+    static inline b2TreeStats castShape(uint64_t worldId, const b2ShapeProxy* proxy, b2Vec2 translation, b2QueryFilter filter, b2CastResultFcnI* fcn) {
+        return b2World_CastShape(b2LoadWorldId(worldId), proxy, translation, filter, b2CastResultFcnWrapper, fcn);
     }
 
     /// Cast a capsule mover through the world. This is a special shape cast that handles sliding along other shapes while reducing
@@ -100,8 +122,8 @@ class B2_World {
 
     /// Collide a capsule mover with the world, gathering collision planes that can be fed to b2SolvePlanes. Useful for
     /// kinematic character movement.
-    static inline void collideMover(uint64_t worldId, const b2Capsule* mover, b2QueryFilter filter, b2PlaneResultFcn* fcn, void* context) {
-        b2World_CollideMover(b2LoadWorldId(worldId), mover, filter, fcn, context); 
+    static inline void collideMover(uint64_t worldId, const b2Capsule* mover, b2QueryFilter filter, b2PlaneResultFcnI* fcn) {
+        b2World_CollideMover(b2LoadWorldId(worldId), mover, filter, b2PlaneResultFcnWrapper, fcn);
     }
 
     /// Enable/disable sleep. If your application does not need sleeping, you can gain some performance
@@ -166,23 +188,25 @@ class B2_World {
     }
 
     /// Register the custom filter callback. This is optional.
-    static inline void setCustomFilterCallback(uint64_t worldId, b2CustomFilterFcn* fcn, void* context) {
-        b2World_SetCustomFilterCallback(b2LoadWorldId(worldId), fcn, context); 
+    static inline void setCustomFilterCallback(uint64_t worldId, b2CustomFilterFcnI* fcn) {
+        b2World_SetCustomFilterCallback(b2LoadWorldId(worldId), &b2CustomFilterFcnWrapper, fcn);
     }
 
     /// Register the pre-solve callback. This is optional.
-    static inline void setPreSolveCallback(uint64_t worldId, b2PreSolveFcn* fcn, void* context) {
-        b2World_SetPreSolveCallback(b2LoadWorldId(worldId), fcn, context); 
+    static inline void setPreSolveCallback(uint64_t worldId, b2PreSolveFcnI* fcn) {
+        b2World_SetPreSolveCallback(b2LoadWorldId(worldId), &b2PreSolveFcnWrapper, fcn);
     }
 
     /// Set the friction callback. Passing NULL resets to default.
-    static inline void setFrictionCallback(uint64_t worldId, b2FrictionCallback* callback) {
-        b2World_SetFrictionCallback(b2LoadWorldId(worldId), callback); 
+    static inline void setFrictionCallback(uint64_t worldId, b2FrictionCallbackI* callback) {
+        g_frictionCallback = callback;
+        b2World_SetFrictionCallback(b2LoadWorldId(worldId), &b2FrictionCallbackWrapper);
     }
 
     /// Set the restitution callback. Passing NULL resets to default.
-    static inline void setRestitutionCallback(uint64_t worldId, b2RestitutionCallback* callback) {
-        b2World_SetRestitutionCallback(b2LoadWorldId(worldId), callback); 
+    static inline void setRestitutionCallback(uint64_t worldId, b2RestitutionCallbackI* callback) {
+        g_restitutionCallback = callback;
+        b2World_SetRestitutionCallback(b2LoadWorldId(worldId), &b2RestitutionCallbackWrapper);
     }
 
     /// Apply a radial explosion
@@ -263,3 +287,156 @@ class B2_World {
         b2World_EnableSpeculative(b2LoadWorldId(worldId), flag); 
     }
 };
+
+class b2CustomFilterFcnI {
+public:
+    virtual ~b2CustomFilterFcnI() = default;
+    virtual bool customFilterFcn(uint64_t shapeIdA, uint64_t shapeIdB) = 0;
+};
+
+class b2PreSolveFcnI {
+public:
+    virtual ~b2PreSolveFcnI() = default;
+    virtual bool preSolveFcn(uint64_t shapeIdA, uint64_t shapeIdB, b2Manifold *manifold) = 0;
+};
+
+class b2FrictionCallbackI {
+public:
+    virtual ~b2FrictionCallbackI() = default;
+    virtual float frictionCallback(float frictionA, int32_t userMaterialIdA, float frictionB, int32_t userMaterialIdB) = 0;
+};
+
+class b2RestitutionCallbackI {
+public:
+    virtual ~b2RestitutionCallbackI() = default;
+    virtual float restitutionCallback(float restitutionA, int32_t userMaterialIdA, float restitutionB, int32_t userMaterialIdB) = 0;
+};
+
+class b2OverlapResultFcnI {
+public:
+    virtual ~b2OverlapResultFcnI() = default;
+    virtual bool overlapResultFcn(uint64_t shapeId) = 0;
+};
+
+class b2CastResultFcnI {
+public:
+    virtual ~b2CastResultFcnI() = default;
+    virtual bool castResultFcn(uint64_t shapeId, b2Vec2 point, b2Vec2 normal, float fraction) = 0;
+};
+
+class b2PlaneResultFcnI {
+public:
+    virtual ~b2PlaneResultFcnI() = default;
+    virtual bool planeResultFcn(uint64_t shapeId, const b2PlaneResult* plane) = 0;
+};
+
+static bool b2CustomFilterFcnWrapper(b2ShapeId shapeIdA, b2ShapeId shapeIdB, void *context) {
+    b2CustomFilterFcnI *callback = (b2CustomFilterFcnI *)context;
+    return callback->customFilterFcn(b2StoreShapeId(shapeIdA), b2StoreShapeId(shapeIdB));
+}
+
+static bool b2PreSolveFcnWrapper(b2ShapeId shapeIdA, b2ShapeId shapeIdB, b2Manifold *manifold, void *context) {
+    b2PreSolveFcnI *callback = (b2PreSolveFcnI *)context;
+    return callback->preSolveFcn(b2StoreShapeId(shapeIdA), b2StoreShapeId(shapeIdB), manifold);
+}
+
+static float b2FrictionCallbackWrapper(float frictionA, int32_t userMaterialIdA, float frictionB, int32_t userMaterialIdB) {
+    if (g_frictionCallback) {
+        return g_frictionCallback->frictionCallback(frictionA, userMaterialIdA, frictionB, userMaterialIdB);
+    }
+    return (frictionA + frictionB) / 2.0f;
+}
+
+static float b2RestitutionCallbackWrapper(float restitutionA, int32_t userMaterialIdA, float restitutionB, int32_t userMaterialIdB) {
+    if (g_restitutionCallback) {
+        return g_restitutionCallback->restitutionCallback(restitutionA, userMaterialIdA, restitutionB, userMaterialIdB);
+    }
+    return (restitutionA + restitutionB) / 2.0f;
+}
+
+static bool b2OverlapResultFcnWrapper(b2ShapeId shapeId, void* context) {
+    b2OverlapResultFcnI *cb = (b2OverlapResultFcnI *) context;
+    return cb->overlapResultFcn(b2StoreShapeId(shapeId));
+}
+
+static float b2CastResultFcnWrapper(b2ShapeId shapeId, b2Vec2 point, b2Vec2 normal, float fraction, void* context) {
+    b2CastResultFcnI *cb = (b2CastResultFcnI *) context;
+    return cb->castResultFcn(b2StoreShapeId(shapeId), point, normal, fraction);
+}
+
+static bool b2PlaneResultFcnWrapper(b2ShapeId shapeId, const b2PlaneResult* plane, void* context) {
+    b2PlaneResultFcnI *cb = (b2PlaneResultFcnI *) context;
+    return cb->planeResultFcn(b2StoreShapeId(shapeId), plane);
+}
+
+class b2DebugDrawCallbacks {
+public:
+    virtual ~b2DebugDrawCallbacks() = default;
+    virtual void drawPolygon(const b2Vec2 *vertices, int32_t vertexCount, int32_t color) = 0;
+    virtual void drawSolidPolygon(b2Transform transform, const b2Vec2 *vertices, int32_t vertexCount, float radius, int32_t color) = 0;
+    virtual void drawCircle(b2Vec2 center, float radius, int32_t color) = 0;
+    virtual void drawSolidCircle(b2Transform transform, float radius, int32_t color) = 0;
+    virtual void drawSolidCapsule(b2Vec2 p1, b2Vec2 p2, float radius, int32_t color) = 0;
+    virtual void drawSegment(b2Vec2 p1, b2Vec2 p2, int32_t color) = 0;
+    virtual void drawTransform(b2Transform transform) = 0;
+    virtual void drawPoint(b2Vec2 p, float size, int32_t color) = 0;
+    virtual void drawString(b2Vec2 p, const char *s, int32_t color) = 0;
+};
+
+static void drawPolygonFcn(const b2Vec2* vertices, int vertexCount, b2HexColor color, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawPolygon(vertices, vertexCount, color);
+}
+
+static void drawSolidPolygonFcn(b2Transform transform, const b2Vec2* vertices, int vertexCount, float radius, b2HexColor color, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawSolidPolygon(transform, vertices, vertexCount, radius, color);
+}
+
+static void drawCircleFcn(b2Vec2 center, float radius, b2HexColor color, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawCircle(center, radius, color);
+}
+
+static void drawSolidCircleFcn(b2Transform transform, float radius, b2HexColor color, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawSolidCircle(transform, radius, color);
+}
+
+static void drawSolidCapsuleFcn(b2Vec2 p1, b2Vec2 p2, float radius, b2HexColor color, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawSolidCapsule(p1, p2, radius, color);
+}
+
+static void drawSegmentFcn(b2Vec2 p1, b2Vec2 p2, b2HexColor color, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawSegment(p1, p2, color);
+}
+
+static void drawTransformFcn(b2Transform transform, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawTransform(transform);
+}
+
+static void drawPointFcn(b2Vec2 p, float size, b2HexColor color, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawPoint(p, size, color);
+}
+
+static void drawStringFcn(b2Vec2 p, const char* s, b2HexColor color, void* context) {
+    b2DebugDrawCallbacks *cb = (b2DebugDrawCallbacks *) context;
+    cb->drawString(p, s, color);
+}
+
+static void installDebugDrawCallbacks(b2DebugDraw* draw, b2DebugDrawCallbacks *callbacks) {
+    draw->context = callbacks;
+    draw->DrawPolygonFcn = &drawPolygonFcn;
+    draw->DrawSolidPolygonFcn = &drawSolidPolygonFcn;
+    draw->DrawCircleFcn = &drawCircleFcn;
+    draw->DrawSolidCircleFcn = &drawSolidCircleFcn;
+    draw->DrawSolidCapsuleFcn = &drawSolidCapsuleFcn;
+    draw->DrawSegmentFcn = &drawSegmentFcn;
+    draw->DrawTransformFcn = &drawTransformFcn;
+    draw->DrawPointFcn = &drawPointFcn;
+    draw->DrawStringFcn = &drawStringFcn;
+}
