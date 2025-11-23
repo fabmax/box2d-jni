@@ -40,8 +40,13 @@ public:
         enkiDeleteTaskScheduler(scheduler);
     }
 
+    void stepWorld(uint64_t worldId, float timeStep, int subStepCount) {
+        b2World_Step(b2LoadWorldId(worldId), timeStep, subStepCount);
+        taskCount = 0;
+    }
+
     enkiTaskSet* enqueueTask(b2TaskCallback* box2dTask, int itemCount, int minRange, void* box2dContext) {
-        std::cout << "Enqueue!" << std::endl;
+        //printf("Enqueue task %d, itemCount=%d, range=%d\n", taskCount, itemCount, minRange);
         if (taskCount < MAX_TASKS) {
             enkiTaskSet* task = tasks[taskCount];
             TaskData* data = taskData + taskCount;
@@ -60,7 +65,7 @@ public:
             ++taskCount;
             return task;
         } else {
-            std::cout << "Too many tasks enqueued!" << std::endl;
+            std::cerr << "[Box2D] Too many tasks enqueued! You should use TaskManager.stepWorld() to run a multi-threaded simulation" << std::endl;
             box2dTask(0, itemCount, 0, box2dContext);
             return NULL;
         }

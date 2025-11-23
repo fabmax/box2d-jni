@@ -52,8 +52,8 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-//    testRuntimeOnly(project(":box2d-jni-natives-windows"))
-//    testRuntimeOnly(project(":box2d-jni-natives-linux"))
+    testRuntimeOnly(project(":box2d-jni-natives-windows"))
+    testRuntimeOnly(project(":box2d-jni-natives-linux"))
     testRuntimeOnly(project(":box2d-jni-natives-macos"))
 
     testImplementation(libs.lwjgl.core)

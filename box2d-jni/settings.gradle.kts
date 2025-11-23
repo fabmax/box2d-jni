@@ -1,5 +1,6 @@
 pluginManagement {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
         gradlePluginPortal()
@@ -17,4 +18,6 @@ dependencyResolutionManagement {
 rootProject.name = "box2d-jni"
 
 include("box2d-jni")
+include("box2d-jni-natives-linux")
 include("box2d-jni-natives-macos")
+include("box2d-jni-natives-windows")

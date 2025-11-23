@@ -56,7 +56,7 @@ class B2_World {
     /// @param worldId The world to simulate
     /// @param timeStep The amount of time to simulate, this should be a fixed number. Usually 1/60.
     /// @param subStepCount The number of sub-steps, increasing the sub-step count can increase accuracy. Usually 4.
-    static inline void step(uint64_t worldId, float timeStep, long subStepCount) {
+    static inline void step(uint64_t worldId, float timeStep, int subStepCount) {
         b2World_Step(b2LoadWorldId(worldId), timeStep, subStepCount);
     }
 
