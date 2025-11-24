@@ -375,8 +375,8 @@ class B2_Body {
 
     /// Get the shape ids for all shapes on this body, up to the provided capacity.
     /// @returns the number of shape ids stored in the user array
-    static inline int getShapes(uint64_t bodyId, b2ShapeId* shapeArray, int capacity) {
-        return b2Body_GetShapes(b2LoadBodyId(bodyId), shapeArray, capacity);
+    static inline int getShapes(uint64_t bodyId, b2ShapeIdArray* shapeArray) {
+        return b2Body_GetShapes(b2LoadBodyId(bodyId), shapeArray->array, shapeArray->length);
     }
 
     /// Get the number of joints on this body
@@ -386,8 +386,8 @@ class B2_Body {
 
     /// Get the joint ids for all joints on this body, up to the provided capacity
     /// @returns the number of joint ids stored in the user array
-    static inline int getJoints(uint64_t bodyId, b2JointId* jointArray, int capacity) {
-        return b2Body_GetJoints(b2LoadBodyId(bodyId), jointArray, capacity);
+    static inline int getJoints(uint64_t bodyId, b2JointIdArray* jointArray) {
+        return b2Body_GetJoints(b2LoadBodyId(bodyId), jointArray->array, jointArray->length);
     }
 
     /// Get the maximum capacity required for retrieving all the touching contacts on a body
@@ -399,8 +399,8 @@ class B2_Body {
     /// @note Box2D uses speculative collision so some contact points may be separated.
     /// @returns the number of elements filled in the provided array
     /// @warning do not ignore the return value, it specifies the valid number of elements
-    static inline int getContactData(uint64_t bodyId, b2ContactData* contactData, int capacity) {
-         return b2Body_GetContactData(b2LoadBodyId(bodyId), contactData, capacity);
+    static inline int getContactData(uint64_t bodyId, b2ContactDataArray* contactData) {
+         return b2Body_GetContactData(b2LoadBodyId(bodyId), contactData->array, contactData->length);
     }
 
     /// Get the current world AABB that contains all the attached shapes. Note that this may not encompass the body origin.

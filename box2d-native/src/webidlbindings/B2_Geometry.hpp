@@ -175,8 +175,8 @@ class B2_Geometry {
     /// - more than B2_MAX_POLYGON_VERTICES points
     /// This welds close points and removes collinear points.
     /// @warning Do not modify a hull once it has been computed
-    static inline void computeHull(const b2Vec2* points, int count, b2Hull& result) {
-        result = b2ComputeHull(points, count);
+    static inline void computeHull(const b2Vec2Array* points, b2Hull& result) {
+        result = b2ComputeHull(points->array, points->length);
     }
 
     /// This determines if a hull is valid. Checks for:

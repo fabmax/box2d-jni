@@ -83,9 +83,9 @@ interface B2_Body {
     // World and relationships
     [Value] static b2WorldId getWorld(unsigned long long bodyId);
     static long getShapeCount(unsigned long long bodyId);
-    //static long getShapes(unsigned long long bodyId, VoidPtr shapeArray, long capacity);
+    static long getShapes(unsigned long long bodyId, b2ShapeIdArray shapeArray);
     static long getJointCount(unsigned long long bodyId);
-    //static long getJoints(unsigned long long bodyId, VoidPtr jointArray, long capacity);
+    static long getJoints(unsigned long long bodyId, b2JointIdArray jointArray);
 
     // Events
     static void enableContactEvents(unsigned long long bodyId, boolean flag);
@@ -93,7 +93,7 @@ interface B2_Body {
 
     // Contacts
     static long getContactCapacity(unsigned long long bodyId);
-    //static long getContactData(unsigned long long bodyId, VoidPtr contactData, long capacity);
+    static long getContactData(unsigned long long bodyId, b2ContactDataArray contactData);
 
     // Body name and user data
     static void setName(unsigned long long bodyId, DOMString name);

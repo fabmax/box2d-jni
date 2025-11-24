@@ -274,8 +274,8 @@ class B2_Shape {
     /// @note Box2D uses speculative collision so some contact points may be separated.
     /// @returns the number of elements filled in the provided array
     /// @warning do not ignore the return value, it specifies the valid number of elements
-    static inline int getContactData(uint64_t shapeId, b2ContactData* contactData, int capacity) {
-        return b2Shape_GetContactData(b2LoadShapeId(shapeId), contactData, capacity);
+    static inline int getContactData(uint64_t shapeId, b2ContactDataArray* contactData) {
+        return b2Shape_GetContactData(b2LoadShapeId(shapeId), contactData->array, contactData->length);
     }
 
     /// Get the maximum capacity required for retrieving all the overlapped shapes on a sensor shape.
@@ -289,12 +289,11 @@ class B2_Shape {
     /// Get the overlapped shapes for a sensor shape.
     /// @param shapeId the id of a sensor shape
     /// @param overlaps a user allocated array that is filled with the overlapping shapes
-    /// @param capacity the capacity of overlappedShapes
     /// @returns the number of elements filled in the provided array
     /// @warning do not ignore the return value, it specifies the valid number of elements
     /// @warning overlaps may contain destroyed shapes so use b2Shape_IsValid to confirm each overlap
-    static inline int getSensorOverlaps(uint64_t shapeId, b2ShapeId* overlaps, int capacity) {
-        return b2Shape_GetSensorOverlaps(b2LoadShapeId(shapeId), overlaps, capacity);
+    static inline int getSensorOverlaps(uint64_t shapeId, b2ShapeIdArray* overlaps) {
+        return b2Shape_GetSensorOverlaps(b2LoadShapeId(shapeId), overlaps->array, overlaps->length);
     }
 
     /// Get the current world AABB
@@ -349,8 +348,8 @@ class B2_Chain {
 
     /// Fill a user array with chain segment shape ids up to the specified capacity. Returns
     /// the actual number of segments returned.
-    static inline int getSegments(uint64_t chainId, b2ShapeId* segmentArray, int capacity) {
-        return b2Chain_GetSegments(b2LoadChainId(chainId), segmentArray, capacity);
+    static inline int getSegments(uint64_t chainId, b2ShapeIdArray* segmentArray) {
+        return b2Chain_GetSegments(b2LoadChainId(chainId), segmentArray->array, segmentArray->length);
     }
 
     /// Set the chain friction

@@ -46,5 +46,22 @@ class B2_Base {
     static inline void loadJointId(uint64_t jointId, b2JointId& result) {
         result = b2LoadJointId(jointId);
     }
-
 };
+
+template <typename T> class b2Array {
+public:
+    b2Array(uint32_t length) : length(length), array(new T[length]) {}
+    ~b2Array() { delete[] array; }
+
+    void set(uint32_t index, T value) { array[index] = value; }
+    T* get(uint32_t index) { return array + index; }
+
+    uint32_t length;
+    T* array;
+};
+
+typedef b2Array<b2ShapeId> b2ShapeIdArray;
+typedef b2Array<b2JointId> b2JointIdArray;
+typedef b2Array<b2ContactData> b2ContactDataArray;
+typedef b2Array<b2CollisionPlane> b2CollisionPlaneArray;
+typedef b2Array<b2Vec2> b2Vec2Array;

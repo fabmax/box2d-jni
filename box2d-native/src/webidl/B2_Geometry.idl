@@ -47,7 +47,7 @@ interface B2_Geometry {
     [Value] static b2CastOutput shapeCastPolygon([Const] b2ShapeCastInput input, [Const] b2Polygon shape);
 
     // Hull computation and validation
-    //static void computeHull([Value] b2Vec2[] points, long count, [Ref] b2Hull result);
+    static void computeHull(b2Vec2Array points, [Ref] b2Hull result);
     static boolean validateHull([Const] b2Hull hull);
 };
 

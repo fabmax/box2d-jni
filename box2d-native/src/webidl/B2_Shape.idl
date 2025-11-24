@@ -71,9 +71,9 @@ interface B2_Shape {
 
     // Shape contact and sensor data
     static long getContactCapacity(unsigned long long shapeId);
-    // static long getContactData(unsigned long long shapeId, b2ContactData contactData, long capacity);
+    static long getContactData(unsigned long long shapeId, b2ContactDataArray contactData);
     static long getSensorCapacity(unsigned long long shapeId);
-    // static long getSensorOverlaps(unsigned long long shapeId, b2ShapeId overlaps, long capacity);
+    static long getSensorOverlaps(unsigned long long shapeId, b2ShapeIdArray overlaps);
 
     // Shape AABB and mass
     [Value] static b2AABB getAABB(unsigned long long shapeId);
@@ -94,7 +94,7 @@ interface B2_Chain {
     static boolean isValid(unsigned long long id);
     [Value] static b2WorldId getWorld(unsigned long long chainId);
     static long getSegmentCount(unsigned long long chainId);
-    // static long getSegments(unsigned long long chainId, b2ShapeId segmentArray, long capacity);
+    static long getSegments(unsigned long long chainId, b2ShapeIdArray segmentArray);
 
     // Chain material properties
     static void setFriction(unsigned long long chainId, float friction);
@@ -159,6 +159,14 @@ interface b2SurfaceMaterial {
     attribute float rollingResistance;
     attribute float tangentSpeed;
     attribute long userMaterialId;
+};
+
+[StackAllocatable]
+interface b2ContactData {
+    void b2ContactData();
+    [Value] attribute b2Manifold manifold;
+    [Value] attribute b2ShapeId shapeIdA;
+    [Value] attribute b2ShapeId shapeIdB;
 };
 
 enum b2ShapeType {

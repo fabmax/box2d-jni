@@ -59,3 +59,43 @@ interface b2JointId {
     attribute long index1;
     attribute unsigned short world0;
 };
+
+[StackAllocatable]
+interface b2ShapeIdArray {
+    void b2ShapeIdArray(unsigned long length);
+    void set(unsigned long index, [Value] b2ShapeId value);
+    b2ShapeId get(unsigned long index);
+    attribute unsigned long length;
+};
+
+[StackAllocatable]
+interface b2JointIdArray {
+    void b2JointIdArray(unsigned long length);
+    void set(unsigned long index, [Value] b2JointId value);
+    b2JointId get(unsigned long index);
+    attribute unsigned long length;
+};
+
+[StackAllocatable]
+interface b2ContactDataArray {
+    void b2ContactDataArray(unsigned long length);
+    void set(unsigned long index, [Value] b2ContactData value);
+    b2ContactData get(unsigned long index);
+    attribute unsigned long length;
+};
+
+[StackAllocatable]
+interface b2CollisionPlaneArray {
+    void b2CollisionPlaneArray(unsigned long length);
+    void set(unsigned long index,[Value] b2CollisionPlane value);
+    b2CollisionPlane get(unsigned long index);
+    attribute unsigned long length;
+};
+
+[StackAllocatable]
+interface b2Vec2Array {
+    void b2Vec2Array(unsigned long length);
+    void set(unsigned long index, [Value] b2Vec2 value);
+    b2Vec2 get(unsigned long index);
+    attribute unsigned long length;
+};
