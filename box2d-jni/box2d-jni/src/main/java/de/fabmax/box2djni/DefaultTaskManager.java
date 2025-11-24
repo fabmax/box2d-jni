@@ -50,7 +50,7 @@ public class DefaultTaskManager extends TaskManagerImpl {
                 System.out.println("no items!");
                 return;
             }
-            var numParts = Math.max(1, Math.min(itemCount / minRange, threadCount * 3));
+            var numParts = Math.max(1, Math.min(itemCount / minRange, threadCount * 4));
             var partSize = Math.max(itemCount / numParts, minRange);
             for (int i = 0; i < itemCount; i += partSize) {
                 var end = Math.min(i + partSize, itemCount);

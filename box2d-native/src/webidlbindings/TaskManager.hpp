@@ -18,10 +18,6 @@ public:
 		worldDef.userTaskContext = this;
 	}
 
-    virtual void stepWorld(uint64_t worldId, float timeStep, int subStepCount) {
-        b2World_Step(b2LoadWorldId(worldId), timeStep, subStepCount);
-    }
-
     void executeTask(uint32_t start, uint32_t end, uint32_t threadIndex, uint64_t box2dTask, uint64_t box2dContext) {
         ((b2TaskCallback*) box2dTask)(start, end, threadIndex, (void*) box2dContext);
     }

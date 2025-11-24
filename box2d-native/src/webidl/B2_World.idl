@@ -67,7 +67,6 @@ interface B2_World {
 
 interface TaskManager {
     void install([Ref] b2WorldDef worldDef, long threadCount);
-    void stepWorld(unsigned long long worldId, float timeStep, long subStepCount);
     void executeTask(unsigned long start, unsigned long end, unsigned long threadIndex, unsigned long long box2dTask, unsigned long long box2dContext);
 };
 
@@ -80,12 +79,14 @@ interface TaskManagerImpl {
 
 [StackAllocatable]
 interface b2BodyEvents {
+    void b2BodyEvents();
     attribute long moveCount;
     attribute b2BodyMoveEvent moveEvents;
 };
 
 [StackAllocatable]
 interface b2BodyMoveEvent {
+    void b2BodyMoveEvent();
     [Value] attribute b2BodyId bodyId;
     attribute boolean fellAsleep;
     [Value] attribute b2Transform transform;
@@ -94,6 +95,7 @@ interface b2BodyMoveEvent {
 
 [StackAllocatable]
 interface b2SensorEvents {
+    void b2SensorEvents();
     attribute long beginCount;
     attribute b2SensorBeginTouchEvent beginEvents;
     attribute long endCount;
@@ -102,18 +104,21 @@ interface b2SensorEvents {
 
 [StackAllocatable]
 interface b2SensorBeginTouchEvent {
+    void b2SensorBeginTouchEvent();
     [Value] attribute b2ShapeId sensorShapeId;
     [Value] attribute b2ShapeId visitorShapeId;
 };
 
 [StackAllocatable]
 interface b2SensorEndTouchEvent {
+    void b2SensorEndTouchEvent();
     [Value] attribute b2ShapeId sensorShapeId;
     [Value] attribute b2ShapeId visitorShapeId;
 };
 
 [StackAllocatable]
 interface b2ContactEvents {
+    void b2ContactEvents();
     attribute long beginCount;
     attribute b2ContactBeginTouchEvent beginEvents;
     attribute long endCount;
@@ -124,6 +129,7 @@ interface b2ContactEvents {
 
 [StackAllocatable]
 interface b2ContactBeginTouchEvent {
+    void b2ContactBeginTouchEvent();
     [Value] attribute b2Manifold manifold;
     [Value] attribute b2ShapeId shapeIdA;
     [Value] attribute b2ShapeId shapeIdB;
@@ -131,12 +137,14 @@ interface b2ContactBeginTouchEvent {
 
 [StackAllocatable]
 interface b2ContactEndTouchEvent {
+    void b2ContactEndTouchEvent();
     [Value] attribute b2ShapeId shapeIdA;
     [Value] attribute b2ShapeId shapeIdB;
 };
 
 [StackAllocatable]
 interface b2ContactHitEvent {
+    void b2ContactHitEvent();
     attribute float approachSpeed;
     [Value] attribute b2Vec2 normal;
     [Value] attribute b2Vec2 point;
@@ -146,6 +154,7 @@ interface b2ContactHitEvent {
 
 [StackAllocatable]
 interface b2Manifold {
+    void b2Manifold();
     [Value] attribute b2Vec2 normal;
     attribute long pointCount;
     [Value] attribute b2ManifoldPoint[] points;
@@ -154,6 +163,7 @@ interface b2Manifold {
 
 [StackAllocatable]
 interface b2ManifoldPoint {
+    void b2ManifoldPoint();
     [Value] attribute b2Vec2 anchorA;
     [Value] attribute b2Vec2 anchorB;
     attribute unsigned short id;
@@ -166,7 +176,9 @@ interface b2ManifoldPoint {
     attribute float totalNormalImpulse;
 };
 
+[StackAllocatable]
 interface b2RayResult {
+    void b2RayResult();
     attribute float fraction;
     attribute boolean hit;
     attribute long leafVisits;
@@ -176,7 +188,9 @@ interface b2RayResult {
     [Value] attribute b2ShapeId shapeId;
 };
 
+[StackAllocatable]
 interface b2TreeStats {
+    void b2TreeStats();
     attribute long leafVisits;
     attribute long nodeVisits;
 };
@@ -203,10 +217,6 @@ interface b2WorldDef {
     attribute float maximumLinearSpeed;
     attribute boolean enableSleep;
     attribute boolean enableContinuous;
-    // attribute long workerCount;
-    // b2EnqueueTaskCallback * 	enqueueTask
-    // b2FinishTaskCallback * 	finishTask
-    // attribute VoidPtr userTaskContext;
     attribute VoidPtr userData;
 };
 
