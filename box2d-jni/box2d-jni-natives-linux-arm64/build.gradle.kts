@@ -13,12 +13,12 @@ tasks["sourcesJar"].apply {
 
 tasks.register<Exec>("generateNativeProjectLinuxArm64") {
     group = "native build"
-    workingDir = File("$rootDir/../box2d-native/build-linux-arm64")
-    commandLine = listOf("cmake", "-DCMAKE_BUILD_TYPE=Release", "-DBOX2D_AVX2=Off", "-DCMAKE_TOOLCHAIN_FILE=../cmake/LinuxArm64.cmake", "..")
+    workingDir = File("$rootDir/../box2d-native/build")
+    commandLine = listOf("cmake", "-DCMAKE_BUILD_TYPE=Release", "..")
 
     doFirst {
-        delete("$rootDir/../box2d-native/build-linux-arm64")
-        mkdir("$rootDir/../box2d-native/build-linux-arm64")
+        delete("$rootDir/../box2d-native/build")
+        mkdir("$rootDir/../box2d-native/build")
     }
 }
 
@@ -26,7 +26,7 @@ tasks.register<Exec>("buildNativeLibLinuxArm64") {
     dependsOn(":box2d-jni:generateJniNativeBindings")
 
     group = "native build"
-    workingDir = File("$rootDir/../box2d-native/build-linux-arm64")
+    workingDir = File("$rootDir/../box2d-native/build")
     commandLine = listOf("cmake", "--build", ".", "--config", "Release")
     if (!workingDir.exists()) {
         dependsOn("generateNativeProjectLinuxArm64")
@@ -38,7 +38,7 @@ tasks.register<Exec>("buildNativeLibLinuxArm64") {
     }
     doLast {
         copy {
-            from("$rootDir/../box2d-native/build-linux-arm64/lib/arm64")
+            from("$rootDir/../box2d-native/build/lib/arm64")
             include("*.so")
             into(resourcesDir)
         }
