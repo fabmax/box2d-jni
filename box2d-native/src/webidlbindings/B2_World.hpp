@@ -97,7 +97,6 @@ class B2_World {
     /// @param translation The translation of the ray from the start point to the end point
     /// @param filter Contains bit flags to filter unwanted shapes from the results
     /// @param fcn A user implemented callback function
-    /// @param context A user context that is passed along to the callback function
     ///	@return traversal performance counters
     static inline b2TreeStats castRay(uint64_t worldId, b2Vec2 origin, b2Vec2 translation, b2QueryFilter filter, b2CastResultFcnI* fcn) {
         return b2World_CastRay(b2LoadWorldId(worldId), origin, translation, filter, b2CastResultFcnWrapper, fcn);
