@@ -40,6 +40,15 @@ tasks.javadoc {
     opts.addStringOption("Xdoclint:none", "-quiet")
 }
 
+tasks["clean"].doLast {
+    delete("$projectDir/src/main/generated")
+}
+
+tasks.compileJava {
+    dependsOn("generateJniJavaBindings")
+    //dependsOn("updateVersionNames")
+}
+
 tasks.test {
     useJUnitPlatform()
     testLogging {
@@ -53,14 +62,17 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testRuntimeOnly(project(":box2d-jni-natives-windows"))
+    testRuntimeOnly(project(":box2d-jni-natives-windows-arm64"))
     testRuntimeOnly(project(":box2d-jni-natives-linux"))
+    testRuntimeOnly(project(":box2d-jni-natives-linux-arm64"))
     testRuntimeOnly(project(":box2d-jni-natives-macos"))
 
     testImplementation(libs.lwjgl.core)
     val os = org.gradle.internal.os.OperatingSystem.current()
     val arch = System.getProperty("os.arch", "unknown")
     val lwjglPlatform = when {
-        os.isLinux -> "natives-linux"
+        os.isLinux && arch == "aarch64" -> "natives-linux-arm64"
+        os.isLinux && arch != "aarch64" -> "natives-linux"
         os.isMacOsX && arch == "aarch64" -> "natives-macos-arm64"
         os.isMacOsX && arch != "aarch64" -> "natives-macos"
         else -> "natives-windows"
@@ -109,12 +121,18 @@ afterEvaluate {
     publishing.publications["maven"].apply {
         this as MavenPublication
 
-//        artifact(project(":box2d-jni-natives-windows").tasks["jar"]).apply {
-//            classifier = "natives-windows"
-//        }
-//        artifact(project(":box2d-jni-natives-linux").tasks["jar"]).apply {
-//            classifier = "natives-linux"
-//        }
+        artifact(project(":box2d-jni-natives-windows").tasks["jar"]).apply {
+            classifier = "natives-windows"
+        }
+        artifact(project(":box2d-jni-natives-windows-arm64").tasks["jar"]).apply {
+            classifier = "natives-windows-arm64"
+        }
+        artifact(project(":box2d-jni-natives-linux").tasks["jar"]).apply {
+            classifier = "natives-linux"
+        }
+        artifact(project(":box2d-jni-natives-linux-arm64").tasks["jar"]).apply {
+            classifier = "natives-linux-arm64"
+        }
         artifact(project(":box2d-jni-natives-macos").tasks["jar"]).apply {
             classifier = "natives-macos"
         }

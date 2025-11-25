@@ -1,0 +1,140 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - "*"
+    tags:
+      - '!**'
+  pull_request:
+    branches:
+      - "*"
+    tags:
+      - '!**'
+
+jobs:
+  build_linux:
+    name: Linux x64 build
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Install arm64 toolchain
+        run: sudo apt install -y g++-aarch64-linux-gnu
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+      - name: Build native lib x64
+        run: ./gradlew :box2d-jni-natives-linux:buildNativeLibLinux
+        working-directory: box2d-jni/
+      - name: Build and test JNI bindings
+        run: ./gradlew build
+        working-directory: box2d-jni/
+
+      - name: Upload native lib artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-libs
+          path: |
+            box2d-jni/box2d-jni/build/libs/*.jar
+            box2d-jni/box2d-jni-natives-linux/build/libs/*.jar
+          compression-level: 0
+
+  build_linux_arm64:
+    name: Linux arm64 build
+    runs-on: ubuntu-22.04-arm
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+      - name: Build native lib arm64
+        run: ./gradlew :box2d-jni-natives-linux-arm64:buildNativeLibLinuxArm64
+        working-directory: box2d-jni/
+      - name: Build and test JNI bindings
+        run: ./gradlew build
+        working-directory: box2d-jni/
+
+      - name: Upload native lib artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-libs-arm64
+          path: |
+            box2d-jni/box2d-jni/build/libs/*.jar
+            box2d-jni/box2d-jni-natives-linux-arm64/build/libs/*.jar
+          compression-level: 0
+
+  build_windows:
+    name: Windows build
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+      - name: Build native lib x64
+        run: ./gradlew :box2d-jni-natives-windows:buildNativeLibWindows
+        working-directory: box2d-jni/
+      - name: Build native lib arm64
+        run: ./gradlew :box2d-jni-natives-windows-arm64:buildNativeLibWindowsArm64
+        working-directory: box2d-jni/
+      - name: Build and test JNI bindings
+        run: ./gradlew build
+        working-directory: box2d-jni/
+
+      - name: Upload native lib artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-libs
+          path: |
+            box2d-jni/box2d-jni/build/libs/*.jar
+            box2d-jni/box2d-jni-natives-windows/build/libs/*.jar
+            box2d-jni/box2d-jni-natives-windows-arm64/build/libs/*.jar
+          compression-level: 0
+
+  build_macos:
+    name: MacOS build
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Install coreutils
+        run: brew install coreutils
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+      - name: Build native lib
+        run: ./gradlew :box2d-jni-natives-macos:buildNativeLibMacos
+        working-directory: box2d-jni/
+      - name: Build and test JNI bindings
+        run: ./gradlew build
+        working-directory: box2d-jni/
+
+      - name: Upload MacOS lib artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-libs
+          path: |
+            box2d-jni/box2d-jni/build/libs/*.jar
+            box2d-jni/box2d-jni-natives-macos/build/libs/*.jar
+          compression-level: 0
