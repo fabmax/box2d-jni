@@ -38,8 +38,8 @@ tasks.register<Exec>("buildNativeLibLinux") {
     }
     doLast {
         copy {
-            from("$rootDir/../box2d-native/build/lib")
-            include("*.dll")
+            from("$rootDir/../box2d-native/build/lib/x64")
+            include("*.so")
             into(resourcesDir)
         }
         Sha1Helper.writeHashes(File(resourcesDir))

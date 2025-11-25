@@ -292,13 +292,13 @@ class B2_World {
 class b2CustomFilterFcnI {
 public:
     virtual ~b2CustomFilterFcnI() = default;
-    virtual bool customFilterFcn(uint64_t shapeIdA, uint64_t shapeIdB) = 0;
+    virtual bool customFilterFcn(unsigned long long shapeIdA, unsigned long long shapeIdB) = 0;
 };
 
 class b2PreSolveFcnI {
 public:
     virtual ~b2PreSolveFcnI() = default;
-    virtual bool preSolveFcn(uint64_t shapeIdA, uint64_t shapeIdB, b2Manifold *manifold) = 0;
+    virtual bool preSolveFcn(unsigned long long shapeIdA, unsigned long long shapeIdB, b2Manifold *manifold) = 0;
 };
 
 class b2FrictionCallbackI {
@@ -316,19 +316,19 @@ public:
 class b2OverlapResultFcnI {
 public:
     virtual ~b2OverlapResultFcnI() = default;
-    virtual bool overlapResultFcn(uint64_t shapeId) = 0;
+    virtual bool overlapResultFcn(unsigned long long shapeId) = 0;
 };
 
 class b2CastResultFcnI {
 public:
     virtual ~b2CastResultFcnI() = default;
-    virtual bool castResultFcn(uint64_t shapeId, b2Vec2 point, b2Vec2 normal, float fraction) = 0;
+    virtual bool castResultFcn(unsigned long long shapeId, b2Vec2 point, b2Vec2 normal, float fraction) = 0;
 };
 
 class b2PlaneResultFcnI {
 public:
     virtual ~b2PlaneResultFcnI() = default;
-    virtual bool planeResultFcn(uint64_t shapeId, const b2PlaneResult* plane) = 0;
+    virtual bool planeResultFcn(unsigned long long shapeId, const b2PlaneResult* plane) = 0;
 };
 
 static bool b2CustomFilterFcnWrapper(b2ShapeId shapeIdA, b2ShapeId shapeIdB, void *context) {

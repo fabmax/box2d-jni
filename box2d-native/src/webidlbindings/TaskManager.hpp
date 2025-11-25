@@ -22,8 +22,8 @@ public:
         ((b2TaskCallback*) box2dTask)(start, end, threadIndex, (void*) box2dContext);
     }
 
-    virtual uint64_t enqueueTask(uint64_t box2dTask, int itemCount, int minRange, uint64_t box2dContext) = 0;
-    virtual void finishTask(uint64_t userTask) = 0;
+    virtual unsigned long long enqueueTask(unsigned long long box2dTask, int itemCount, int minRange, unsigned long long box2dContext) = 0;
+    virtual void finishTask(unsigned long long userTask) = 0;
 
     int threadCount;
 };

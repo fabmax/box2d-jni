@@ -54,6 +54,7 @@ FetchContent_MakeAvailable(box2d)
 
 set(JAVA_AWT_LIBRARY NotNeeded)
 set(JAVA_JVM_LIBRARY NotNeeded)
+set(JAVA_AWT_INCLUDE_PATH NotNeeded)
 find_package(JNI REQUIRED)
 
 add_library(Box2dJniBindings SHARED

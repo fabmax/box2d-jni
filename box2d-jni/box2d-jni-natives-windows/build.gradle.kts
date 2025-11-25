@@ -39,7 +39,7 @@ tasks.register<Exec>("buildNativeLibWindows") {
     }
     doLast {
         copy {
-            from("$rootDir/../box2d-native/build/bin/Release")
+            from("$rootDir/../box2d-native/build/bin/x64/Release")
             include("*.dll")
             into(resourcesDir)
         }
