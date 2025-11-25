@@ -6,7 +6,8 @@ public enum Platform {
     LINUX_ARM64("de.fabmax.box2djni.linuxarm64.NativeLibLinuxArm64"),
     WINDOWS("de.fabmax.box2djni.windows.NativeLibWindows"),
     WINDOWS_ARM64("de.fabmax.box2djni.windowsarm64.NativeLibWindowsArm64"),
-    MACOS("de.fabmax.box2djni.macos.NativeLibMacos");
+    MACOS("de.fabmax.box2djni.macos.NativeLibMacos"),
+    MACOS_ARM64("de.fabmax.box2djni.macosarm64.NativeLibMacosArm64");
 
     private final String metaClassName;
 
@@ -39,7 +40,11 @@ public enum Platform {
                 return LINUX;
             }
         } else if (osName.contains("mac os x") || osName.contains("darwin") || osName.contains("osx")) {
-            return MACOS;
+            if (arch.contains("aarch64") || arch.contains("arm64")) {
+                return MACOS_ARM64;
+            } else {
+                return MACOS;
+            }
         } else {
             throw new IllegalStateException("Unsupported OS: " + osName);
         }

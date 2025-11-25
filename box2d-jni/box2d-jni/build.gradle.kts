@@ -66,6 +66,7 @@ dependencies {
     testRuntimeOnly(project(":box2d-jni-natives-linux"))
     testRuntimeOnly(project(":box2d-jni-natives-linux-arm64"))
     testRuntimeOnly(project(":box2d-jni-natives-macos"))
+    testRuntimeOnly(project(":box2d-jni-natives-macos-arm64"))
 
     testImplementation(libs.lwjgl.core)
     val os = org.gradle.internal.os.OperatingSystem.current()
@@ -135,6 +136,9 @@ afterEvaluate {
         }
         artifact(project(":box2d-jni-natives-macos").tasks["jar"]).apply {
             classifier = "natives-macos"
+        }
+        artifact(project(":box2d-jni-natives-macos-arm64").tasks["jar"]).apply {
+            classifier = "natives-macos-arm64"
         }
     }
 }

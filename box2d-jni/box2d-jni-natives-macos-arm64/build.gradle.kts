@@ -11,10 +11,10 @@ tasks["sourcesJar"].apply {
     exclude("**/*.sha1")
 }
 
-tasks.register<Exec>("generateNativeProjectMacos") {
+tasks.register<Exec>("generateNativeProjectMacosArm64") {
     group = "native build"
     workingDir = File("$rootDir/../box2d-native/build")
-    commandLine = listOf("cmake", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_OSX_ARCHITECTURES=x86_64", "..")
+    commandLine = listOf("cmake", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_OSX_ARCHITECTURES=arm64", "..")
 
     doFirst {
         delete("$rootDir/../box2d-native/build")
@@ -22,23 +22,23 @@ tasks.register<Exec>("generateNativeProjectMacos") {
     }
 }
 
-tasks.register<Exec>("buildNativeLibMacos") {
+tasks.register<Exec>("buildNativeLibMacosArm64") {
     dependsOn(":box2d-jni:generateJniNativeBindings")
 
     group = "native build"
     workingDir = File("$rootDir/../box2d-native/build")
     commandLine = listOf("cmake", "--build", ".")
     if (!workingDir.exists()) {
-        dependsOn("generateNativeProjectMacos")
+        dependsOn("generateNativeProjectMacosArm64")
     }
 
-    val resourcesDir = "${projectDir}/src/main/resources/de/fabmax/box2djni/macos/"
+    val resourcesDir = "${projectDir}/src/main/resources/de/fabmax/box2djni/macosarm64/"
     doFirst {
         delete(resourcesDir)
     }
     doLast {
         copy {
-            from("$rootDir/../box2d-native/build/lib/x64")
+            from("$rootDir/../box2d-native/build/lib/arm64")
             include("*.dylib")
             into(resourcesDir)
         }

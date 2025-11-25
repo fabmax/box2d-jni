@@ -27,7 +27,7 @@ tasks.register<Exec>("buildNativeLibLinux") {
 
     group = "native build"
     workingDir = File("$rootDir/../box2d-native/build")
-    commandLine = listOf("cmake", "--build", ".", "--config", "Release")
+    commandLine = listOf("cmake", "--build", ".")
     if (!workingDir.exists()) {
         dependsOn("generateNativeProjectLinux")
     }
