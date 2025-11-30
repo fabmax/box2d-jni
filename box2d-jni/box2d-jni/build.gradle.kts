@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.webidl)
     alias(libs.plugins.mavenPublish)
+    `java-library`
 }
 
 java {

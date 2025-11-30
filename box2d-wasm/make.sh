@@ -1,8 +1,9 @@
 #!/bin/bash
 
-cd /box2d-native/build-wasm
+SRC_DIR=$(pwd)
+cd ../box2d-native/build-wasm
 
 emmake make -j8
 
-cp box2d-wasm.mjs /src/dist/
-cp box2d-wasm.wasm /src/dist/
+cp -v box2d-wasm.mjs $SRC_DIR/dist/
+cp -v box2d-wasm.wasm $SRC_DIR/dist/

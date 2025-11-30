@@ -1,8 +1,6 @@
 services:
-  box2d-builder:
+  builder:
     build: .
     volumes:
       - .:/src
       - ../box2d-native:/box2d-native
-    entrypoint: ["bash",  "-c"]
-    command: ./generate_release.sh

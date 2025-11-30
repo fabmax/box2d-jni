@@ -114,9 +114,8 @@ else()
         -sEXPORT_NAME=Box2D
         -sENVIRONMENT=web,worker
         -sNO_FILESYSTEM=1
-        -sALLOW_TABLE_GROWTH=1
         -sALLOW_MEMORY_GROWTH=1
-        -sTOTAL_MEMORY=268435456
+        -sEXPORTED_RUNTIME_METHODS=['HEAPU8','HEAPU16','HEAPU32','stackSave','stackRestore','stackAlloc']
         -fno-rtti
         -fno-exceptions
     )
