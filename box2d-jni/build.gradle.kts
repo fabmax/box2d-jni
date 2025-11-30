@@ -1,3 +1,8 @@
+plugins {
+    alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.mavenPublish) apply false
+}
+
 subprojects {
     group = "de.fabmax.box2d-jni"
     version = "1.0.0"

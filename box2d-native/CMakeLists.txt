@@ -38,7 +38,28 @@ elseif(WIN32)
     message(STATUS "Windows architecture: ${WIN_ARCH}")
     set(BUILD_JNI TRUE)
 
-elseif(UNIX AND NOT APPLE)
+elseif(ANDROID)
+    # Detect Android ABI
+    if(ANDROID_ABI STREQUAL "armeabi-v7a")
+        message(STATUS "Building for Android ARMv7")
+        set(ANDROID_ARCH "armeabi-v7a")
+    elseif(ANDROID_ABI STREQUAL "arm64-v8a")
+        message(STATUS "Building for Android ARM64")
+        set(ANDROID_ARCH "arm64-v8a")
+    elseif(ANDROID_ABI STREQUAL "x86")
+        message(STATUS "Building for Android x86")
+        set(ANDROID_ARCH "x86")
+    elseif(ANDROID_ABI STREQUAL "x86_64")
+        message(STATUS "Building for Android x86_64")
+        set(ANDROID_ARCH "x86_64")
+    else()
+        message(STATUS "Building for Android (unknown ABI: ${ANDROID_ABI})")
+        set(ANDROID_ARCH "${ANDROID_ABI}")
+    endif()
+    message(STATUS "Android ABI: ${ANDROID_ARCH}")
+    set(BUILD_JNI TRUE)
+
+elseif(UNIX)
     # Detect architecture on Linux
     if(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
         message(STATUS "Building for Linux ARM64")
@@ -66,14 +87,21 @@ FetchContent_MakeAvailable(box2d)
 
 # Only build JNI bindings for non-Emscripten platforms
 if(BUILD_JNI)
-    set(JAVA_AWT_LIBRARY NotNeeded)
-    set(JAVA_JVM_LIBRARY NotNeeded)
-    set(JAVA_AWT_INCLUDE_PATH NotNeeded)
-    find_package(JNI REQUIRED)
-
     add_library(Box2dJniBindings SHARED
         src/webidlbindings/jni/box2d_jni.cpp
     )
+
+    if(NOT ANDROID)
+        set(JAVA_AWT_LIBRARY NotNeeded)
+        set(JAVA_JVM_LIBRARY NotNeeded)
+        set(JAVA_AWT_INCLUDE_PATH NotNeeded)
+        find_package(JNI REQUIRED)
+    else()
+        set(JNI_INCLUDE_DIRS "")
+        # Use 16kb alignment on Android
+        target_link_options(Box2dJniBindings PRIVATE "-Wl,-z,max-page-size=16384")
+    endif()
+
     target_include_directories(Box2dJniBindings PRIVATE
         ${JNI_INCLUDE_DIRS}
         src/webidlbindings/jni
@@ -90,6 +118,11 @@ if(BUILD_JNI)
         set_target_properties(Box2dJniBindings PROPERTIES
             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/${MACOS_ARCH}"
             RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/${MACOS_ARCH}"
+        )
+    elseif(ANDROID)
+        set_target_properties(Box2dJniBindings PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/${ANDROID_ARCH}"
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/${ANDROID_ARCH}"
         )
     elseif(UNIX)
         set_target_properties(Box2dJniBindings PROPERTIES

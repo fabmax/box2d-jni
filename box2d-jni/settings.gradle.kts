@@ -17,6 +17,7 @@ dependencyResolutionManagement {
 rootProject.name = "box2d-jni"
 
 include("box2d-jni")
+include("box2d-jni-android")
 include("box2d-jni-natives-linux")
 include("box2d-jni-natives-linux-arm64")
 include("box2d-jni-natives-macos")
