@@ -175,18 +175,18 @@ else()
         OUTPUT glue.o
         COMMAND em++ ${GLUE_WRAPPER} ${EMCC_GLUE_ARGS} -o glue.o
         DEPENDS ${GLUE_CPP}
-        COMMENT "Building box2d bindings"
+        COMMENT "Building box2d WASM bindings"
         VERBATIM
     )
     add_custom_target(box2d-bindings ALL DEPENDS ${GLUE_JS} glue.o)
 
     add_custom_command(
-        OUTPUT box2d-wasm.mjs box2d-wasm.wasm
-        COMMAND em++ glue.o $<TARGET_FILE:box2d> ${EMCC_WASM_ARGS} -o box2d-wasm.mjs
+        OUTPUT kool-box2d-wasm.mjs kool-box2d-wasm.wasm
+        COMMAND em++ glue.o $<TARGET_FILE:box2d> ${EMCC_WASM_ARGS} -o kool-box2d-wasm.mjs
         DEPENDS box2d-bindings box2d
         COMMENT "Building box2d webassembly"
         VERBATIM
     )
-    add_custom_target(Box2dWasmBindings ALL DEPENDS box2d-wasm.mjs box2d-wasm.wasm)
+    add_custom_target(Box2dWasmBindings ALL DEPENDS kool-box2d-wasm.mjs kool-box2d-wasm.wasm)
 
 endif()

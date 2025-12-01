@@ -1,12 +1,12 @@
 {
-  "name": "fabmax-box2d-wasm",
+  "name": "kool-box2d-wasm",
   "version": "1.0.0",
   "description": "Javascript/WASM bindings for Box2D v3",
   "author": "fabmax",
-  "main": "box2d-wasm.mjs",
+  "main": "kool-box2d-wasm.mjs",
   "files": [
-    "box2d-wasm.mjs",
-    "box2d-wasm.wasm"
+    "kool-box2d-wasm.mjs",
+    "kool-box2d-wasm.wasm"
   ],
   "repository": {
     "type": "git",
