@@ -363,4 +363,29 @@ class B2_Math {
     static inline float getLengthUnitsPerMeter() {
         return b2GetLengthUnitsPerMeter();
     }
+
+    /// Is this a valid number? Not NaN or infinity.
+    static inline bool isValidFloat(float a) {
+        return b2IsValidFloat(a);
+    }
+
+    /// Is this a valid vector? Not NaN or infinity.
+    static inline bool isValidVec2(b2Vec2 v) {
+        return b2IsValidVec2(v);
+    }
+
+    /// Is this a valid rotation? Not NaN or infinity. Is normalized.
+    static inline bool isValidRotation(b2Rot q) {
+        return b2IsValidRotation(q);
+    }
+
+    /// Is this a valid bounding box? Not Nan or infinity. Upper bound greater than or equal to lower bound.
+    static inline bool isValidAABB(b2AABB aabb) {
+        return b2IsValidAABB(aabb);
+    }
+
+    /// Is this a valid plane? Normal is a unit vector. Not Nan or infinity.
+    static inline bool isValidPlane(b2Plane a) {
+        return b2IsValidPlane(a);
+    }
 };

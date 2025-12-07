@@ -261,6 +261,11 @@ interface B2_Math {
     static float springDamper(float hertz, float dampingRatio, float position, float velocity, float timeStep);
     static void setLengthUnitsPerMeter(float lengthUnits);
     static float getLengthUnitsPerMeter();
+    static boolean isValidFloat(float a);
+    static boolean isValidVec2([Ref] b2Vec2 v);
+    static boolean isValidRotation([Ref] b2Rot q);
+    static boolean isValidAABB([Ref] b2AABB aabb);
+    static boolean isValidPlane([Ref] b2Plane a);
 };
 
 [NoDelete]

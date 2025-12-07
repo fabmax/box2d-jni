@@ -1128,6 +1128,21 @@ JNIEXPORT void JNICALL Java_box2d_B2_1Math_00024Raw_setLengthUnitsPerMeter(JNIEn
 JNIEXPORT jfloat JNICALL Java_box2d_B2_1Math_00024Raw_getLengthUnitsPerMeter(JNIEnv*, jclass) {
     return (jfloat) B2_Math::getLengthUnitsPerMeter();
 }
+JNIEXPORT jboolean JNICALL Java_box2d_B2_1Math_00024Raw_isValidFloat(JNIEnv*, jclass, jfloat a) {
+    return (jboolean) B2_Math::isValidFloat(a);
+}
+JNIEXPORT jboolean JNICALL Java_box2d_B2_1Math_00024Raw_isValidVec2(JNIEnv*, jclass, jlong v) {
+    return (jboolean) B2_Math::isValidVec2(*((b2Vec2*) v));
+}
+JNIEXPORT jboolean JNICALL Java_box2d_B2_1Math_00024Raw_isValidRotation(JNIEnv*, jclass, jlong q) {
+    return (jboolean) B2_Math::isValidRotation(*((b2Rot*) q));
+}
+JNIEXPORT jboolean JNICALL Java_box2d_B2_1Math_00024Raw_isValidAABB(JNIEnv*, jclass, jlong aabb) {
+    return (jboolean) B2_Math::isValidAABB(*((b2AABB*) aabb));
+}
+JNIEXPORT jboolean JNICALL Java_box2d_B2_1Math_00024Raw_isValidPlane(JNIEnv*, jclass, jlong a) {
+    return (jboolean) B2_Math::isValidPlane(*((b2Plane*) a));
+}
 
 // b2Vec2
 JNIEXPORT jint JNICALL Java_box2d_b2Vec2__1_1sizeOf(JNIEnv*, jclass) {

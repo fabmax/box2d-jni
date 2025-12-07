@@ -60,10 +60,50 @@ public class B2_Math extends NativeObject {
         return Raw.getLengthUnitsPerMeter();
     }
 
+    /**
+     * Is this a valid number? Not NaN or infinity.
+     */
+    public static boolean isValidFloat(float a) {
+        return Raw.isValidFloat(a);
+    }
+
+    /**
+     * Is this a valid vector? Not NaN or infinity.
+     */
+    public static boolean isValidVec2(b2Vec2 v) {
+        return Raw.isValidVec2(v.getAddress());
+    }
+
+    /**
+     * Is this a valid rotation? Not NaN or infinity. Is normalized.
+     */
+    public static boolean isValidRotation(b2Rot q) {
+        return Raw.isValidRotation(q.getAddress());
+    }
+
+    /**
+     * Is this a valid bounding box? Not Nan or infinity. Upper bound greater than or equal to lower bound.
+     */
+    public static boolean isValidAABB(b2AABB aabb) {
+        return Raw.isValidAABB(aabb.getAddress());
+    }
+
+    /**
+     * Is this a valid plane? Normal is a unit vector. Not Nan or infinity.
+     */
+    public static boolean isValidPlane(b2Plane a) {
+        return Raw.isValidPlane(a.getAddress());
+    }
+
     public static class Raw {
         public static native void computeCosSin(float radians, long result);
         public static native float springDamper(float hertz, float dampingRatio, float position, float velocity, float timeStep);
         public static native void setLengthUnitsPerMeter(float lengthUnits);
         public static native float getLengthUnitsPerMeter();
+        public static native boolean isValidFloat(float a);
+        public static native boolean isValidVec2(long v);
+        public static native boolean isValidRotation(long q);
+        public static native boolean isValidAABB(long aabb);
+        public static native boolean isValidPlane(long a);
     }
 }
