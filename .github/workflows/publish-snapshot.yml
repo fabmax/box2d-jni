@@ -15,8 +15,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Install arm64 toolchain
-        run: sudo apt install -y g++-aarch64-linux-gnu
       - name: Setup CMake
         uses: lukka/get-cmake@latest
       - name: Build box2d-jni
