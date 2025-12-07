@@ -124,6 +124,22 @@ interface B2_CharacterMover {
 };
 
 [NoDelete]
+interface B2_Collision {
+    [Value] static b2Manifold collideCircles([Const] b2Circle circleA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collideCapsuleAndCircle([Const] b2Capsule capsuleA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collideSegmentAndCircle([Const] b2Segment segmentA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collidePolygonAndCircle([Const] b2Polygon polygonA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collideCapsules([Const] b2Capsule capsuleA, [Ref] b2Transform xfA, [Const] b2Capsule capsuleB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collideSegmentAndCapsule([Const] b2Segment segmentA, [Ref] b2Transform xfA, [Const] b2Capsule capsuleB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collidePolygonAndCapsule([Const] b2Polygon polygonA, [Ref] b2Transform xfA, [Const] b2Capsule capsuleB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collidePolygons([Const] b2Polygon polygonA, [Ref] b2Transform xfA, [Const] b2Polygon polygonB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collideSegmentAndPolygon([Const] b2Segment segmentA, [Ref] b2Transform xfA, [Const] b2Polygon polygonB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collideChainSegmentAndCircle([Const] b2ChainSegment segmentA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
+    [Value] static b2Manifold collideChainSegmentAndCapsule([Const] b2ChainSegment segmentA, [Ref] b2Transform xfA, [Const] b2Capsule capsuleB, [Ref] b2Transform xfB, b2SimplexCache cache);
+    [Value] static b2Manifold collideChainSegmentAndPolygon([Const] b2ChainSegment segmentA, [Ref] b2Transform xfA, [Const] b2Polygon polygonB, [Ref] b2Transform xfB, b2SimplexCache cache);
+};
+
+[NoDelete]
 interface B2_Distance {
     [Value] static b2SegmentDistanceResult segmentDistance([Ref] b2Vec2 p1, [Ref] b2Vec2 q1, [Ref] b2Vec2 p2, [Ref] b2Vec2 q2);
     [Value] static b2DistanceOutput shapeDistance([Const] b2DistanceInput input, b2SimplexCache cache, b2Simplex simplexes, long simplexCapacity);

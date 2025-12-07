@@ -153,30 +153,6 @@ interface b2ContactHitEvent {
 };
 
 [StackAllocatable]
-interface b2Manifold {
-    void b2Manifold();
-    [Value] attribute b2Vec2 normal;
-    attribute long pointCount;
-    [Value] attribute b2ManifoldPoint[] points;
-    attribute float rollingImpulse;
-};
-
-[StackAllocatable]
-interface b2ManifoldPoint {
-    void b2ManifoldPoint();
-    [Value] attribute b2Vec2 anchorA;
-    [Value] attribute b2Vec2 anchorB;
-    attribute unsigned short id;
-    attribute float normalImpulse;
-    attribute float normalVelocity;
-    attribute boolean persisted;
-    [Value] attribute b2Vec2 point;
-    attribute float separation;
-    attribute float tangentImpulse;
-    attribute float totalNormalImpulse;
-};
-
-[StackAllocatable]
 interface b2RayResult {
     void b2RayResult();
     attribute float fraction;

@@ -1358,14 +1358,14 @@ JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_shapeCast(JNIEnv*, jcla
     _cache = B2_Distance::shapeCast((b2ShapeCastPairInput*) input);
     return (jlong) &_cache;
 }
-JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_makeProxy(JNIEnv*, jclass, jlong points, jint count, jfloat radius) {
-    static thread_local b2ShapeProxy _cache = B2_Distance::makeProxy((b2Vec2Array*) points, count, radius);
-    _cache = B2_Distance::makeProxy((b2Vec2Array*) points, count, radius);
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_makeProxy(JNIEnv*, jclass, jlong points, jfloat radius) {
+    static thread_local b2ShapeProxy _cache = B2_Distance::makeProxy((b2Vec2Array*) points, radius);
+    _cache = B2_Distance::makeProxy((b2Vec2Array*) points, radius);
     return (jlong) &_cache;
 }
-JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_makeOffsetProxy(JNIEnv*, jclass, jlong points, jint count, jfloat radius, jlong position, jlong rotation) {
-    static thread_local b2ShapeProxy _cache = B2_Distance::makeOffsetProxy((b2Vec2Array*) points, count, radius, *((b2Vec2*) position), *((b2Rot*) rotation));
-    _cache = B2_Distance::makeOffsetProxy((b2Vec2Array*) points, count, radius, *((b2Vec2*) position), *((b2Rot*) rotation));
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_makeOffsetProxy(JNIEnv*, jclass, jlong points, jfloat radius, jlong position, jlong rotation) {
+    static thread_local b2ShapeProxy _cache = B2_Distance::makeOffsetProxy((b2Vec2Array*) points, radius, *((b2Vec2*) position), *((b2Rot*) rotation));
+    _cache = B2_Distance::makeOffsetProxy((b2Vec2Array*) points, radius, *((b2Vec2*) position), *((b2Rot*) rotation));
     return (jlong) &_cache;
 }
 JNIEXPORT void JNICALL Java_box2d_B2_1Distance_00024Raw_getSweepTransform(JNIEnv*, jclass, jlong sweep, jfloat time, jlong result) {
@@ -2451,146 +2451,6 @@ JNIEXPORT jlong JNICALL Java_box2d_b2ContactHitEvent_00024Raw_getShapeIdB(JNIEnv
 JNIEXPORT void JNICALL Java_box2d_b2ContactHitEvent_00024Raw_setShapeIdB(JNIEnv*, jclass, jlong _address, jlong value) {
     b2ContactHitEvent* _self = (b2ContactHitEvent*) _address;
     _self->shapeIdB = *((b2ShapeId*) value);
-}
-
-// b2Manifold
-JNIEXPORT jint JNICALL Java_box2d_b2Manifold__1_1sizeOf(JNIEnv*, jclass) {
-    return sizeof(b2Manifold);
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2Manifold_00024Raw_b2Manifold_1placed(JNIEnv*, jclass, jlong _placement_address) {
-    return (jlong) new((void*)_placement_address) b2Manifold();
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2Manifold_00024Raw_b2Manifold(JNIEnv*, jclass) {
-    return (jlong) new b2Manifold();
-}
-JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
-    delete (b2Manifold*) _address;
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2Manifold_00024Raw_getNormal(JNIEnv*, jclass, jlong _address) {
-    b2Manifold* _self = (b2Manifold*) _address;
-    return (jlong) &_self->normal;
-}
-JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_setNormal(JNIEnv*, jclass, jlong _address, jlong value) {
-    b2Manifold* _self = (b2Manifold*) _address;
-    _self->normal = *((b2Vec2*) value);
-}
-JNIEXPORT jint JNICALL Java_box2d_b2Manifold_00024Raw_getPointCount(JNIEnv*, jclass, jlong _address) {
-    b2Manifold* _self = (b2Manifold*) _address;
-    return (jint) _self->pointCount;
-}
-JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_setPointCount(JNIEnv*, jclass, jlong _address, jint value) {
-    b2Manifold* _self = (b2Manifold*) _address;
-    _self->pointCount = value;
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2Manifold_00024Raw_getPoints(JNIEnv*, jclass, jlong _address, jint _index) {
-    b2Manifold* _self = (b2Manifold*) _address;
-    return (jlong) &_self->points[_index];
-}
-JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_setPoints(JNIEnv*, jclass, jlong _address, jint _index, jlong value) {
-    b2Manifold* _self = (b2Manifold*) _address;
-    _self->points[_index] = *((b2ManifoldPoint*) value);
-}
-JNIEXPORT jfloat JNICALL Java_box2d_b2Manifold_00024Raw_getRollingImpulse(JNIEnv*, jclass, jlong _address) {
-    b2Manifold* _self = (b2Manifold*) _address;
-    return (jfloat) _self->rollingImpulse;
-}
-JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_setRollingImpulse(JNIEnv*, jclass, jlong _address, jfloat value) {
-    b2Manifold* _self = (b2Manifold*) _address;
-    _self->rollingImpulse = value;
-}
-
-// b2ManifoldPoint
-JNIEXPORT jint JNICALL Java_box2d_b2ManifoldPoint__1_1sizeOf(JNIEnv*, jclass) {
-    return sizeof(b2ManifoldPoint);
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_b2ManifoldPoint_1placed(JNIEnv*, jclass, jlong _placement_address) {
-    return (jlong) new((void*)_placement_address) b2ManifoldPoint();
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_b2ManifoldPoint(JNIEnv*, jclass) {
-    return (jlong) new b2ManifoldPoint();
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
-    delete (b2ManifoldPoint*) _address;
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getAnchorA(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jlong) &_self->anchorA;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setAnchorA(JNIEnv*, jclass, jlong _address, jlong value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->anchorA = *((b2Vec2*) value);
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getAnchorB(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jlong) &_self->anchorB;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setAnchorB(JNIEnv*, jclass, jlong _address, jlong value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->anchorB = *((b2Vec2*) value);
-}
-JNIEXPORT jshort JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getId(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jshort) _self->id;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setId(JNIEnv*, jclass, jlong _address, jshort value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->id = value;
-}
-JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getNormalImpulse(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jfloat) _self->normalImpulse;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setNormalImpulse(JNIEnv*, jclass, jlong _address, jfloat value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->normalImpulse = value;
-}
-JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getNormalVelocity(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jfloat) _self->normalVelocity;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setNormalVelocity(JNIEnv*, jclass, jlong _address, jfloat value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->normalVelocity = value;
-}
-JNIEXPORT jboolean JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getPersisted(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jboolean) _self->persisted;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setPersisted(JNIEnv*, jclass, jlong _address, jboolean value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->persisted = value;
-}
-JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getPoint(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jlong) &_self->point;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setPoint(JNIEnv*, jclass, jlong _address, jlong value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->point = *((b2Vec2*) value);
-}
-JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getSeparation(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jfloat) _self->separation;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setSeparation(JNIEnv*, jclass, jlong _address, jfloat value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->separation = value;
-}
-JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getTangentImpulse(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jfloat) _self->tangentImpulse;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setTangentImpulse(JNIEnv*, jclass, jlong _address, jfloat value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->tangentImpulse = value;
-}
-JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getTotalNormalImpulse(JNIEnv*, jclass, jlong _address) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    return (jfloat) _self->totalNormalImpulse;
-}
-JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setTotalNormalImpulse(JNIEnv*, jclass, jlong _address, jfloat value) {
-    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
-    _self->totalNormalImpulse = value;
 }
 
 // b2RayResult
@@ -5776,6 +5636,211 @@ JNIEXPORT jlong JNICALL Java_box2d_b2WheelJointDef_00024Raw_getUserData(JNIEnv*,
 JNIEXPORT void JNICALL Java_box2d_b2WheelJointDef_00024Raw_setUserData(JNIEnv*, jclass, jlong _address, jlong value) {
     b2WheelJointDef* _self = (b2WheelJointDef*) _address;
     _self->userData = (void*) value;
+}
+
+// B2_Collision
+JNIEXPORT jint JNICALL Java_box2d_B2_1Collision__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(B2_Collision);
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideCircles(JNIEnv*, jclass, jlong circleA, jlong xfA, jlong circleB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collideCircles((b2Circle*) circleA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collideCircles((b2Circle*) circleA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideCapsuleAndCircle(JNIEnv*, jclass, jlong capsuleA, jlong xfA, jlong circleB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collideCapsuleAndCircle((b2Capsule*) capsuleA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collideCapsuleAndCircle((b2Capsule*) capsuleA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideSegmentAndCircle(JNIEnv*, jclass, jlong segmentA, jlong xfA, jlong circleB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collideSegmentAndCircle((b2Segment*) segmentA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collideSegmentAndCircle((b2Segment*) segmentA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collidePolygonAndCircle(JNIEnv*, jclass, jlong polygonA, jlong xfA, jlong circleB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collidePolygonAndCircle((b2Polygon*) polygonA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collidePolygonAndCircle((b2Polygon*) polygonA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideCapsules(JNIEnv*, jclass, jlong capsuleA, jlong xfA, jlong capsuleB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collideCapsules((b2Capsule*) capsuleA, *((b2Transform*) xfA), (b2Capsule*) capsuleB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collideCapsules((b2Capsule*) capsuleA, *((b2Transform*) xfA), (b2Capsule*) capsuleB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideSegmentAndCapsule(JNIEnv*, jclass, jlong segmentA, jlong xfA, jlong capsuleB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collideSegmentAndCapsule((b2Segment*) segmentA, *((b2Transform*) xfA), (b2Capsule*) capsuleB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collideSegmentAndCapsule((b2Segment*) segmentA, *((b2Transform*) xfA), (b2Capsule*) capsuleB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collidePolygonAndCapsule(JNIEnv*, jclass, jlong polygonA, jlong xfA, jlong capsuleB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collidePolygonAndCapsule((b2Polygon*) polygonA, *((b2Transform*) xfA), (b2Capsule*) capsuleB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collidePolygonAndCapsule((b2Polygon*) polygonA, *((b2Transform*) xfA), (b2Capsule*) capsuleB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collidePolygons(JNIEnv*, jclass, jlong polygonA, jlong xfA, jlong polygonB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collidePolygons((b2Polygon*) polygonA, *((b2Transform*) xfA), (b2Polygon*) polygonB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collidePolygons((b2Polygon*) polygonA, *((b2Transform*) xfA), (b2Polygon*) polygonB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideSegmentAndPolygon(JNIEnv*, jclass, jlong segmentA, jlong xfA, jlong polygonB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collideSegmentAndPolygon((b2Segment*) segmentA, *((b2Transform*) xfA), (b2Polygon*) polygonB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collideSegmentAndPolygon((b2Segment*) segmentA, *((b2Transform*) xfA), (b2Polygon*) polygonB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideChainSegmentAndCircle(JNIEnv*, jclass, jlong segmentA, jlong xfA, jlong circleB, jlong xfB) {
+    static thread_local b2Manifold _cache = B2_Collision::collideChainSegmentAndCircle((b2ChainSegment*) segmentA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    _cache = B2_Collision::collideChainSegmentAndCircle((b2ChainSegment*) segmentA, *((b2Transform*) xfA), (b2Circle*) circleB, *((b2Transform*) xfB));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideChainSegmentAndCapsule(JNIEnv*, jclass, jlong segmentA, jlong xfA, jlong capsuleB, jlong xfB, jlong cache) {
+    static thread_local b2Manifold _cache = B2_Collision::collideChainSegmentAndCapsule((b2ChainSegment*) segmentA, *((b2Transform*) xfA), (b2Capsule*) capsuleB, *((b2Transform*) xfB), (b2SimplexCache*) cache);
+    _cache = B2_Collision::collideChainSegmentAndCapsule((b2ChainSegment*) segmentA, *((b2Transform*) xfA), (b2Capsule*) capsuleB, *((b2Transform*) xfB), (b2SimplexCache*) cache);
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Collision_00024Raw_collideChainSegmentAndPolygon(JNIEnv*, jclass, jlong segmentA, jlong xfA, jlong polygonB, jlong xfB, jlong cache) {
+    static thread_local b2Manifold _cache = B2_Collision::collideChainSegmentAndPolygon((b2ChainSegment*) segmentA, *((b2Transform*) xfA), (b2Polygon*) polygonB, *((b2Transform*) xfB), (b2SimplexCache*) cache);
+    _cache = B2_Collision::collideChainSegmentAndPolygon((b2ChainSegment*) segmentA, *((b2Transform*) xfA), (b2Polygon*) polygonB, *((b2Transform*) xfB), (b2SimplexCache*) cache);
+    return (jlong) &_cache;
+}
+
+// b2ManifoldPoint
+JNIEXPORT jint JNICALL Java_box2d_b2ManifoldPoint__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2ManifoldPoint);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_b2ManifoldPoint_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2ManifoldPoint();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_b2ManifoldPoint(JNIEnv*, jclass) {
+    return (jlong) new b2ManifoldPoint();
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2ManifoldPoint*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getAnchorA(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jlong) &_self->anchorA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setAnchorA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->anchorA = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getAnchorB(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jlong) &_self->anchorB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setAnchorB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->anchorB = *((b2Vec2*) value);
+}
+JNIEXPORT jshort JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getId(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jshort) _self->id;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setId(JNIEnv*, jclass, jlong _address, jshort value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->id = value;
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getNormalImpulse(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jfloat) _self->normalImpulse;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setNormalImpulse(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->normalImpulse = value;
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getNormalVelocity(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jfloat) _self->normalVelocity;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setNormalVelocity(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->normalVelocity = value;
+}
+JNIEXPORT jboolean JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getPersisted(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jboolean) _self->persisted;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setPersisted(JNIEnv*, jclass, jlong _address, jboolean value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->persisted = value;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getPoint(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jlong) &_self->point;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setPoint(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->point = *((b2Vec2*) value);
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getSeparation(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jfloat) _self->separation;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setSeparation(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->separation = value;
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getTangentImpulse(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jfloat) _self->tangentImpulse;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setTangentImpulse(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->tangentImpulse = value;
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2ManifoldPoint_00024Raw_getTotalNormalImpulse(JNIEnv*, jclass, jlong _address) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    return (jfloat) _self->totalNormalImpulse;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ManifoldPoint_00024Raw_setTotalNormalImpulse(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2ManifoldPoint* _self = (b2ManifoldPoint*) _address;
+    _self->totalNormalImpulse = value;
+}
+
+// b2Manifold
+JNIEXPORT jint JNICALL Java_box2d_b2Manifold__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2Manifold);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Manifold_00024Raw_b2Manifold_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2Manifold();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Manifold_00024Raw_b2Manifold(JNIEnv*, jclass) {
+    return (jlong) new b2Manifold();
+}
+JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2Manifold*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Manifold_00024Raw_getNormal(JNIEnv*, jclass, jlong _address) {
+    b2Manifold* _self = (b2Manifold*) _address;
+    return (jlong) &_self->normal;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_setNormal(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Manifold* _self = (b2Manifold*) _address;
+    _self->normal = *((b2Vec2*) value);
+}
+JNIEXPORT jint JNICALL Java_box2d_b2Manifold_00024Raw_getPointCount(JNIEnv*, jclass, jlong _address) {
+    b2Manifold* _self = (b2Manifold*) _address;
+    return (jint) _self->pointCount;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_setPointCount(JNIEnv*, jclass, jlong _address, jint value) {
+    b2Manifold* _self = (b2Manifold*) _address;
+    _self->pointCount = value;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Manifold_00024Raw_getPoints(JNIEnv*, jclass, jlong _address, jint _index) {
+    b2Manifold* _self = (b2Manifold*) _address;
+    return (jlong) &_self->points[_index];
+}
+JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_setPoints(JNIEnv*, jclass, jlong _address, jint _index, jlong value) {
+    b2Manifold* _self = (b2Manifold*) _address;
+    _self->points[_index] = *((b2ManifoldPoint*) value);
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2Manifold_00024Raw_getRollingImpulse(JNIEnv*, jclass, jlong _address) {
+    b2Manifold* _self = (b2Manifold*) _address;
+    return (jfloat) _self->rollingImpulse;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Manifold_00024Raw_setRollingImpulse(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2Manifold* _self = (b2Manifold*) _address;
+    _self->rollingImpulse = value;
 }
 
 // B2_Geometry
