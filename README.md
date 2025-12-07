@@ -1,5 +1,9 @@
 # Box2D Bindings for Java / Kotlin
 
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Maven Central](https://img.shields.io/maven-central/v/de.fabmax.box2d-jni/box2d-jni.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/de.fabmax.box2d/box2d-jni)
+![Build](https://github.com/fabmax/box2d-jni/workflows/Build/badge.svg)
+
 Provides Java / JNI bindings for [Box2D](https://github.com/erincatto/box2d).
 
 The generated bindings contain most of the original documentation as javadoc. However, you may also want to check
