@@ -1,0 +1,38 @@
+name: Publish WASM to npm
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_wasm:
+    name: wasm build
+    runs-on: ubuntu-latest
+    environment: publish-npm
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+      - name: Build Docker Environment
+        run: sudo docker compose up
+        working-directory: box2d-wasm/
+      - name: Build Box2D wasm
+        working-directory: box2d-wasm/
+        run: |
+          sudo docker compose run --rm builder ./generate_release.sh
+          sudo docker compose run --rm builder ./make.sh
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish to npmjs
+        working-directory: box2d-wasm/dist
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

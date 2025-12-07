@@ -4,9 +4,9 @@ import box2d.*;
 import org.junit.jupiter.api.Test;
 import org.lwjgl.system.MemoryStack;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class WorldTest {
+public class FilterCallbackTest {
     @Test
     public void simpleWorldTest() {
         try (var stack = MemoryStack.stackPush()) {
@@ -17,6 +17,9 @@ public class WorldTest {
             grav.setY(-10.0f);
             worldDef.setGravity(grav);
             var worldId = B2_World.createWorld(worldDef);
+
+            var customFilterCb = new CustomFilterCb();
+            B2_World.setCustomFilterCallback(worldId, customFilterCb);
 
             var groundBodyDef = b2BodyDef.createAt(stack, MemoryStack::nmalloc);
             B2_Body.defaultBodyDef(groundBodyDef);
@@ -55,18 +58,22 @@ public class WorldTest {
             int subStepCount = 4;
             for (int i = 0; i < 100; i++) {
                 B2_World.step(worldId, timeStep, subStepCount);
-                var pos = B2_Body.getPosition(bodyId);
-                var rot = B2_Body.getRotation(bodyId);
-                var angle = B2_Rot.getAngle(rot);
-                System.out.printf("%4.2f %4.2f %4.2f\n", pos.getX(), pos.getY(), angle);
             }
 
-            var pos = B2_Body.getPosition(bodyId);
-            assertEquals(0.0f, pos.getX(), 0.1f);
-            assertEquals(1.0f, pos.getY(), 0.01f);
-            assertEquals(0.0f, B2_Rot.getAngle(B2_Body.getRotation(bodyId)), 0.01f);
+            assertTrue(customFilterCb.calls > 0);
 
             B2_World.destroyWorld(worldId);
+            customFilterCb.destroy();
+        }
+    }
+
+    static class CustomFilterCb extends b2CustomFilterFcnImpl {
+        int calls = 0;
+
+        @Override
+        public boolean customFilterFcn(long shapeIdA, long shapeIdB) {
+            calls++;
+            return true;
         }
     }
 }

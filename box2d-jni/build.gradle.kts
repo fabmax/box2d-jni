@@ -5,7 +5,7 @@ plugins {
 
 subprojects {
     group = "de.fabmax.box2d-jni"
-    version = "1.0.0-SNAPSHOT"
+    version = "1.0.0"
 
     if (name != "box2d-jni-android") {
         apply(plugin = "java-library")
