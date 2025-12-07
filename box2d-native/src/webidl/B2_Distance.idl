@@ -1,0 +1,117 @@
+[NoDelete]
+interface B2_Distance {
+    // Distance computation functions
+    [Value] static b2SegmentDistanceResult segmentDistance([Ref] b2Vec2 p1, [Ref] b2Vec2 q1, [Ref] b2Vec2 p2, [Ref] b2Vec2 q2);
+    [Value] static b2DistanceOutput shapeDistance([Const] b2DistanceInput input, b2SimplexCache cache, b2Simplex simplexes, long simplexCapacity);
+    [Value] static b2CastOutput shapeCast([Const] b2ShapeCastPairInput input);
+    [Value] static b2ShapeProxy makeProxy(b2Vec2Array points, float radius);
+    [Value] static b2ShapeProxy makeOffsetProxy(b2Vec2Array points, float radius, [Ref] b2Vec2 position, [Ref] b2Rot rotation);
+    static void getSweepTransform([Const] b2Sweep sweep, float time, [Ref] b2Transform result);
+    [Value] static b2TOIOutput timeOfImpact([Const] b2TOIInput input);
+};
+
+[StackAllocatable]
+interface b2SegmentDistanceResult {
+    void b2SegmentDistanceResult();
+    [Value] attribute b2Vec2 closest1;
+    [Value] attribute b2Vec2 closest2;
+    attribute float fraction1;
+    attribute float fraction2;
+    attribute float distanceSquared;
+};
+
+[StackAllocatable]
+interface b2SimplexCache {
+    void b2SimplexCache();
+    attribute unsigned short count;
+    attribute octet[] indexA;
+    attribute octet[] indexB;
+};
+
+[StackAllocatable]
+interface b2DistanceInput {
+    void b2DistanceInput();
+    [Value] attribute b2ShapeProxy proxyA;
+    [Value] attribute b2ShapeProxy proxyB;
+    [Value] attribute b2Transform transformA;
+    [Value] attribute b2Transform transformB;
+    attribute boolean useRadii;
+};
+
+[StackAllocatable]
+interface b2DistanceOutput {
+    void b2DistanceOutput();
+    [Value] attribute b2Vec2 pointA;
+    [Value] attribute b2Vec2 pointB;
+    [Value] attribute b2Vec2 normal;
+    attribute float distance;
+    attribute long iterations;
+    attribute long simplexCount;
+};
+
+[StackAllocatable]
+interface b2SimplexVertex {
+    void b2SimplexVertex();
+    [Value] attribute b2Vec2 wA;
+    [Value] attribute b2Vec2 wB;
+    [Value] attribute b2Vec2 w;
+    attribute float a;
+    attribute long indexA;
+    attribute long indexB;
+};
+
+[StackAllocatable]
+interface b2Simplex {
+    void b2Simplex();
+    [Value] attribute b2SimplexVertex v1;
+    [Value] attribute b2SimplexVertex v2;
+    [Value] attribute b2SimplexVertex v3;
+    attribute long count;
+};
+
+[StackAllocatable]
+interface b2ShapeCastPairInput {
+    void b2ShapeCastPairInput();
+    [Value] attribute b2ShapeProxy proxyA;
+    [Value] attribute b2ShapeProxy proxyB;
+    [Value] attribute b2Transform transformA;
+    [Value] attribute b2Transform transformB;
+    [Value] attribute b2Vec2 translationB;
+    attribute float maxFraction;
+    attribute boolean canEncroach;
+};
+
+[StackAllocatable]
+interface b2Sweep {
+    void b2Sweep();
+    [Value] attribute b2Vec2 localCenter;
+    [Value] attribute b2Vec2 c1;
+    [Value] attribute b2Vec2 c2;
+    [Value] attribute b2Rot q1;
+    [Value] attribute b2Rot q2;
+};
+
+[StackAllocatable]
+interface b2TOIInput {
+    void b2TOIInput();
+    [Value] attribute b2ShapeProxy proxyA;
+    [Value] attribute b2ShapeProxy proxyB;
+    [Value] attribute b2Sweep sweepA;
+    [Value] attribute b2Sweep sweepB;
+    attribute float maxFraction;
+};
+
+enum b2TOIState {
+    "b2_toiStateUnknown",
+    "b2_toiStateFailed",
+    "b2_toiStateOverlapped",
+    "b2_toiStateHit",
+    "b2_toiStateSeparated"
+};
+
+[StackAllocatable]
+interface b2TOIOutput {
+    void b2TOIOutput();
+    attribute b2TOIState state;
+    attribute float fraction;
+};

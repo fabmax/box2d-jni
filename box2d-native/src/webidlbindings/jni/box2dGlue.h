@@ -1339,6 +1339,568 @@ JNIEXPORT void JNICALL Java_box2d_b2Plane_00024Raw_setOffset(JNIEnv*, jclass, jl
     _self->offset = value;
 }
 
+// B2_Distance
+JNIEXPORT jint JNICALL Java_box2d_B2_1Distance__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(B2_Distance);
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_segmentDistance(JNIEnv*, jclass, jlong p1, jlong q1, jlong p2, jlong q2) {
+    static thread_local b2SegmentDistanceResult _cache = B2_Distance::segmentDistance(*((b2Vec2*) p1), *((b2Vec2*) q1), *((b2Vec2*) p2), *((b2Vec2*) q2));
+    _cache = B2_Distance::segmentDistance(*((b2Vec2*) p1), *((b2Vec2*) q1), *((b2Vec2*) p2), *((b2Vec2*) q2));
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_shapeDistance(JNIEnv*, jclass, jlong input, jlong cache, jlong simplexes, jint simplexCapacity) {
+    static thread_local b2DistanceOutput _cache = B2_Distance::shapeDistance((b2DistanceInput*) input, (b2SimplexCache*) cache, (b2Simplex*) simplexes, simplexCapacity);
+    _cache = B2_Distance::shapeDistance((b2DistanceInput*) input, (b2SimplexCache*) cache, (b2Simplex*) simplexes, simplexCapacity);
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_shapeCast(JNIEnv*, jclass, jlong input) {
+    static thread_local b2CastOutput _cache = B2_Distance::shapeCast((b2ShapeCastPairInput*) input);
+    _cache = B2_Distance::shapeCast((b2ShapeCastPairInput*) input);
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_makeProxy(JNIEnv*, jclass, jlong points, jint count, jfloat radius) {
+    static thread_local b2ShapeProxy _cache = B2_Distance::makeProxy((b2Vec2Array*) points, count, radius);
+    _cache = B2_Distance::makeProxy((b2Vec2Array*) points, count, radius);
+    return (jlong) &_cache;
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_makeOffsetProxy(JNIEnv*, jclass, jlong points, jint count, jfloat radius, jlong position, jlong rotation) {
+    static thread_local b2ShapeProxy _cache = B2_Distance::makeOffsetProxy((b2Vec2Array*) points, count, radius, *((b2Vec2*) position), *((b2Rot*) rotation));
+    _cache = B2_Distance::makeOffsetProxy((b2Vec2Array*) points, count, radius, *((b2Vec2*) position), *((b2Rot*) rotation));
+    return (jlong) &_cache;
+}
+JNIEXPORT void JNICALL Java_box2d_B2_1Distance_00024Raw_getSweepTransform(JNIEnv*, jclass, jlong sweep, jfloat time, jlong result) {
+    B2_Distance::getSweepTransform((b2Sweep*) sweep, time, *((b2Transform*) result));
+}
+JNIEXPORT jlong JNICALL Java_box2d_B2_1Distance_00024Raw_timeOfImpact(JNIEnv*, jclass, jlong input) {
+    static thread_local b2TOIOutput _cache = B2_Distance::timeOfImpact((b2TOIInput*) input);
+    _cache = B2_Distance::timeOfImpact((b2TOIInput*) input);
+    return (jlong) &_cache;
+}
+
+// b2SegmentDistanceResult
+JNIEXPORT jint JNICALL Java_box2d_b2SegmentDistanceResult__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2SegmentDistanceResult);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_b2SegmentDistanceResult_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2SegmentDistanceResult();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_b2SegmentDistanceResult(JNIEnv*, jclass) {
+    return (jlong) new b2SegmentDistanceResult();
+}
+JNIEXPORT void JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2SegmentDistanceResult*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_getClosest1(JNIEnv*, jclass, jlong _address) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    return (jlong) &_self->closest1;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_setClosest1(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    _self->closest1 = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_getClosest2(JNIEnv*, jclass, jlong _address) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    return (jlong) &_self->closest2;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_setClosest2(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    _self->closest2 = *((b2Vec2*) value);
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_getFraction1(JNIEnv*, jclass, jlong _address) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    return (jfloat) _self->fraction1;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_setFraction1(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    _self->fraction1 = value;
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_getFraction2(JNIEnv*, jclass, jlong _address) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    return (jfloat) _self->fraction2;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_setFraction2(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    _self->fraction2 = value;
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_getDistanceSquared(JNIEnv*, jclass, jlong _address) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    return (jfloat) _self->distanceSquared;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SegmentDistanceResult_00024Raw_setDistanceSquared(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2SegmentDistanceResult* _self = (b2SegmentDistanceResult*) _address;
+    _self->distanceSquared = value;
+}
+
+// b2SimplexCache
+JNIEXPORT jint JNICALL Java_box2d_b2SimplexCache__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2SimplexCache);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SimplexCache_00024Raw_b2SimplexCache_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2SimplexCache();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SimplexCache_00024Raw_b2SimplexCache(JNIEnv*, jclass) {
+    return (jlong) new b2SimplexCache();
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexCache_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2SimplexCache*) _address;
+}
+JNIEXPORT jshort JNICALL Java_box2d_b2SimplexCache_00024Raw_getCount(JNIEnv*, jclass, jlong _address) {
+    b2SimplexCache* _self = (b2SimplexCache*) _address;
+    return (jshort) _self->count;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexCache_00024Raw_setCount(JNIEnv*, jclass, jlong _address, jshort value) {
+    b2SimplexCache* _self = (b2SimplexCache*) _address;
+    _self->count = value;
+}
+JNIEXPORT jbyte JNICALL Java_box2d_b2SimplexCache_00024Raw_getIndexA(JNIEnv*, jclass, jlong _address, jint _index) {
+    b2SimplexCache* _self = (b2SimplexCache*) _address;
+    return (jbyte) _self->indexA[_index];
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexCache_00024Raw_setIndexA(JNIEnv*, jclass, jlong _address, jint _index, jbyte value) {
+    b2SimplexCache* _self = (b2SimplexCache*) _address;
+    _self->indexA[_index] = value;
+}
+JNIEXPORT jbyte JNICALL Java_box2d_b2SimplexCache_00024Raw_getIndexB(JNIEnv*, jclass, jlong _address, jint _index) {
+    b2SimplexCache* _self = (b2SimplexCache*) _address;
+    return (jbyte) _self->indexB[_index];
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexCache_00024Raw_setIndexB(JNIEnv*, jclass, jlong _address, jint _index, jbyte value) {
+    b2SimplexCache* _self = (b2SimplexCache*) _address;
+    _self->indexB[_index] = value;
+}
+
+// b2DistanceInput
+JNIEXPORT jint JNICALL Java_box2d_b2DistanceInput__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2DistanceInput);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceInput_00024Raw_b2DistanceInput_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2DistanceInput();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceInput_00024Raw_b2DistanceInput(JNIEnv*, jclass) {
+    return (jlong) new b2DistanceInput();
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceInput_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2DistanceInput*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceInput_00024Raw_getProxyA(JNIEnv*, jclass, jlong _address) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    return (jlong) &_self->proxyA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceInput_00024Raw_setProxyA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    _self->proxyA = *((b2ShapeProxy*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceInput_00024Raw_getProxyB(JNIEnv*, jclass, jlong _address) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    return (jlong) &_self->proxyB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceInput_00024Raw_setProxyB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    _self->proxyB = *((b2ShapeProxy*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceInput_00024Raw_getTransformA(JNIEnv*, jclass, jlong _address) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    return (jlong) &_self->transformA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceInput_00024Raw_setTransformA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    _self->transformA = *((b2Transform*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceInput_00024Raw_getTransformB(JNIEnv*, jclass, jlong _address) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    return (jlong) &_self->transformB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceInput_00024Raw_setTransformB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    _self->transformB = *((b2Transform*) value);
+}
+JNIEXPORT jboolean JNICALL Java_box2d_b2DistanceInput_00024Raw_getUseRadii(JNIEnv*, jclass, jlong _address) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    return (jboolean) _self->useRadii;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceInput_00024Raw_setUseRadii(JNIEnv*, jclass, jlong _address, jboolean value) {
+    b2DistanceInput* _self = (b2DistanceInput*) _address;
+    _self->useRadii = value;
+}
+
+// b2DistanceOutput
+JNIEXPORT jint JNICALL Java_box2d_b2DistanceOutput__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2DistanceOutput);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceOutput_00024Raw_b2DistanceOutput_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2DistanceOutput();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceOutput_00024Raw_b2DistanceOutput(JNIEnv*, jclass) {
+    return (jlong) new b2DistanceOutput();
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceOutput_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2DistanceOutput*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceOutput_00024Raw_getPointA(JNIEnv*, jclass, jlong _address) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    return (jlong) &_self->pointA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceOutput_00024Raw_setPointA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    _self->pointA = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceOutput_00024Raw_getPointB(JNIEnv*, jclass, jlong _address) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    return (jlong) &_self->pointB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceOutput_00024Raw_setPointB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    _self->pointB = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2DistanceOutput_00024Raw_getNormal(JNIEnv*, jclass, jlong _address) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    return (jlong) &_self->normal;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceOutput_00024Raw_setNormal(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    _self->normal = *((b2Vec2*) value);
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2DistanceOutput_00024Raw_getDistance(JNIEnv*, jclass, jlong _address) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    return (jfloat) _self->distance;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceOutput_00024Raw_setDistance(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    _self->distance = value;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2DistanceOutput_00024Raw_getIterations(JNIEnv*, jclass, jlong _address) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    return (jint) _self->iterations;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceOutput_00024Raw_setIterations(JNIEnv*, jclass, jlong _address, jint value) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    _self->iterations = value;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2DistanceOutput_00024Raw_getSimplexCount(JNIEnv*, jclass, jlong _address) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    return (jint) _self->simplexCount;
+}
+JNIEXPORT void JNICALL Java_box2d_b2DistanceOutput_00024Raw_setSimplexCount(JNIEnv*, jclass, jlong _address, jint value) {
+    b2DistanceOutput* _self = (b2DistanceOutput*) _address;
+    _self->simplexCount = value;
+}
+
+// b2SimplexVertex
+JNIEXPORT jint JNICALL Java_box2d_b2SimplexVertex__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2SimplexVertex);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SimplexVertex_00024Raw_b2SimplexVertex_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2SimplexVertex();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SimplexVertex_00024Raw_b2SimplexVertex(JNIEnv*, jclass) {
+    return (jlong) new b2SimplexVertex();
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexVertex_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2SimplexVertex*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SimplexVertex_00024Raw_getWA(JNIEnv*, jclass, jlong _address) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    return (jlong) &_self->wA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexVertex_00024Raw_setWA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    _self->wA = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SimplexVertex_00024Raw_getWB(JNIEnv*, jclass, jlong _address) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    return (jlong) &_self->wB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexVertex_00024Raw_setWB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    _self->wB = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2SimplexVertex_00024Raw_getW(JNIEnv*, jclass, jlong _address) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    return (jlong) &_self->w;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexVertex_00024Raw_setW(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    _self->w = *((b2Vec2*) value);
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2SimplexVertex_00024Raw_getA(JNIEnv*, jclass, jlong _address) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    return (jfloat) _self->a;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexVertex_00024Raw_setA(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    _self->a = value;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2SimplexVertex_00024Raw_getIndexA(JNIEnv*, jclass, jlong _address) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    return (jint) _self->indexA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexVertex_00024Raw_setIndexA(JNIEnv*, jclass, jlong _address, jint value) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    _self->indexA = value;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2SimplexVertex_00024Raw_getIndexB(JNIEnv*, jclass, jlong _address) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    return (jint) _self->indexB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2SimplexVertex_00024Raw_setIndexB(JNIEnv*, jclass, jlong _address, jint value) {
+    b2SimplexVertex* _self = (b2SimplexVertex*) _address;
+    _self->indexB = value;
+}
+
+// b2Simplex
+JNIEXPORT jint JNICALL Java_box2d_b2Simplex__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2Simplex);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Simplex_00024Raw_b2Simplex_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2Simplex();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Simplex_00024Raw_b2Simplex(JNIEnv*, jclass) {
+    return (jlong) new b2Simplex();
+}
+JNIEXPORT void JNICALL Java_box2d_b2Simplex_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2Simplex*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Simplex_00024Raw_getV1(JNIEnv*, jclass, jlong _address) {
+    b2Simplex* _self = (b2Simplex*) _address;
+    return (jlong) &_self->v1;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Simplex_00024Raw_setV1(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Simplex* _self = (b2Simplex*) _address;
+    _self->v1 = *((b2SimplexVertex*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Simplex_00024Raw_getV2(JNIEnv*, jclass, jlong _address) {
+    b2Simplex* _self = (b2Simplex*) _address;
+    return (jlong) &_self->v2;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Simplex_00024Raw_setV2(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Simplex* _self = (b2Simplex*) _address;
+    _self->v2 = *((b2SimplexVertex*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Simplex_00024Raw_getV3(JNIEnv*, jclass, jlong _address) {
+    b2Simplex* _self = (b2Simplex*) _address;
+    return (jlong) &_self->v3;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Simplex_00024Raw_setV3(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Simplex* _self = (b2Simplex*) _address;
+    _self->v3 = *((b2SimplexVertex*) value);
+}
+JNIEXPORT jint JNICALL Java_box2d_b2Simplex_00024Raw_getCount(JNIEnv*, jclass, jlong _address) {
+    b2Simplex* _self = (b2Simplex*) _address;
+    return (jint) _self->count;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Simplex_00024Raw_setCount(JNIEnv*, jclass, jlong _address, jint value) {
+    b2Simplex* _self = (b2Simplex*) _address;
+    _self->count = value;
+}
+
+// b2ShapeCastPairInput
+JNIEXPORT jint JNICALL Java_box2d_b2ShapeCastPairInput__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2ShapeCastPairInput);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_b2ShapeCastPairInput_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2ShapeCastPairInput();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_b2ShapeCastPairInput(JNIEnv*, jclass) {
+    return (jlong) new b2ShapeCastPairInput();
+}
+JNIEXPORT void JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2ShapeCastPairInput*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_getProxyA(JNIEnv*, jclass, jlong _address) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    return (jlong) &_self->proxyA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_setProxyA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    _self->proxyA = *((b2ShapeProxy*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_getProxyB(JNIEnv*, jclass, jlong _address) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    return (jlong) &_self->proxyB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_setProxyB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    _self->proxyB = *((b2ShapeProxy*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_getTransformA(JNIEnv*, jclass, jlong _address) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    return (jlong) &_self->transformA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_setTransformA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    _self->transformA = *((b2Transform*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_getTransformB(JNIEnv*, jclass, jlong _address) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    return (jlong) &_self->transformB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_setTransformB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    _self->transformB = *((b2Transform*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_getTranslationB(JNIEnv*, jclass, jlong _address) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    return (jlong) &_self->translationB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_setTranslationB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    _self->translationB = *((b2Vec2*) value);
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_getMaxFraction(JNIEnv*, jclass, jlong _address) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    return (jfloat) _self->maxFraction;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_setMaxFraction(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    _self->maxFraction = value;
+}
+JNIEXPORT jboolean JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_getCanEncroach(JNIEnv*, jclass, jlong _address) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    return (jboolean) _self->canEncroach;
+}
+JNIEXPORT void JNICALL Java_box2d_b2ShapeCastPairInput_00024Raw_setCanEncroach(JNIEnv*, jclass, jlong _address, jboolean value) {
+    b2ShapeCastPairInput* _self = (b2ShapeCastPairInput*) _address;
+    _self->canEncroach = value;
+}
+
+// b2Sweep
+JNIEXPORT jint JNICALL Java_box2d_b2Sweep__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2Sweep);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Sweep_00024Raw_b2Sweep_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2Sweep();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Sweep_00024Raw_b2Sweep(JNIEnv*, jclass) {
+    return (jlong) new b2Sweep();
+}
+JNIEXPORT void JNICALL Java_box2d_b2Sweep_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2Sweep*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Sweep_00024Raw_getLocalCenter(JNIEnv*, jclass, jlong _address) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    return (jlong) &_self->localCenter;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Sweep_00024Raw_setLocalCenter(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    _self->localCenter = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Sweep_00024Raw_getC1(JNIEnv*, jclass, jlong _address) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    return (jlong) &_self->c1;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Sweep_00024Raw_setC1(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    _self->c1 = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Sweep_00024Raw_getC2(JNIEnv*, jclass, jlong _address) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    return (jlong) &_self->c2;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Sweep_00024Raw_setC2(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    _self->c2 = *((b2Vec2*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Sweep_00024Raw_getQ1(JNIEnv*, jclass, jlong _address) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    return (jlong) &_self->q1;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Sweep_00024Raw_setQ1(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    _self->q1 = *((b2Rot*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2Sweep_00024Raw_getQ2(JNIEnv*, jclass, jlong _address) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    return (jlong) &_self->q2;
+}
+JNIEXPORT void JNICALL Java_box2d_b2Sweep_00024Raw_setQ2(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2Sweep* _self = (b2Sweep*) _address;
+    _self->q2 = *((b2Rot*) value);
+}
+
+// b2TOIInput
+JNIEXPORT jint JNICALL Java_box2d_b2TOIInput__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2TOIInput);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2TOIInput_00024Raw_b2TOIInput_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2TOIInput();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2TOIInput_00024Raw_b2TOIInput(JNIEnv*, jclass) {
+    return (jlong) new b2TOIInput();
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIInput_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2TOIInput*) _address;
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2TOIInput_00024Raw_getProxyA(JNIEnv*, jclass, jlong _address) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    return (jlong) &_self->proxyA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIInput_00024Raw_setProxyA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    _self->proxyA = *((b2ShapeProxy*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2TOIInput_00024Raw_getProxyB(JNIEnv*, jclass, jlong _address) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    return (jlong) &_self->proxyB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIInput_00024Raw_setProxyB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    _self->proxyB = *((b2ShapeProxy*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2TOIInput_00024Raw_getSweepA(JNIEnv*, jclass, jlong _address) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    return (jlong) &_self->sweepA;
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIInput_00024Raw_setSweepA(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    _self->sweepA = *((b2Sweep*) value);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2TOIInput_00024Raw_getSweepB(JNIEnv*, jclass, jlong _address) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    return (jlong) &_self->sweepB;
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIInput_00024Raw_setSweepB(JNIEnv*, jclass, jlong _address, jlong value) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    _self->sweepB = *((b2Sweep*) value);
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2TOIInput_00024Raw_getMaxFraction(JNIEnv*, jclass, jlong _address) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    return (jfloat) _self->maxFraction;
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIInput_00024Raw_setMaxFraction(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2TOIInput* _self = (b2TOIInput*) _address;
+    _self->maxFraction = value;
+}
+
+// b2TOIOutput
+JNIEXPORT jint JNICALL Java_box2d_b2TOIOutput__1_1sizeOf(JNIEnv*, jclass) {
+    return sizeof(b2TOIOutput);
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2TOIOutput_00024Raw_b2TOIOutput_1placed(JNIEnv*, jclass, jlong _placement_address) {
+    return (jlong) new((void*)_placement_address) b2TOIOutput();
+}
+JNIEXPORT jlong JNICALL Java_box2d_b2TOIOutput_00024Raw_b2TOIOutput(JNIEnv*, jclass) {
+    return (jlong) new b2TOIOutput();
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIOutput_00024Raw_destroy(JNIEnv*, jclass, jlong _address) {
+    delete (b2TOIOutput*) _address;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2TOIOutput_00024Raw_getState(JNIEnv*, jclass, jlong _address) {
+    b2TOIOutput* _self = (b2TOIOutput*) _address;
+    return (jint) _self->state;
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIOutput_00024Raw_setState(JNIEnv*, jclass, jlong _address, jint value) {
+    b2TOIOutput* _self = (b2TOIOutput*) _address;
+    _self->state = (b2TOIState) value;
+}
+JNIEXPORT jfloat JNICALL Java_box2d_b2TOIOutput_00024Raw_getFraction(JNIEnv*, jclass, jlong _address) {
+    b2TOIOutput* _self = (b2TOIOutput*) _address;
+    return (jfloat) _self->fraction;
+}
+JNIEXPORT void JNICALL Java_box2d_b2TOIOutput_00024Raw_setFraction(JNIEnv*, jclass, jlong _address, jfloat value) {
+    b2TOIOutput* _self = (b2TOIOutput*) _address;
+    _self->fraction = value;
+}
+
 // B2_World
 JNIEXPORT jint JNICALL Java_box2d_B2_1World__1_1sizeOf(JNIEnv*, jclass) {
     return sizeof(B2_World);
@@ -5801,6 +6363,23 @@ JNIEXPORT jint JNICALL Java_box2d_b2ShapeType__1getb2_1polygonShape(JNIEnv*, jcl
 }
 JNIEXPORT jint JNICALL Java_box2d_b2ShapeType__1getb2_1chainSegmentShape(JNIEnv*, jclass) {
     return b2_chainSegmentShape;
+}
+
+// b2TOIState
+JNIEXPORT jint JNICALL Java_box2d_b2TOIState__1getb2_1toiStateUnknown(JNIEnv*, jclass) {
+    return b2_toiStateUnknown;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2TOIState__1getb2_1toiStateFailed(JNIEnv*, jclass) {
+    return b2_toiStateFailed;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2TOIState__1getb2_1toiStateOverlapped(JNIEnv*, jclass) {
+    return b2_toiStateOverlapped;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2TOIState__1getb2_1toiStateHit(JNIEnv*, jclass) {
+    return b2_toiStateHit;
+}
+JNIEXPORT jint JNICALL Java_box2d_b2TOIState__1getb2_1toiStateSeparated(JNIEnv*, jclass) {
+    return b2_toiStateSeparated;
 }
 
 // b2BodyType

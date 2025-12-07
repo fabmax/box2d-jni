@@ -124,6 +124,17 @@ interface B2_CharacterMover {
 };
 
 [NoDelete]
+interface B2_Distance {
+    [Value] static b2SegmentDistanceResult segmentDistance([Ref] b2Vec2 p1, [Ref] b2Vec2 q1, [Ref] b2Vec2 p2, [Ref] b2Vec2 q2);
+    [Value] static b2DistanceOutput shapeDistance([Const] b2DistanceInput input, b2SimplexCache cache, b2Simplex simplexes, long simplexCapacity);
+    [Value] static b2CastOutput shapeCast([Const] b2ShapeCastPairInput input);
+    [Value] static b2ShapeProxy makeProxy(b2Vec2Array points, float radius);
+    [Value] static b2ShapeProxy makeOffsetProxy(b2Vec2Array points, float radius, [Ref] b2Vec2 position, [Ref] b2Rot rotation);
+    static void getSweepTransform([Const] b2Sweep sweep, float time, [Ref] b2Transform result);
+    [Value] static b2TOIOutput timeOfImpact([Const] b2TOIInput input);
+};
+
+[NoDelete]
 interface B2_DistanceJoint {
     static unsigned long long createDistanceJoint(unsigned long long worldId, [Const] b2DistanceJointDef def);
     static void defaultDistanceJointDef([Ref] b2DistanceJointDef result);
@@ -773,6 +784,15 @@ interface b2DebugDrawCallbacksImpl {
     void drawString([Ref] b2Vec2 p, [Const] DOMString s, long color);
 };
 
+interface b2DistanceInput {
+    void b2DistanceInput();
+    [Value] attribute b2ShapeProxy proxyA;
+    [Value] attribute b2ShapeProxy proxyB;
+    [Value] attribute b2Transform transformA;
+    [Value] attribute b2Transform transformB;
+    attribute boolean useRadii;
+};
+
 interface b2DistanceJointDef {
     void b2DistanceJointDef();
     [Value] attribute b2BodyId bodyIdA;
@@ -792,6 +812,16 @@ interface b2DistanceJointDef {
     attribute float minLength;
     attribute float motorSpeed;
     attribute VoidPtr userData;
+};
+
+interface b2DistanceOutput {
+    void b2DistanceOutput();
+    [Value] attribute b2Vec2 pointA;
+    [Value] attribute b2Vec2 pointB;
+    [Value] attribute b2Vec2 normal;
+    attribute float distance;
+    attribute long iterations;
+    attribute long simplexCount;
 };
 
 interface b2ExplosionDef {
@@ -1077,6 +1107,15 @@ interface b2Segment {
     [Value] attribute b2Vec2 point2;
 };
 
+interface b2SegmentDistanceResult {
+    void b2SegmentDistanceResult();
+    [Value] attribute b2Vec2 closest1;
+    [Value] attribute b2Vec2 closest2;
+    attribute float fraction1;
+    attribute float fraction2;
+    attribute float distanceSquared;
+};
+
 interface b2SensorBeginTouchEvent {
     void b2SensorBeginTouchEvent();
     [Value] attribute b2ShapeId sensorShapeId;
@@ -1103,6 +1142,17 @@ interface b2ShapeCastInput {
     attribute float maxFraction;
     [Value] attribute b2ShapeProxy proxy;
     [Value] attribute b2Vec2 translation;
+};
+
+interface b2ShapeCastPairInput {
+    void b2ShapeCastPairInput();
+    [Value] attribute b2ShapeProxy proxyA;
+    [Value] attribute b2ShapeProxy proxyB;
+    [Value] attribute b2Transform transformA;
+    [Value] attribute b2Transform transformB;
+    [Value] attribute b2Vec2 translationB;
+    attribute float maxFraction;
+    attribute boolean canEncroach;
 };
 
 interface b2ShapeDef {
@@ -1141,6 +1191,31 @@ interface b2ShapeProxy {
     attribute float radius;
 };
 
+interface b2Simplex {
+    void b2Simplex();
+    [Value] attribute b2SimplexVertex v1;
+    [Value] attribute b2SimplexVertex v2;
+    [Value] attribute b2SimplexVertex v3;
+    attribute long count;
+};
+
+interface b2SimplexCache {
+    void b2SimplexCache();
+    attribute unsigned short count;
+    attribute octet[] indexA;
+    attribute octet[] indexB;
+};
+
+interface b2SimplexVertex {
+    void b2SimplexVertex();
+    [Value] attribute b2Vec2 wA;
+    [Value] attribute b2Vec2 wB;
+    [Value] attribute b2Vec2 w;
+    attribute float a;
+    attribute long indexA;
+    attribute long indexB;
+};
+
 interface b2SurfaceMaterial {
     void b2SurfaceMaterial();
     attribute unsigned long customColor;
@@ -1149,6 +1224,30 @@ interface b2SurfaceMaterial {
     attribute float rollingResistance;
     attribute float tangentSpeed;
     attribute long userMaterialId;
+};
+
+interface b2Sweep {
+    void b2Sweep();
+    [Value] attribute b2Vec2 localCenter;
+    [Value] attribute b2Vec2 c1;
+    [Value] attribute b2Vec2 c2;
+    [Value] attribute b2Rot q1;
+    [Value] attribute b2Rot q2;
+};
+
+interface b2TOIInput {
+    void b2TOIInput();
+    [Value] attribute b2ShapeProxy proxyA;
+    [Value] attribute b2ShapeProxy proxyB;
+    [Value] attribute b2Sweep sweepA;
+    [Value] attribute b2Sweep sweepB;
+    attribute float maxFraction;
+};
+
+interface b2TOIOutput {
+    void b2TOIOutput();
+    attribute b2TOIState state;
+    attribute float fraction;
 };
 
 interface b2Transform {
@@ -1262,5 +1361,13 @@ enum b2ShapeType {
     "b2_segmentShape",
     "b2_polygonShape",
     "b2_chainSegmentShape"
+};
+
+enum b2TOIState {
+    "b2_toiStateUnknown",
+    "b2_toiStateFailed",
+    "b2_toiStateOverlapped",
+    "b2_toiStateHit",
+    "b2_toiStateSeparated"
 };
 
