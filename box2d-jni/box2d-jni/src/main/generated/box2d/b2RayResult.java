@@ -73,99 +73,71 @@ public class b2RayResult extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public float getFraction() {
         checkNotNull();
         return Raw.getFraction(address);
     }
 
-    /**
-     */
     public void setFraction(float value) {
         checkNotNull();
         Raw.setFraction(address, value);
     }
 
-    /**
-     */
     public boolean getHit() {
         checkNotNull();
         return Raw.getHit(address);
     }
 
-    /**
-     */
     public void setHit(boolean value) {
         checkNotNull();
         Raw.setHit(address, value);
     }
 
-    /**
-     */
     public int getLeafVisits() {
         checkNotNull();
         return Raw.getLeafVisits(address);
     }
 
-    /**
-     */
     public void setLeafVisits(int value) {
         checkNotNull();
         Raw.setLeafVisits(address, value);
     }
 
-    /**
-     */
     public int getNodeVisits() {
         checkNotNull();
         return Raw.getNodeVisits(address);
     }
 
-    /**
-     */
     public void setNodeVisits(int value) {
         checkNotNull();
         Raw.setNodeVisits(address, value);
     }
 
-    /**
-     */
     public b2Vec2 getNormal() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getNormal(address));
     }
 
-    /**
-     */
     public void setNormal(b2Vec2 value) {
         checkNotNull();
         Raw.setNormal(address, value.getAddress());
     }
 
-    /**
-     */
     public b2Vec2 getPoint() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getPoint(address));
     }
 
-    /**
-     */
     public void setPoint(b2Vec2 value) {
         checkNotNull();
         Raw.setPoint(address, value.getAddress());
     }
 
-    /**
-     */
     public b2ShapeId getShapeId() {
         checkNotNull();
         return b2ShapeId.wrapPointer(Raw.getShapeId(address));
     }
 
-    /**
-     */
     public void setShapeId(b2ShapeId value) {
         checkNotNull();
         Raw.setShapeId(address, value.getAddress());

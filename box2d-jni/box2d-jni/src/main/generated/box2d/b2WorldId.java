@@ -71,29 +71,21 @@ public class b2WorldId extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public short getGeneration() {
         checkNotNull();
         return Raw.getGeneration(address);
     }
 
-    /**
-     */
     public void setGeneration(short value) {
         checkNotNull();
         Raw.setGeneration(address, value);
     }
 
-    /**
-     */
     public short getIndex1() {
         checkNotNull();
         return Raw.getIndex1(address);
     }
 
-    /**
-     */
     public void setIndex1(short value) {
         checkNotNull();
         Raw.setIndex1(address, value);

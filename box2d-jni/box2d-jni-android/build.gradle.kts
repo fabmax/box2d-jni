@@ -31,19 +31,19 @@ java {
 }
 
 webidl {
-    modelPath.set(file("${rootDir}/../box2d-native/src/webidl/"))
-    modelName.set("Box2d")
+    modelPath = file("${rootDir}/../box2d-native/src/webidl/")
+    modelName = "Box2d"
 
     generateJni {
-        javaClassesOutputDirectory.set(file("$projectDir/src/main/generated/box2dandroid"))
-        nativeGlueCodeOutputFile.set(file("${rootDir}/../box2d-native/src/webidlbindings/jni/box2dGlue.h"))
+        javaClassesOutputDirectory = file("$projectDir/src/main/generated/box2dandroid")
+        nativeGlueCodeOutputFile = file("${rootDir}/../box2d-native/src/webidlbindings/jni/box2dGlue.h")
 
-        packagePrefix.set("box2dandroid")
-        onClassLoadStatement.set("de.fabmax.box2dandroid.Loader.load();")
-        nativeIncludeDirs.set(files(
+        packagePrefix = "box2dandroid"
+        onClassLoadStatement = "de.fabmax.box2dandroid.Loader.load();"
+        nativeIncludeDirs = files(
             file("$rootDir/../box2d-native/build/_deps/box2d-src/include/box2d"),
             file("$rootDir/../box2d-native/src/webidlbindings"),
-        ))
+        )
     }
 }
 

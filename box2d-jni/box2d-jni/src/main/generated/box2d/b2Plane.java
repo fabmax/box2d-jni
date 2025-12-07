@@ -71,29 +71,21 @@ public class b2Plane extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2Vec2 getNormal() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getNormal(address));
     }
 
-    /**
-     */
     public void setNormal(b2Vec2 value) {
         checkNotNull();
         Raw.setNormal(address, value.getAddress());
     }
 
-    /**
-     */
     public float getOffset() {
         checkNotNull();
         return Raw.getOffset(address);
     }
 
-    /**
-     */
     public void setOffset(float value) {
         checkNotNull();
         Raw.setOffset(address, value);

@@ -80,57 +80,41 @@ public class b2BodyMoveEvent extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2BodyId getBodyId() {
         checkNotNull();
         return b2BodyId.wrapPointer(Raw.getBodyId(address));
     }
 
-    /**
-     */
     public void setBodyId(b2BodyId value) {
         checkNotNull();
         Raw.setBodyId(address, value.getAddress());
     }
 
-    /**
-     */
     public boolean getFellAsleep() {
         checkNotNull();
         return Raw.getFellAsleep(address);
     }
 
-    /**
-     */
     public void setFellAsleep(boolean value) {
         checkNotNull();
         Raw.setFellAsleep(address, value);
     }
 
-    /**
-     */
     public b2Transform getTransform() {
         checkNotNull();
         return b2Transform.wrapPointer(Raw.getTransform(address));
     }
 
-    /**
-     */
     public void setTransform(b2Transform value) {
         checkNotNull();
         Raw.setTransform(address, value.getAddress());
     }
 
-    /**
-     */
     public NativeObject getUserData() {
         checkNotNull();
         return NativeObject.wrapPointer(Raw.getUserData(address));
     }
 
-    /**
-     */
     public void setUserData(NativeObject value) {
         checkNotNull();
         Raw.setUserData(address, value.getAddress());

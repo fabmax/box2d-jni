@@ -73,15 +73,11 @@ public class b2Sweep extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2Vec2 getLocalCenter() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getLocalCenter(address));
     }
 
-    /**
-     */
     public void setLocalCenter(b2Vec2 value) {
         checkNotNull();
         Raw.setLocalCenter(address, value.getAddress());

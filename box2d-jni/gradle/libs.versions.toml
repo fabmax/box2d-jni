@@ -8,6 +8,6 @@ junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 
 [plugins]
-webidl = { id = "de.fabmax.webidl-util", version = "0.10.4" }
+webidl = { id = "de.fabmax.webidl-util", version = "0.10.5" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.35.0" }
 androidLibrary = { id = "com.android.library", version = "8.12.3" }

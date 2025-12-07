@@ -71,29 +71,21 @@ public class b2Transform extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2Vec2 getP() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getP(address));
     }
 
-    /**
-     */
     public void setP(b2Vec2 value) {
         checkNotNull();
         Raw.setP(address, value.getAddress());
     }
 
-    /**
-     */
     public b2Rot getQ() {
         checkNotNull();
         return b2Rot.wrapPointer(Raw.getQ(address));
     }
 
-    /**
-     */
     public void setQ(b2Rot value) {
         checkNotNull();
         Raw.setQ(address, value.getAddress());

@@ -71,15 +71,11 @@ public class b2TOIOutput extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2TOIState getState() {
         checkNotNull();
         return b2TOIState.forValue(Raw.getState(address));
     }
 
-    /**
-     */
     public void setState(b2TOIState value) {
         checkNotNull();
         Raw.setState(address, value.value);

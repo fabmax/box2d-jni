@@ -71,15 +71,11 @@ public class b2TOIInput extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2ShapeProxy getProxyA() {
         checkNotNull();
         return b2ShapeProxy.wrapPointer(Raw.getProxyA(address));
     }
 
-    /**
-     */
     public void setProxyA(b2ShapeProxy value) {
         checkNotNull();
         Raw.setProxyA(address, value.getAddress());

@@ -44,141 +44,101 @@ public class b2Counters extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public int getBodyCount() {
         checkNotNull();
         return Raw.getBodyCount(address);
     }
 
-    /**
-     */
     public void setBodyCount(int value) {
         checkNotNull();
         Raw.setBodyCount(address, value);
     }
 
-    /**
-     */
     public int getShapeCount() {
         checkNotNull();
         return Raw.getShapeCount(address);
     }
 
-    /**
-     */
     public void setShapeCount(int value) {
         checkNotNull();
         Raw.setShapeCount(address, value);
     }
 
-    /**
-     */
     public int getContactCount() {
         checkNotNull();
         return Raw.getContactCount(address);
     }
 
-    /**
-     */
     public void setContactCount(int value) {
         checkNotNull();
         Raw.setContactCount(address, value);
     }
 
-    /**
-     */
     public int getJointCount() {
         checkNotNull();
         return Raw.getJointCount(address);
     }
 
-    /**
-     */
     public void setJointCount(int value) {
         checkNotNull();
         Raw.setJointCount(address, value);
     }
 
-    /**
-     */
     public int getIslandCount() {
         checkNotNull();
         return Raw.getIslandCount(address);
     }
 
-    /**
-     */
     public void setIslandCount(int value) {
         checkNotNull();
         Raw.setIslandCount(address, value);
     }
 
-    /**
-     */
     public int getStackUsed() {
         checkNotNull();
         return Raw.getStackUsed(address);
     }
 
-    /**
-     */
     public void setStackUsed(int value) {
         checkNotNull();
         Raw.setStackUsed(address, value);
     }
 
-    /**
-     */
     public int getStaticTreeHeight() {
         checkNotNull();
         return Raw.getStaticTreeHeight(address);
     }
 
-    /**
-     */
     public void setStaticTreeHeight(int value) {
         checkNotNull();
         Raw.setStaticTreeHeight(address, value);
     }
 
-    /**
-     */
     public int getTreeHeight() {
         checkNotNull();
         return Raw.getTreeHeight(address);
     }
 
-    /**
-     */
     public void setTreeHeight(int value) {
         checkNotNull();
         Raw.setTreeHeight(address, value);
     }
 
-    /**
-     */
     public int getByteCount() {
         checkNotNull();
         return Raw.getByteCount(address);
     }
 
-    /**
-     */
     public void setByteCount(int value) {
         checkNotNull();
         Raw.setByteCount(address, value);
     }
 
-    /**
-     */
     public int getTaskCount() {
         checkNotNull();
         return Raw.getTaskCount(address);
     }
 
-    /**
-     */
     public void setTaskCount(int value) {
         checkNotNull();
         Raw.setTaskCount(address, value);

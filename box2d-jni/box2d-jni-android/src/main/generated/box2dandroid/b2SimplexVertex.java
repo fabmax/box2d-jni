@@ -71,15 +71,11 @@ public class b2SimplexVertex extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2Vec2 getWA() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getWA(address));
     }
 
-    /**
-     */
     public void setWA(b2Vec2 value) {
         checkNotNull();
         Raw.setWA(address, value.getAddress());

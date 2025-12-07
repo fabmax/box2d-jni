@@ -72,43 +72,31 @@ public class b2ContactData extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2Manifold getManifold() {
         checkNotNull();
         return b2Manifold.wrapPointer(Raw.getManifold(address));
     }
 
-    /**
-     */
     public void setManifold(b2Manifold value) {
         checkNotNull();
         Raw.setManifold(address, value.getAddress());
     }
 
-    /**
-     */
     public b2ShapeId getShapeIdA() {
         checkNotNull();
         return b2ShapeId.wrapPointer(Raw.getShapeIdA(address));
     }
 
-    /**
-     */
     public void setShapeIdA(b2ShapeId value) {
         checkNotNull();
         Raw.setShapeIdA(address, value.getAddress());
     }
 
-    /**
-     */
     public b2ShapeId getShapeIdB() {
         checkNotNull();
         return b2ShapeId.wrapPointer(Raw.getShapeIdB(address));
     }
 
-    /**
-     */
     public void setShapeIdB(b2ShapeId value) {
         checkNotNull();
         Raw.setShapeIdB(address, value.getAddress());

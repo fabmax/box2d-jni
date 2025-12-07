@@ -71,43 +71,31 @@ public class b2BodyId extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public short getGeneration() {
         checkNotNull();
         return Raw.getGeneration(address);
     }
 
-    /**
-     */
     public void setGeneration(short value) {
         checkNotNull();
         Raw.setGeneration(address, value);
     }
 
-    /**
-     */
     public int getIndex1() {
         checkNotNull();
         return Raw.getIndex1(address);
     }
 
-    /**
-     */
     public void setIndex1(int value) {
         checkNotNull();
         Raw.setIndex1(address, value);
     }
 
-    /**
-     */
     public short getWorld0() {
         checkNotNull();
         return Raw.getWorld0(address);
     }
 
-    /**
-     */
     public void setWorld0(short value) {
         checkNotNull();
         Raw.setWorld0(address, value);

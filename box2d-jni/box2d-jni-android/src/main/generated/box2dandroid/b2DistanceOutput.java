@@ -71,15 +71,11 @@ public class b2DistanceOutput extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2Vec2 getPointA() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getPointA(address));
     }
 
-    /**
-     */
     public void setPointA(b2Vec2 value) {
         checkNotNull();
         Raw.setPointA(address, value.getAddress());

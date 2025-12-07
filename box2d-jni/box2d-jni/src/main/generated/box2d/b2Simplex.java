@@ -103,15 +103,11 @@ public class b2Simplex extends NativeObject {
         Raw.setV2(address, value.getAddress());
     }
 
-    /**
-     */
     public b2SimplexVertex getV3() {
         checkNotNull();
         return b2SimplexVertex.wrapPointer(Raw.getV3(address));
     }
 
-    /**
-     */
     public void setV3(b2SimplexVertex value) {
         checkNotNull();
         Raw.setV3(address, value.getAddress());

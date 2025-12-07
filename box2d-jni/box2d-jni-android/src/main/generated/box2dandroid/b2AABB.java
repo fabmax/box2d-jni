@@ -71,29 +71,21 @@ public class b2AABB extends NativeObject {
 
     // Attributes
 
-    /**
-     */
     public b2Vec2 getLowerBound() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getLowerBound(address));
     }
 
-    /**
-     */
     public void setLowerBound(b2Vec2 value) {
         checkNotNull();
         Raw.setLowerBound(address, value.getAddress());
     }
 
-    /**
-     */
     public b2Vec2 getUpperBound() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getUpperBound(address));
     }
 
-    /**
-     */
     public void setUpperBound(b2Vec2 value) {
         checkNotNull();
         Raw.setUpperBound(address, value.getAddress());

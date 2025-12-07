@@ -88,15 +88,11 @@ public class b2CosSin extends NativeObject {
         Raw.setCosine(address, value);
     }
 
-    /**
-     */
     public float getSine() {
         checkNotNull();
         return Raw.getSine(address);
     }
 
-    /**
-     */
     public void setSine(float value) {
         checkNotNull();
         Raw.setSine(address, value);
