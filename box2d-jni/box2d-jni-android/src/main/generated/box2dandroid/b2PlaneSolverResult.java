@@ -2,7 +2,7 @@ package box2dandroid;
 
 
 /**
- * Result returned by b2SolvePlanes
+ * Result returned by b2SolvePlanes.
  */
 public class b2PlaneSolverResult extends NativeObject {
 
@@ -88,19 +88,19 @@ public class b2PlaneSolverResult extends NativeObject {
     }
 
     /**
-     * The translation of the mover
+     * The final relative translation.
      */
-    public b2Vec2 getTranslation() {
+    public b2Vec2 getDelta() {
         checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getTranslation(address));
+        return b2Vec2.wrapPointer(Raw.getDelta(address));
     }
 
     /**
-     * The translation of the mover
+     * The final relative translation.
      */
-    public void setTranslation(b2Vec2 value) {
+    public void setDelta(b2Vec2 value) {
         checkNotNull();
-        Raw.setTranslation(address, value.getAddress());
+        Raw.setDelta(address, value.getAddress());
     }
 
     public static class Raw {
@@ -109,7 +109,7 @@ public class b2PlaneSolverResult extends NativeObject {
         public static native void destroy(long address);
         public static native int getIterationCount(long address);
         public static native void setIterationCount(long address, int value);
-        public static native long getTranslation(long address);
-        public static native void setTranslation(long address, long value);
+        public static native long getDelta(long address);
+        public static native void setDelta(long address, long value);
     }
 }

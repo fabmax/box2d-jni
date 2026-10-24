@@ -2,7 +2,7 @@ package box2dandroid;
 
 
 /**
- * Input parameters for b2TimeOfImpact
+ * Time of impact input
  */
 public class b2TOIInput extends NativeObject {
 

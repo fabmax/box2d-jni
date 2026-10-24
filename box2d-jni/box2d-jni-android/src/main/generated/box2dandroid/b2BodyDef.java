@@ -2,10 +2,9 @@ package box2dandroid;
 
 
 /**
- * A body definition holds all the data needed to construct a rigid body.
- * You can safely re-use body definitions. Shapes are added to a body after construction.
- * Body definitions are temporary objects used to bundle creation parameters.
- * Must be initialized using b2DefaultBodyDef().
+ * A body definition holds all the data needed to construct a rigid body. You can safely re-use
+ * body definitions. Shapes are added to a body after construction. Body definitions are temporary
+ * objects used to bundle creation parameters. Must be initialized using b2DefaultBodyDef().
  * @ingroup body
  */
 public class b2BodyDef extends NativeObject {
@@ -93,8 +92,8 @@ public class b2BodyDef extends NativeObject {
 
     /**
      * The initial world position of the body. Bodies should be created with the desired position.
-     * @note Creating bodies at the origin and then moving them nearly doubles the cost of body creation, especially
-     * if the body is moved after shapes have been added.
+     * @note Creating bodies at the origin and then moving them nearly doubles the cost of body
+     * creation, especially if the body is moved after shapes have been added.
      */
     public b2Vec2 getPosition() {
         checkNotNull();
@@ -103,8 +102,8 @@ public class b2BodyDef extends NativeObject {
 
     /**
      * The initial world position of the body. Bodies should be created with the desired position.
-     * @note Creating bodies at the origin and then moving them nearly doubles the cost of body creation, especially
-     * if the body is moved after shapes have been added.
+     * @note Creating bodies at the origin and then moving them nearly doubles the cost of body
+     * creation, especially if the body is moved after shapes have been added.
      */
     public void setPosition(b2Vec2 value) {
         checkNotNull();
@@ -160,11 +159,10 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * Linear damping is used to reduce the linear velocity. The damping parameter
-     * can be larger than 1 but the damping effect becomes sensitive to the
-     * time step when the damping parameter is large.
-     * Generally linear damping is undesirable because it makes objects move slowly
-     * as if they are floating.
+     * Linear damping is used to reduce the linear velocity. The damping parameter can be larger
+     * than 1 but the damping effect becomes sensitive to the time step when the damping parameter
+     * is large. Generally linear damping is undesirable because it makes objects move slowly as if
+     * they are floating.
      */
     public float getLinearDamping() {
         checkNotNull();
@@ -172,11 +170,10 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * Linear damping is used to reduce the linear velocity. The damping parameter
-     * can be larger than 1 but the damping effect becomes sensitive to the
-     * time step when the damping parameter is large.
-     * Generally linear damping is undesirable because it makes objects move slowly
-     * as if they are floating.
+     * Linear damping is used to reduce the linear velocity. The damping parameter can be larger
+     * than 1 but the damping effect becomes sensitive to the time step when the damping parameter
+     * is large. Generally linear damping is undesirable because it makes objects move slowly as if
+     * they are floating.
      */
     public void setLinearDamping(float value) {
         checkNotNull();
@@ -184,10 +181,9 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * Angular damping is used to reduce the angular velocity. The damping parameter
-     * can be larger than 1.0f but the damping effect becomes sensitive to the
-     * time step when the damping parameter is large.
-     * Angular damping can be use slow down rotating bodies.
+     * Angular damping is used to reduce the angular velocity. The damping parameter can be larger
+     * than 1.0f but the damping effect becomes sensitive to the time step when the damping
+     * parameter is large. Angular damping can be used to slow down rotating bodies.
      */
     public float getAngularDamping() {
         checkNotNull();
@@ -195,10 +191,9 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * Angular damping is used to reduce the angular velocity. The damping parameter
-     * can be larger than 1.0f but the damping effect becomes sensitive to the
-     * time step when the damping parameter is large.
-     * Angular damping can be use slow down rotating bodies.
+     * Angular damping is used to reduce the angular velocity. The damping parameter can be larger
+     * than 1.0f but the damping effect becomes sensitive to the time step when the damping
+     * parameter is large. Angular damping can be used to slow down rotating bodies.
      */
     public void setAngularDamping(float value) {
         checkNotNull();
@@ -238,7 +233,33 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * Optional body name for debugging. Up to 31 characters (excluding null termination)
+     * Continuous collision safety factor. The solver only uses continuous collision if there is a
+     * risk of tunneling. If the body is moving fast enough to risk tunneling then it is considered
+     * a "fast body". This improves performance and prevents movement hitches. If a body moving N
+     * meters risks tunneling, then the body will be considered fast if it moves more than a
+     * safetyFactor times N meters over one full time step. Non-dimensional. Recommended range
+     * [0.01, 0.5]. Default is 0.5 for high performance with low tunneling risk.
+     */
+    public float getSafetyFactor() {
+        checkNotNull();
+        return Raw.getSafetyFactor(address);
+    }
+
+    /**
+     * Continuous collision safety factor. The solver only uses continuous collision if there is a
+     * risk of tunneling. If the body is moving fast enough to risk tunneling then it is considered
+     * a "fast body". This improves performance and prevents movement hitches. If a body moving N
+     * meters risks tunneling, then the body will be considered fast if it moves more than a
+     * safetyFactor times N meters over one full time step. Non-dimensional. Recommended range
+     * [0.01, 0.5]. Default is 0.5 for high performance with low tunneling risk.
+     */
+    public void setSafetyFactor(float value) {
+        checkNotNull();
+        Raw.setSafetyFactor(address, value);
+    }
+
+    /**
+     * Optional body name for debugging. Up to B2_NAME_LENGTH characters
      */
     public String getName() {
         checkNotNull();
@@ -246,7 +267,7 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * Optional body name for debugging. Up to 31 characters (excluding null termination)
+     * Optional body name for debugging. Up to B2_NAME_LENGTH characters
      */
     public void setName(String value) {
         checkNotNull();
@@ -267,6 +288,24 @@ public class b2BodyDef extends NativeObject {
     public void setUserData(NativeObject value) {
         checkNotNull();
         Raw.setUserData(address, value.getAddress());
+    }
+
+    /**
+     * Motion locks to restrict linear and angular movement. Caution: may lead to softer
+     * constraints along the locked direction
+     */
+    public b2MotionLocks getMotionLocks() {
+        checkNotNull();
+        return b2MotionLocks.wrapPointer(Raw.getMotionLocks(address));
+    }
+
+    /**
+     * Motion locks to restrict linear and angular movement. Caution: may lead to softer
+     * constraints along the locked direction
+     */
+    public void setMotionLocks(b2MotionLocks value) {
+        checkNotNull();
+        Raw.setMotionLocks(address, value.getAddress());
     }
 
     /**
@@ -302,26 +341,21 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * Should this body be prevented from rotating? Useful for characters.
-     */
-    public boolean getFixedRotation() {
-        checkNotNull();
-        return Raw.getFixedRotation(address);
-    }
-
-    /**
-     * Should this body be prevented from rotating? Useful for characters.
-     */
-    public void setFixedRotation(boolean value) {
-        checkNotNull();
-        Raw.setFixedRotation(address, value);
-    }
-
-    /**
-     * Treat this body as high speed object that performs continuous collision detection
+     * Treat this dynamic body as a high speed object that performs continuous collision detection
      * against dynamic and kinematic bodies, but not other bullet bodies.
-     * @warning Bullets should be used sparingly. They are not a solution for general dynamic-versus-dynamic
-     * continuous collision. They may interfere with joint constraints.
+     * @warning Bullets should be used sparingly. They are not a solution for general
+     * dynamic-versus-dynamic continuous collision. They do not guarantee accurate collision if
+     * both bodies are fast moving because the bullet does a continuous check after all non-bullet
+     * bodies have moved. You could get unlucky and have the bullet body end a time step very close
+     * to a non-bullet body and the non-bullet body then moves over the bullet body. In continuous
+     * collision, initial overlap is ignored to avoid freezing bodies in place. I do not recommend
+     * using them for game projectiles if precise collision timing is needed. Instead consider
+     * using a ray or shape cast. You can use a marching ray or shape cast for a projectile that
+     * moves over time. If you want a fast moving projectile to collide with a fast moving target,
+     * you need to consider the relative movement in your ray or shape cast. This is out of the
+     * scope of Box2D. So what are good use cases for bullets? Pinball games or games with dynamic
+     * containers that hold other objects. It should be a use case where it doesn't break the game
+     * if there is a collision missed, but having them captured improves the quality of the game.
      */
     public boolean getIsBullet() {
         checkNotNull();
@@ -329,10 +363,21 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * Treat this body as high speed object that performs continuous collision detection
+     * Treat this dynamic body as a high speed object that performs continuous collision detection
      * against dynamic and kinematic bodies, but not other bullet bodies.
-     * @warning Bullets should be used sparingly. They are not a solution for general dynamic-versus-dynamic
-     * continuous collision. They may interfere with joint constraints.
+     * @warning Bullets should be used sparingly. They are not a solution for general
+     * dynamic-versus-dynamic continuous collision. They do not guarantee accurate collision if
+     * both bodies are fast moving because the bullet does a continuous check after all non-bullet
+     * bodies have moved. You could get unlucky and have the bullet body end a time step very close
+     * to a non-bullet body and the non-bullet body then moves over the bullet body. In continuous
+     * collision, initial overlap is ignored to avoid freezing bodies in place. I do not recommend
+     * using them for game projectiles if precise collision timing is needed. Instead consider
+     * using a ray or shape cast. You can use a marching ray or shape cast for a projectile that
+     * moves over time. If you want a fast moving projectile to collide with a fast moving target,
+     * you need to consider the relative movement in your ray or shape cast. This is out of the
+     * scope of Box2D. So what are good use cases for bullets? Pinball games or games with dynamic
+     * containers that hold other objects. It should be a use case where it doesn't break the game
+     * if there is a collision missed, but having them captured improves the quality of the game.
      */
     public void setIsBullet(boolean value) {
         checkNotNull();
@@ -356,8 +401,8 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * This allows this body to bypass rotational speed limits. Should only be used
-     * for circular objects, like wheels.
+     * This allows this body to bypass rotational speed limits. Should only be used for circular
+     * objects, like wheels.
      */
     public boolean getAllowFastRotation() {
         checkNotNull();
@@ -365,12 +410,46 @@ public class b2BodyDef extends NativeObject {
     }
 
     /**
-     * This allows this body to bypass rotational speed limits. Should only be used
-     * for circular objects, like wheels.
+     * This allows this body to bypass rotational speed limits. Should only be used for circular
+     * objects, like wheels.
      */
     public void setAllowFastRotation(boolean value) {
         checkNotNull();
         Raw.setAllowFastRotation(address, value);
+    }
+
+    /**
+     * Enable contact recycling. True by default. Leaving this enabled improves performance but may
+     * lead to ghost collisions that should be avoided on characters.
+     */
+    public boolean getEnableContactRecycling() {
+        checkNotNull();
+        return Raw.getEnableContactRecycling(address);
+    }
+
+    /**
+     * Enable contact recycling. True by default. Leaving this enabled improves performance but may
+     * lead to ghost collisions that should be avoided on characters.
+     */
+    public void setEnableContactRecycling(boolean value) {
+        checkNotNull();
+        Raw.setEnableContactRecycling(address, value);
+    }
+
+    /**
+     * Used internally to detect a valid definition. DO NOT SET.
+     */
+    public int getInternalValue() {
+        checkNotNull();
+        return Raw.getInternalValue(address);
+    }
+
+    /**
+     * Used internally to detect a valid definition. DO NOT SET.
+     */
+    public void setInternalValue(int value) {
+        checkNotNull();
+        Raw.setInternalValue(address, value);
     }
 
     public static class Raw {
@@ -395,21 +474,27 @@ public class b2BodyDef extends NativeObject {
         public static native void setGravityScale(long address, float value);
         public static native float getSleepThreshold(long address);
         public static native void setSleepThreshold(long address, float value);
+        public static native float getSafetyFactor(long address);
+        public static native void setSafetyFactor(long address, float value);
         public static native String getName(long address);
         public static native void setName(long address, String value);
         public static native long getUserData(long address);
         public static native void setUserData(long address, long value);
+        public static native long getMotionLocks(long address);
+        public static native void setMotionLocks(long address, long value);
         public static native boolean getEnableSleep(long address);
         public static native void setEnableSleep(long address, boolean value);
         public static native boolean getIsAwake(long address);
         public static native void setIsAwake(long address, boolean value);
-        public static native boolean getFixedRotation(long address);
-        public static native void setFixedRotation(long address, boolean value);
         public static native boolean getIsBullet(long address);
         public static native void setIsBullet(long address, boolean value);
         public static native boolean getIsEnabled(long address);
         public static native void setIsEnabled(long address, boolean value);
         public static native boolean getAllowFastRotation(long address);
         public static native void setAllowFastRotation(long address, boolean value);
+        public static native boolean getEnableContactRecycling(long address);
+        public static native void setEnableContactRecycling(long address, boolean value);
+        public static native int getInternalValue(long address);
+        public static native void setInternalValue(long address, int value);
     }
 }

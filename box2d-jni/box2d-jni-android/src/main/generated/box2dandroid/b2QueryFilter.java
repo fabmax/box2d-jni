@@ -2,9 +2,9 @@ package box2dandroid;
 
 
 /**
- * The query filter is used to filter collisions between queries and shapes. For example,
- * you may want a ray-cast representing a projectile to hit players and the static environment
- * but not debris.
+ * The query filter is used to filter collisions between queries and shapes. For example, you may
+ * want a ray-cast representing a projectile to hit players and the static environment but not
+ * debris.
  * @ingroup shape
  */
 public class b2QueryFilter extends NativeObject {
@@ -91,8 +91,8 @@ public class b2QueryFilter extends NativeObject {
     }
 
     /**
-     * The collision mask bits. This states the shape categories that this
-     * query would accept for collision.
+     * The collision mask bits. This states the shape categories that this query would accept for
+     * collision.
      */
     public long getMaskBits() {
         checkNotNull();
@@ -100,8 +100,8 @@ public class b2QueryFilter extends NativeObject {
     }
 
     /**
-     * The collision mask bits. This states the shape categories that this
-     * query would accept for collision.
+     * The collision mask bits. This states the shape categories that this query would accept for
+     * collision.
      */
     public void setMaskBits(long value) {
         checkNotNull();

@@ -2,7 +2,7 @@ package box2dandroid;
 
 
 /**
- * Input for b2ShapeDistance
+ * Input for b2ComputeShapeDistance
  */
 public class b2DistanceInput extends NativeObject {
 
@@ -104,35 +104,21 @@ public class b2DistanceInput extends NativeObject {
     }
 
     /**
-     * The world transform for shape A
+     * Transform of shape B in shape A's frame, the relative pose B in A (b2InvMulTransforms(
+     * worldA, worldB )). The query is origin independent and runs in frame A.
      */
-    public b2Transform getTransformA() {
+    public b2Transform getTransform() {
         checkNotNull();
-        return b2Transform.wrapPointer(Raw.getTransformA(address));
+        return b2Transform.wrapPointer(Raw.getTransform(address));
     }
 
     /**
-     * The world transform for shape A
+     * Transform of shape B in shape A's frame, the relative pose B in A (b2InvMulTransforms(
+     * worldA, worldB )). The query is origin independent and runs in frame A.
      */
-    public void setTransformA(b2Transform value) {
+    public void setTransform(b2Transform value) {
         checkNotNull();
-        Raw.setTransformA(address, value.getAddress());
-    }
-
-    /**
-     * The world transform for shape B
-     */
-    public b2Transform getTransformB() {
-        checkNotNull();
-        return b2Transform.wrapPointer(Raw.getTransformB(address));
-    }
-
-    /**
-     * The world transform for shape B
-     */
-    public void setTransformB(b2Transform value) {
-        checkNotNull();
-        Raw.setTransformB(address, value.getAddress());
+        Raw.setTransform(address, value.getAddress());
     }
 
     /**
@@ -159,10 +145,8 @@ public class b2DistanceInput extends NativeObject {
         public static native void setProxyA(long address, long value);
         public static native long getProxyB(long address);
         public static native void setProxyB(long address, long value);
-        public static native long getTransformA(long address);
-        public static native void setTransformA(long address, long value);
-        public static native long getTransformB(long address);
-        public static native void setTransformB(long address, long value);
+        public static native long getTransform(long address);
+        public static native void setTransform(long address, long value);
         public static native boolean getUseRadii(long address);
         public static native void setUseRadii(long address, boolean value);
     }

@@ -76,45 +76,24 @@ public class B2_Chain extends NativeObject {
     }
 
     /**
-     * Set the chain friction
+     * Set the chain material on all segments.
      */
-    public static void setFriction(long chainId, float friction) {
-        Raw.setFriction(chainId, friction);
+    public static void setAllSurfaceMaterials(long chainId, b2SurfaceMaterial material) {
+        Raw.setAllSurfaceMaterials(chainId, material.getAddress());
     }
 
     /**
-     * Get the chain friction
+     * Set a chain material by segment index.
      */
-    public static float getFriction(long chainId) {
-        return Raw.getFriction(chainId);
+    public static void setSurfaceMaterial(long chainId, b2SurfaceMaterial material, int segmentIndex) {
+        Raw.setSurfaceMaterial(chainId, material.getAddress(), segmentIndex);
     }
 
     /**
-     * Set the chain restitution (bounciness)
+     * Get a chain material by segment index.
      */
-    public static void setRestitution(long chainId, float restitution) {
-        Raw.setRestitution(chainId, restitution);
-    }
-
-    /**
-     * Get the chain restitution
-     */
-    public static float getRestitution(long chainId) {
-        return Raw.getRestitution(chainId);
-    }
-
-    /**
-     * Set the chain material
-     */
-    public static void setMaterial(long chainId, int material) {
-        Raw.setMaterial(chainId, material);
-    }
-
-    /**
-     * Get the chain material
-     */
-    public static int getMaterial(long chainId) {
-        return Raw.getMaterial(chainId);
+    public static b2SurfaceMaterial getSurfaceMaterial(long chainId, int segmentIndex) {
+        return b2SurfaceMaterial.wrapPointer(Raw.getSurfaceMaterial(chainId, segmentIndex));
     }
 
     public static class Raw {
@@ -125,11 +104,8 @@ public class B2_Chain extends NativeObject {
         public static native long getWorld(long chainId);
         public static native int getSegmentCount(long chainId);
         public static native int getSegments(long chainId, long segmentArray);
-        public static native void setFriction(long chainId, float friction);
-        public static native float getFriction(long chainId);
-        public static native void setRestitution(long chainId, float restitution);
-        public static native float getRestitution(long chainId);
-        public static native void setMaterial(long chainId, int material);
-        public static native int getMaterial(long chainId);
+        public static native void setAllSurfaceMaterials(long chainId, long material);
+        public static native void setSurfaceMaterial(long chainId, long material, int segmentIndex);
+        public static native long getSurfaceMaterial(long chainId, int segmentIndex);
     }
 }

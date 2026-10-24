@@ -145,107 +145,107 @@ public class B2_Geometry extends NativeObject {
     /**
      * Compute the bounding box of a transformed circle
      */
-    public static b2AABB computeCircleAABB(b2Circle shape, b2Transform transform) {
-        return b2AABB.wrapPointer(Raw.computeCircleAABB(shape.getAddress(), transform.getAddress()));
+    public static b2AABB computeCircleBounds(b2Circle shape, b2Transform transform) {
+        return b2AABB.wrapPointer(Raw.computeCircleBounds(shape.getAddress(), transform.getAddress()));
     }
 
     /**
      * Compute the bounding box of a transformed capsule
      */
-    public static b2AABB computeCapsuleAABB(b2Capsule shape, b2Transform transform) {
-        return b2AABB.wrapPointer(Raw.computeCapsuleAABB(shape.getAddress(), transform.getAddress()));
+    public static b2AABB computeCapsuleBounds(b2Capsule shape, b2Transform transform) {
+        return b2AABB.wrapPointer(Raw.computeCapsuleBounds(shape.getAddress(), transform.getAddress()));
     }
 
     /**
      * Compute the bounding box of a transformed polygon
      */
-    public static b2AABB computePolygonAABB(b2Polygon shape, b2Transform transform) {
-        return b2AABB.wrapPointer(Raw.computePolygonAABB(shape.getAddress(), transform.getAddress()));
+    public static b2AABB computePolygonBounds(b2Polygon shape, b2Transform transform) {
+        return b2AABB.wrapPointer(Raw.computePolygonBounds(shape.getAddress(), transform.getAddress()));
     }
 
     /**
      * Compute the bounding box of a transformed line segment
      */
-    public static b2AABB computeSegmentAABB(b2Segment shape, b2Transform transform) {
-        return b2AABB.wrapPointer(Raw.computeSegmentAABB(shape.getAddress(), transform.getAddress()));
+    public static b2AABB computeSegmentBounds(b2Segment shape, b2Transform transform) {
+        return b2AABB.wrapPointer(Raw.computeSegmentBounds(shape.getAddress(), transform.getAddress()));
     }
 
     /**
      * Test a point for overlap with a circle in local space
      */
-    public static boolean pointInCircle(b2Vec2 point, b2Circle shape) {
-        return Raw.pointInCircle(point.getAddress(), shape.getAddress());
+    public static boolean pointInCircle(b2Circle shape, b2Vec2 point) {
+        return Raw.pointInCircle(shape.getAddress(), point.getAddress());
     }
 
     /**
      * Test a point for overlap with a capsule in local space
      */
-    public static boolean pointInCapsule(b2Vec2 point, b2Capsule shape) {
-        return Raw.pointInCapsule(point.getAddress(), shape.getAddress());
+    public static boolean pointInCapsule(b2Capsule shape, b2Vec2 point) {
+        return Raw.pointInCapsule(shape.getAddress(), point.getAddress());
     }
 
     /**
      * Test a point for overlap with a convex polygon in local space
      */
-    public static boolean pointInPolygon(b2Vec2 point, b2Polygon shape) {
-        return Raw.pointInPolygon(point.getAddress(), shape.getAddress());
+    public static boolean pointInPolygon(b2Polygon shape, b2Vec2 point) {
+        return Raw.pointInPolygon(shape.getAddress(), point.getAddress());
     }
 
     /**
-     * Ray cast versus circle shape in local space. Initial overlap is treated as a miss.
+     * Ray cast versus circle shape in local space.
      */
-    public static b2CastOutput rayCastCircle(b2RayCastInput input, b2Circle shape) {
-        return b2CastOutput.wrapPointer(Raw.rayCastCircle(input.getAddress(), shape.getAddress()));
+    public static b2CastOutput castRayCircle(b2Circle shape, b2RayCastInput input) {
+        return b2CastOutput.wrapPointer(Raw.castRayCircle(shape.getAddress(), input.getAddress()));
     }
 
     /**
-     * Ray cast versus capsule shape in local space. Initial overlap is treated as a miss.
+     * Ray cast versus capsule shape in local space.
      */
-    public static b2CastOutput rayCastCapsule(b2RayCastInput input, b2Capsule shape) {
-        return b2CastOutput.wrapPointer(Raw.rayCastCapsule(input.getAddress(), shape.getAddress()));
+    public static b2CastOutput castRayCapsule(b2Capsule shape, b2RayCastInput input) {
+        return b2CastOutput.wrapPointer(Raw.castRayCapsule(shape.getAddress(), input.getAddress()));
     }
 
     /**
-     * Ray cast versus segment shape in local space. Optionally treat the segment as one-sided with hits from
-     * the left side being treated as a miss.
+     * Ray cast versus segment shape in local space. Optionally treat the segment as one-sided with
+     * hits from the left side being treated as a miss.
      */
-    public static b2CastOutput rayCastSegment(b2RayCastInput input, b2Segment shape, boolean oneSided) {
-        return b2CastOutput.wrapPointer(Raw.rayCastSegment(input.getAddress(), shape.getAddress(), oneSided));
+    public static b2CastOutput castRaySegment(b2Segment shape, b2RayCastInput input, boolean oneSided) {
+        return b2CastOutput.wrapPointer(Raw.castRaySegment(shape.getAddress(), input.getAddress(), oneSided));
     }
 
     /**
-     * Ray cast versus polygon shape in local space. Initial overlap is treated as a miss.
+     * Ray cast versus polygon shape in local space.
      */
-    public static b2CastOutput rayCastPolygon(b2RayCastInput input, b2Polygon shape) {
-        return b2CastOutput.wrapPointer(Raw.rayCastPolygon(input.getAddress(), shape.getAddress()));
+    public static b2CastOutput castRayPolygon(b2Polygon shape, b2RayCastInput input) {
+        return b2CastOutput.wrapPointer(Raw.castRayPolygon(shape.getAddress(), input.getAddress()));
     }
 
     /**
-     * Shape cast versus a circle. Initial overlap is treated as a miss.
+     * Shape cast versus a circle.
      */
-    public static b2CastOutput shapeCastCircle(b2ShapeCastInput input, b2Circle shape) {
-        return b2CastOutput.wrapPointer(Raw.shapeCastCircle(input.getAddress(), shape.getAddress()));
+    public static b2CastOutput castShapeCircle(b2Circle shape, b2ShapeCastInput input) {
+        return b2CastOutput.wrapPointer(Raw.castShapeCircle(shape.getAddress(), input.getAddress()));
     }
 
     /**
-     * Shape cast versus a capsule. Initial overlap is treated as a miss.
+     * Shape cast versus a capsule.
      */
-    public static b2CastOutput shapeCastCapsule(b2ShapeCastInput input, b2Capsule shape) {
-        return b2CastOutput.wrapPointer(Raw.shapeCastCapsule(input.getAddress(), shape.getAddress()));
+    public static b2CastOutput castShapeCapsule(b2Capsule shape, b2ShapeCastInput input) {
+        return b2CastOutput.wrapPointer(Raw.castShapeCapsule(shape.getAddress(), input.getAddress()));
     }
 
     /**
-     * Shape cast versus a line segment. Initial overlap is treated as a miss.
+     * Shape cast versus a line segment.
      */
-    public static b2CastOutput shapeCastSegment(b2ShapeCastInput input, b2Segment shape) {
-        return b2CastOutput.wrapPointer(Raw.shapeCastSegment(input.getAddress(), shape.getAddress()));
+    public static b2CastOutput castShapeSegment(b2Segment shape, b2ShapeCastInput input) {
+        return b2CastOutput.wrapPointer(Raw.castShapeSegment(shape.getAddress(), input.getAddress()));
     }
 
     /**
-     * Shape cast versus a convex polygon. Initial overlap is treated as a miss.
+     * Shape cast versus a convex polygon.
      */
-    public static b2CastOutput shapeCastPolygon(b2ShapeCastInput input, b2Polygon shape) {
-        return b2CastOutput.wrapPointer(Raw.shapeCastPolygon(input.getAddress(), shape.getAddress()));
+    public static b2CastOutput castShapePolygon(b2Polygon shape, b2ShapeCastInput input) {
+        return b2CastOutput.wrapPointer(Raw.castShapePolygon(shape.getAddress(), input.getAddress()));
     }
 
     /**
@@ -287,21 +287,21 @@ public class B2_Geometry extends NativeObject {
         public static native long computeCircleMass(long shape, float density);
         public static native long computeCapsuleMass(long shape, float density);
         public static native long computePolygonMass(long shape, float density);
-        public static native long computeCircleAABB(long shape, long transform);
-        public static native long computeCapsuleAABB(long shape, long transform);
-        public static native long computePolygonAABB(long shape, long transform);
-        public static native long computeSegmentAABB(long shape, long transform);
-        public static native boolean pointInCircle(long point, long shape);
-        public static native boolean pointInCapsule(long point, long shape);
-        public static native boolean pointInPolygon(long point, long shape);
-        public static native long rayCastCircle(long input, long shape);
-        public static native long rayCastCapsule(long input, long shape);
-        public static native long rayCastSegment(long input, long shape, boolean oneSided);
-        public static native long rayCastPolygon(long input, long shape);
-        public static native long shapeCastCircle(long input, long shape);
-        public static native long shapeCastCapsule(long input, long shape);
-        public static native long shapeCastSegment(long input, long shape);
-        public static native long shapeCastPolygon(long input, long shape);
+        public static native long computeCircleBounds(long shape, long transform);
+        public static native long computeCapsuleBounds(long shape, long transform);
+        public static native long computePolygonBounds(long shape, long transform);
+        public static native long computeSegmentBounds(long shape, long transform);
+        public static native boolean pointInCircle(long shape, long point);
+        public static native boolean pointInCapsule(long shape, long point);
+        public static native boolean pointInPolygon(long shape, long point);
+        public static native long castRayCircle(long shape, long input);
+        public static native long castRayCapsule(long shape, long input);
+        public static native long castRaySegment(long shape, long input, boolean oneSided);
+        public static native long castRayPolygon(long shape, long input);
+        public static native long castShapeCircle(long shape, long input);
+        public static native long castShapeCapsule(long shape, long input);
+        public static native long castShapeSegment(long shape, long input);
+        public static native long castShapePolygon(long shape, long input);
         public static native void computeHull(long points, long result);
         public static native boolean validateHull(long hull);
     }

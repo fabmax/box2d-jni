@@ -27,25 +27,27 @@ public class B2_Distance extends NativeObject {
     /**
      * Compute the distance between two line segments, clamping at the end points if needed.
      */
-    public static b2SegmentDistanceResult segmentDistance(b2Vec2 p1, b2Vec2 q1, b2Vec2 p2, b2Vec2 q2) {
-        return b2SegmentDistanceResult.wrapPointer(Raw.segmentDistance(p1.getAddress(), q1.getAddress(), p2.getAddress(), q2.getAddress()));
+    public static b2SegmentDistanceResult computeSegmentDistance(b2Vec2 p1, b2Vec2 q1, b2Vec2 p2, b2Vec2 q2) {
+        return b2SegmentDistanceResult.wrapPointer(Raw.computeSegmentDistance(p1.getAddress(), q1.getAddress(), p2.getAddress(), q2.getAddress()));
     }
 
     /**
-     * Compute the closest points between two shapes represented as point clouds.
-     * b2SimplexCache cache is input/output. On the first call set b2SimplexCache.count to zero.
-     * The underlying GJK algorithm may be debugged by passing in debug simplexes and capacity. You may pass in NULL and 0 for these.
+     * Compute the closest points between two shapes represented as point clouds. b2SimplexCache cache
+     * is input/output. On the first call set b2SimplexCache.count to zero. The underlying GJK
+     * algorithm may be debugged by passing in debug simplexes and capacity. You may pass in NULL and 0
+     * for these.
      */
-    public static b2DistanceOutput shapeDistance(b2DistanceInput input, b2SimplexCache cache, b2Simplex simplexes, int simplexCapacity) {
-        return b2DistanceOutput.wrapPointer(Raw.shapeDistance(input.getAddress(), cache.getAddress(), simplexes.getAddress(), simplexCapacity));
+    public static b2DistanceOutput computeShapeDistance(b2DistanceInput input, b2SimplexCache cache, b2Simplex simplexes, int simplexCapacity) {
+        return b2DistanceOutput.wrapPointer(Raw.computeShapeDistance(input.getAddress(), cache.getAddress(), simplexes.getAddress(), simplexCapacity));
     }
 
     /**
-     * Perform a linear shape cast of shape B moving and shape A fixed. Determines the hit point, normal, and translation fraction.
-     * Initially touching shapes are treated as a miss.
+     * Perform a linear shape cast of shape B moving and shape A fixed. Determines the hit point,
+     * normal, and translation fraction. The query runs in frame A, so the hit point and normal are
+     * returned in frame A. Initially touching shapes return a zero fraction in the output.
      */
-    public static b2CastOutput shapeCast(b2ShapeCastPairInput input) {
-        return b2CastOutput.wrapPointer(Raw.shapeCast(input.getAddress()));
+    public static b2CastOutput castShape(b2ShapeCastPairInput input) {
+        return b2CastOutput.wrapPointer(Raw.castShape(input.getAddress()));
     }
 
     /**
@@ -70,22 +72,21 @@ public class B2_Distance extends NativeObject {
     }
 
     /**
-     * Compute the upper bound on time before two shapes penetrate. Time is represented as
-     * a fraction between [0,tMax]. This uses a swept separating axis and may miss some intermediate,
-     * non-tunneling collisions. If you change the time interval, you should call this function
-     * again.
+     * Compute the upper bound on time before two shapes penetrate. Time is represented as a fraction
+     * between [0,maxFraction]. This uses a swept separating axis and may miss some intermediate,
+     * non-tunneling collisions. If you change the time interval, you should call this function again.
      */
-    public static b2TOIOutput timeOfImpact(b2TOIInput input) {
-        return b2TOIOutput.wrapPointer(Raw.timeOfImpact(input.getAddress()));
+    public static b2TOIOutput computeTimeOfImpact(b2TOIInput input) {
+        return b2TOIOutput.wrapPointer(Raw.computeTimeOfImpact(input.getAddress()));
     }
 
     public static class Raw {
-        public static native long segmentDistance(long p1, long q1, long p2, long q2);
-        public static native long shapeDistance(long input, long cache, long simplexes, int simplexCapacity);
-        public static native long shapeCast(long input);
+        public static native long computeSegmentDistance(long p1, long q1, long p2, long q2);
+        public static native long computeShapeDistance(long input, long cache, long simplexes, int simplexCapacity);
+        public static native long castShape(long input);
         public static native long makeProxy(long points, float radius);
         public static native long makeOffsetProxy(long points, float radius, long position, long rotation);
         public static native void getSweepTransform(long sweep, float time, long result);
-        public static native long timeOfImpact(long input);
+        public static native long computeTimeOfImpact(long input);
     }
 }

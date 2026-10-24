@@ -2,8 +2,8 @@ package box2dandroid;
 
 
 /**
- * A motor joint is used to control the relative motion between two bodies
- * A typical usage is to control the movement of a dynamic body with respect to the ground.
+ * A motor joint is used to control the relative velocity and/or transform between two bodies. With
+ * a velocity of zero this acts like top-down friction.
  * @ingroup motor_joint
  */
 public class b2MotorJointDef extends NativeObject {
@@ -74,83 +74,179 @@ public class b2MotorJointDef extends NativeObject {
     // Attributes
 
     /**
-     * The bodyB angle minus bodyA angle in radians
+     * Base joint definition
      */
-    public float getAngularOffset() {
+    public b2JointDef getBase() {
         checkNotNull();
-        return Raw.getAngularOffset(address);
+        return b2JointDef.wrapPointer(Raw.getBase(address));
     }
 
     /**
-     * The bodyB angle minus bodyA angle in radians
+     * Base joint definition
      */
-    public void setAngularOffset(float value) {
+    public void setBase(b2JointDef value) {
         checkNotNull();
-        Raw.setAngularOffset(address, value);
+        Raw.setBase(address, value.getAddress());
     }
 
     /**
-     * The first attached body
+     * The desired linear velocity
      */
-    public b2BodyId getBodyIdA() {
+    public b2Vec2 getLinearVelocity() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdA(address));
+        return b2Vec2.wrapPointer(Raw.getLinearVelocity(address));
     }
 
     /**
-     * The first attached body
+     * The desired linear velocity
      */
-    public void setBodyIdA(b2BodyId value) {
+    public void setLinearVelocity(b2Vec2 value) {
         checkNotNull();
-        Raw.setBodyIdA(address, value.getAddress());
+        Raw.setLinearVelocity(address, value.getAddress());
     }
 
     /**
-     * The second attached body
+     * The maximum motor force in newtons
      */
-    public b2BodyId getBodyIdB() {
+    public float getMaxVelocityForce() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdB(address));
+        return Raw.getMaxVelocityForce(address);
     }
 
     /**
-     * The second attached body
+     * The maximum motor force in newtons
      */
-    public void setBodyIdB(b2BodyId value) {
+    public void setMaxVelocityForce(float value) {
         checkNotNull();
-        Raw.setBodyIdB(address, value.getAddress());
+        Raw.setMaxVelocityForce(address, value);
     }
 
     /**
-     * Set this flag to true if the attached bodies should collide
+     * The desired angular velocity
      */
-    public boolean getCollideConnected() {
+    public float getAngularVelocity() {
         checkNotNull();
-        return Raw.getCollideConnected(address);
+        return Raw.getAngularVelocity(address);
     }
 
     /**
-     * Set this flag to true if the attached bodies should collide
+     * The desired angular velocity
      */
-    public void setCollideConnected(boolean value) {
+    public void setAngularVelocity(float value) {
         checkNotNull();
-        Raw.setCollideConnected(address, value);
+        Raw.setAngularVelocity(address, value);
     }
 
     /**
-     * Position correction factor in the range [0,1]
+     * The maximum motor torque in newton-meters
      */
-    public float getCorrectionFactor() {
+    public float getMaxVelocityTorque() {
         checkNotNull();
-        return Raw.getCorrectionFactor(address);
+        return Raw.getMaxVelocityTorque(address);
     }
 
     /**
-     * Position correction factor in the range [0,1]
+     * The maximum motor torque in newton-meters
      */
-    public void setCorrectionFactor(float value) {
+    public void setMaxVelocityTorque(float value) {
         checkNotNull();
-        Raw.setCorrectionFactor(address, value);
+        Raw.setMaxVelocityTorque(address, value);
+    }
+
+    /**
+     * Linear spring hertz for position control
+     */
+    public float getLinearHertz() {
+        checkNotNull();
+        return Raw.getLinearHertz(address);
+    }
+
+    /**
+     * Linear spring hertz for position control
+     */
+    public void setLinearHertz(float value) {
+        checkNotNull();
+        Raw.setLinearHertz(address, value);
+    }
+
+    /**
+     * Linear spring damping ratio
+     */
+    public float getLinearDampingRatio() {
+        checkNotNull();
+        return Raw.getLinearDampingRatio(address);
+    }
+
+    /**
+     * Linear spring damping ratio
+     */
+    public void setLinearDampingRatio(float value) {
+        checkNotNull();
+        Raw.setLinearDampingRatio(address, value);
+    }
+
+    /**
+     * Maximum spring force in newtons
+     */
+    public float getMaxSpringForce() {
+        checkNotNull();
+        return Raw.getMaxSpringForce(address);
+    }
+
+    /**
+     * Maximum spring force in newtons
+     */
+    public void setMaxSpringForce(float value) {
+        checkNotNull();
+        Raw.setMaxSpringForce(address, value);
+    }
+
+    /**
+     * Angular spring hertz for position control
+     */
+    public float getAngularHertz() {
+        checkNotNull();
+        return Raw.getAngularHertz(address);
+    }
+
+    /**
+     * Angular spring hertz for position control
+     */
+    public void setAngularHertz(float value) {
+        checkNotNull();
+        Raw.setAngularHertz(address, value);
+    }
+
+    /**
+     * Angular spring damping ratio
+     */
+    public float getAngularDampingRatio() {
+        checkNotNull();
+        return Raw.getAngularDampingRatio(address);
+    }
+
+    /**
+     * Angular spring damping ratio
+     */
+    public void setAngularDampingRatio(float value) {
+        checkNotNull();
+        Raw.setAngularDampingRatio(address, value);
+    }
+
+    /**
+     * Maximum spring torque in newton-meters
+     */
+    public float getMaxSpringTorque() {
+        checkNotNull();
+        return Raw.getMaxSpringTorque(address);
+    }
+
+    /**
+     * Maximum spring torque in newton-meters
+     */
+    public void setMaxSpringTorque(float value) {
+        checkNotNull();
+        Raw.setMaxSpringTorque(address, value);
     }
 
     /**
@@ -169,93 +265,33 @@ public class b2MotorJointDef extends NativeObject {
         Raw.setInternalValue(address, value);
     }
 
-    /**
-     * Position of bodyB minus the position of bodyA, in bodyA's frame
-     */
-    public b2Vec2 getLinearOffset() {
-        checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLinearOffset(address));
-    }
-
-    /**
-     * Position of bodyB minus the position of bodyA, in bodyA's frame
-     */
-    public void setLinearOffset(b2Vec2 value) {
-        checkNotNull();
-        Raw.setLinearOffset(address, value.getAddress());
-    }
-
-    /**
-     * The maximum motor force in newtons
-     */
-    public float getMaxForce() {
-        checkNotNull();
-        return Raw.getMaxForce(address);
-    }
-
-    /**
-     * The maximum motor force in newtons
-     */
-    public void setMaxForce(float value) {
-        checkNotNull();
-        Raw.setMaxForce(address, value);
-    }
-
-    /**
-     * The maximum motor torque in newton-meters
-     */
-    public float getMaxTorque() {
-        checkNotNull();
-        return Raw.getMaxTorque(address);
-    }
-
-    /**
-     * The maximum motor torque in newton-meters
-     */
-    public void setMaxTorque(float value) {
-        checkNotNull();
-        Raw.setMaxTorque(address, value);
-    }
-
-    /**
-     * User data pointer
-     */
-    public NativeObject getUserData() {
-        checkNotNull();
-        return NativeObject.wrapPointer(Raw.getUserData(address));
-    }
-
-    /**
-     * User data pointer
-     */
-    public void setUserData(NativeObject value) {
-        checkNotNull();
-        Raw.setUserData(address, value.getAddress());
-    }
-
     public static class Raw {
         public static native void b2MotorJointDef_placed(long address);
         public static native long b2MotorJointDef();
         public static native void destroy(long address);
-        public static native float getAngularOffset(long address);
-        public static native void setAngularOffset(long address, float value);
-        public static native long getBodyIdA(long address);
-        public static native void setBodyIdA(long address, long value);
-        public static native long getBodyIdB(long address);
-        public static native void setBodyIdB(long address, long value);
-        public static native boolean getCollideConnected(long address);
-        public static native void setCollideConnected(long address, boolean value);
-        public static native float getCorrectionFactor(long address);
-        public static native void setCorrectionFactor(long address, float value);
+        public static native long getBase(long address);
+        public static native void setBase(long address, long value);
+        public static native long getLinearVelocity(long address);
+        public static native void setLinearVelocity(long address, long value);
+        public static native float getMaxVelocityForce(long address);
+        public static native void setMaxVelocityForce(long address, float value);
+        public static native float getAngularVelocity(long address);
+        public static native void setAngularVelocity(long address, float value);
+        public static native float getMaxVelocityTorque(long address);
+        public static native void setMaxVelocityTorque(long address, float value);
+        public static native float getLinearHertz(long address);
+        public static native void setLinearHertz(long address, float value);
+        public static native float getLinearDampingRatio(long address);
+        public static native void setLinearDampingRatio(long address, float value);
+        public static native float getMaxSpringForce(long address);
+        public static native void setMaxSpringForce(long address, float value);
+        public static native float getAngularHertz(long address);
+        public static native void setAngularHertz(long address, float value);
+        public static native float getAngularDampingRatio(long address);
+        public static native void setAngularDampingRatio(long address, float value);
+        public static native float getMaxSpringTorque(long address);
+        public static native void setMaxSpringTorque(long address, float value);
         public static native int getInternalValue(long address);
         public static native void setInternalValue(long address, int value);
-        public static native long getLinearOffset(long address);
-        public static native void setLinearOffset(long address, long value);
-        public static native float getMaxForce(long address);
-        public static native void setMaxForce(long address, float value);
-        public static native float getMaxTorque(long address);
-        public static native void setMaxTorque(long address, float value);
-        public static native long getUserData(long address);
-        public static native void setUserData(long address, long value);
     }
 }

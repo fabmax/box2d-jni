@@ -43,16 +43,17 @@ public class b2DebugDrawCallbacksImpl extends b2DebugDrawCallbacks {
     /*
      * Called from native code
      */
-    private void _drawPolygon(long vertices, int vertexCount, int color) {
-        drawPolygon(b2Vec2.wrapPointer(vertices), vertexCount, color);
+    private void _drawPolygon(long transform, long vertices, int vertexCount, int color) {
+        drawPolygon(b2Transform.wrapPointer(transform), b2Vec2.wrapPointer(vertices), vertexCount, color);
     }
 
     /**
+     * @param transform   WebIDL type: {@link b2Transform} [Ref]
      * @param vertices    WebIDL type: {@link b2Vec2} [Const]
      * @param vertexCount WebIDL type: long
      * @param color       WebIDL type: long
      */
-    public void drawPolygon(b2Vec2 vertices, int vertexCount, int color) { }
+    public void drawPolygon(b2Transform transform, b2Vec2 vertices, int vertexCount, int color) { }
 
     /*
      * Called from native code
@@ -87,16 +88,17 @@ public class b2DebugDrawCallbacksImpl extends b2DebugDrawCallbacks {
     /*
      * Called from native code
      */
-    private void _drawSolidCircle(long transform, float radius, int color) {
-        drawSolidCircle(b2Transform.wrapPointer(transform), radius, color);
+    private void _drawSolidCircle(long transform, long center, float radius, int color) {
+        drawSolidCircle(b2Transform.wrapPointer(transform), b2Vec2.wrapPointer(center), radius, color);
     }
 
     /**
      * @param transform WebIDL type: {@link b2Transform} [Ref]
+     * @param center    WebIDL type: {@link b2Vec2} [Ref]
      * @param radius    WebIDL type: float
      * @param color     WebIDL type: long
      */
-    public void drawSolidCircle(b2Transform transform, float radius, int color) { }
+    public void drawSolidCircle(b2Transform transform, b2Vec2 center, float radius, int color) { }
 
     /*
      * Called from native code
@@ -116,8 +118,8 @@ public class b2DebugDrawCallbacksImpl extends b2DebugDrawCallbacks {
     /*
      * Called from native code
      */
-    private void _drawSegment(long p1, long p2, int color) {
-        drawSegment(b2Vec2.wrapPointer(p1), b2Vec2.wrapPointer(p2), color);
+    private void _drawLine(long p1, long p2, int color) {
+        drawLine(b2Vec2.wrapPointer(p1), b2Vec2.wrapPointer(p2), color);
     }
 
     /**
@@ -125,7 +127,7 @@ public class b2DebugDrawCallbacksImpl extends b2DebugDrawCallbacks {
      * @param p2    WebIDL type: {@link b2Vec2} [Ref]
      * @param color WebIDL type: long
      */
-    public void drawSegment(b2Vec2 p1, b2Vec2 p2, int color) { }
+    public void drawLine(b2Vec2 p1, b2Vec2 p2, int color) { }
 
     /*
      * Called from native code
@@ -166,5 +168,18 @@ public class b2DebugDrawCallbacksImpl extends b2DebugDrawCallbacks {
      * @param color WebIDL type: long
      */
     public void drawString(b2Vec2 p, String s, int color) { }
+
+    /*
+     * Called from native code
+     */
+    private void _drawBounds(long aabb, int color) {
+        drawBounds(b2AABB.wrapPointer(aabb), color);
+    }
+
+    /**
+     * @param aabb  WebIDL type: {@link b2AABB} [Ref]
+     * @param color WebIDL type: long
+     */
+    public void drawBounds(b2AABB aabb, int color) { }
 
 }

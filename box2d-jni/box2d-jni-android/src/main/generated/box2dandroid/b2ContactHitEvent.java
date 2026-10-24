@@ -2,8 +2,8 @@ package box2dandroid;
 
 
 /**
- * A hit touch event is generated when two shapes collide with a speed faster than the hit speed threshold.
- * This may be reported for speculative contacts that have a confirmed impulse.
+ * A hit event is generated when two shapes collide with a speed faster than the hit event
+ * threshold. This may be reported for speculative contacts that have a confirmed impulse.
  */
 public class b2ContactHitEvent extends NativeObject {
 
@@ -105,9 +105,10 @@ public class b2ContactHitEvent extends NativeObject {
     }
 
     /**
-     * Point where the shapes hit at the beginning of the time step.
-     * This is a mid-point between the two surfaces. It could be at speculative
-     * point where the two shapes were not touching at the beginning of the time step.
+     * Point where the shapes hit. This is a mid-point between the two surfaces. It could be a
+     * speculative point where the shapes were not touching at the beginning of the time step. The
+     * point is reconstructed after the step, so when both bodies are moving it may trail the
+     * impact by up to one step of motion.
      */
     public b2Vec2 getPoint() {
         checkNotNull();
@@ -115,9 +116,10 @@ public class b2ContactHitEvent extends NativeObject {
     }
 
     /**
-     * Point where the shapes hit at the beginning of the time step.
-     * This is a mid-point between the two surfaces. It could be at speculative
-     * point where the two shapes were not touching at the beginning of the time step.
+     * Point where the shapes hit. This is a mid-point between the two surfaces. It could be a
+     * speculative point where the shapes were not touching at the beginning of the time step. The
+     * point is reconstructed after the step, so when both bodies are moving it may trail the
+     * impact by up to one step of motion.
      */
     public void setPoint(b2Vec2 value) {
         checkNotNull();
@@ -156,6 +158,24 @@ public class b2ContactHitEvent extends NativeObject {
         Raw.setShapeIdB(address, value.getAddress());
     }
 
+    /**
+     * Id of the contact.
+     * @warning this contact may have been destroyed
+     */
+    public b2ContactId getContactId() {
+        checkNotNull();
+        return b2ContactId.wrapPointer(Raw.getContactId(address));
+    }
+
+    /**
+     * Id of the contact.
+     * @warning this contact may have been destroyed
+     */
+    public void setContactId(b2ContactId value) {
+        checkNotNull();
+        Raw.setContactId(address, value.getAddress());
+    }
+
     public static class Raw {
         public static native void b2ContactHitEvent_placed(long address);
         public static native long b2ContactHitEvent();
@@ -170,5 +190,7 @@ public class b2ContactHitEvent extends NativeObject {
         public static native void setShapeIdA(long address, long value);
         public static native long getShapeIdB(long address);
         public static native void setShapeIdB(long address, long value);
+        public static native long getContactId(long address);
+        public static native void setContactId(long address, long value);
     }
 }

@@ -73,62 +73,44 @@ public class b2FilterJointDef extends NativeObject {
     // Attributes
 
     /**
-     * The first attached body.
+     * Base joint definition
      */
-    public b2BodyId getBodyIdA() {
+    public b2JointDef getBase() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdA(address));
+        return b2JointDef.wrapPointer(Raw.getBase(address));
     }
 
     /**
-     * The first attached body.
+     * Base joint definition
      */
-    public void setBodyIdA(b2BodyId value) {
+    public void setBase(b2JointDef value) {
         checkNotNull();
-        Raw.setBodyIdA(address, value.getAddress());
+        Raw.setBase(address, value.getAddress());
     }
 
     /**
-     * The second attached body.
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public b2BodyId getBodyIdB() {
+    public int getInternalValue() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdB(address));
+        return Raw.getInternalValue(address);
     }
 
     /**
-     * The second attached body.
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public void setBodyIdB(b2BodyId value) {
+    public void setInternalValue(int value) {
         checkNotNull();
-        Raw.setBodyIdB(address, value.getAddress());
-    }
-
-    /**
-     * User data pointer
-     */
-    public NativeObject getUserData() {
-        checkNotNull();
-        return NativeObject.wrapPointer(Raw.getUserData(address));
-    }
-
-    /**
-     * User data pointer
-     */
-    public void setUserData(NativeObject value) {
-        checkNotNull();
-        Raw.setUserData(address, value.getAddress());
+        Raw.setInternalValue(address, value);
     }
 
     public static class Raw {
         public static native void b2FilterJointDef_placed(long address);
         public static native long b2FilterJointDef();
         public static native void destroy(long address);
-        public static native long getBodyIdA(long address);
-        public static native void setBodyIdA(long address, long value);
-        public static native long getBodyIdB(long address);
-        public static native void setBodyIdB(long address, long value);
-        public static native long getUserData(long address);
-        public static native void setUserData(long address, long value);
+        public static native long getBase(long address);
+        public static native void setBase(long address, long value);
+        public static native int getInternalValue(long address);
+        public static native void setInternalValue(long address, int value);
     }
 }

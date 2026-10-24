@@ -33,7 +33,7 @@ public class B2_RevoluteJoint extends NativeObject {
     }
 
     /**
-     * Use this to initialize your joint definition
+     * Use this to initialize your joint definition.
      */
     public static void defaultRevoluteJointDef(b2RevoluteJointDef result) {
         Raw.defaultRevoluteJointDef(result.getAddress());
@@ -47,59 +47,52 @@ public class B2_RevoluteJoint extends NativeObject {
     }
 
     /**
-     * Is the revolute joint spring enabled?
+     * Is the revolute angular spring enabled?
      */
     public static boolean isSpringEnabled(long jointId) {
         return Raw.isSpringEnabled(jointId);
     }
 
     /**
-     * Set the revolute joint spring hertz
+     * Set the revolute joint spring stiffness in Hertz
      */
     public static void setSpringHertz(long jointId, float hertz) {
         Raw.setSpringHertz(jointId, hertz);
     }
 
     /**
-     * Get the revolute joint spring hertz
+     * Get the revolute joint spring stiffness in Hertz
      */
     public static float getSpringHertz(long jointId) {
         return Raw.getSpringHertz(jointId);
     }
 
     /**
-     * Set the revolute joint spring damping ratio
+     * Set the revolute joint spring damping ratio, non-dimensional
      */
     public static void setSpringDampingRatio(long jointId, float dampingRatio) {
         Raw.setSpringDampingRatio(jointId, dampingRatio);
     }
 
     /**
-     * Get the revolute joint spring damping ratio
+     * Get the revolute joint spring damping ratio, non-dimensional
      */
     public static float getSpringDampingRatio(long jointId) {
         return Raw.getSpringDampingRatio(jointId);
     }
 
     /**
-     * Set the revolute joint target angle
+     * Set the revolute joint spring target angle, radians
      */
     public static void setTargetAngle(long jointId, float angle) {
         Raw.setTargetAngle(jointId, angle);
     }
 
     /**
-     * Get the revolute joint target angle
+     * Get the revolute joint spring target angle, radians
      */
     public static float getTargetAngle(long jointId) {
         return Raw.getTargetAngle(jointId);
-    }
-
-    /**
-     * Get the revolute joint angle
-     */
-    public static float getAngle(long jointId) {
-        return Raw.getAngle(jointId);
     }
 
     /**
@@ -117,28 +110,29 @@ public class B2_RevoluteJoint extends NativeObject {
     }
 
     /**
-     * Get the revolute joint lower limit
+     * Get the revolute joint lower limit in radians
      */
     public static float getLowerLimit(long jointId) {
         return Raw.getLowerLimit(jointId);
     }
 
     /**
-     * Get the revolute joint upper limit
+     * Get the revolute joint upper limit in radians
      */
     public static float getUpperLimit(long jointId) {
         return Raw.getUpperLimit(jointId);
     }
 
     /**
-     * Set the revolute joint limits
+     * Set the revolute joint limits in radians. It is expected that lower &lt;= upper and that -0.99 *
+     * B2_PI &lt;= lower &amp;&amp; upper &lt;= 0.99 * B2_PI.
      */
     public static void setLimits(long jointId, float lower, float upper) {
         Raw.setLimits(jointId, lower, upper);
     }
 
     /**
-     * Enable/disable the revolute joint motor
+     * Enable/disable a revolute joint motor
      */
     public static void enableMotor(long jointId, boolean enableMotor) {
         Raw.enableMotor(jointId, enableMotor);
@@ -152,38 +146,53 @@ public class B2_RevoluteJoint extends NativeObject {
     }
 
     /**
-     * Set the revolute joint motor speed
+     * Set the revolute joint motor speed in radians per second
      */
-    public static void setMotorSpeed(long jointId, float motorSpeed) {
-        Raw.setMotorSpeed(jointId, motorSpeed);
+    public static void setTargetMotorSpeed(long jointId, float motorSpeed) {
+        Raw.setTargetMotorSpeed(jointId, motorSpeed);
     }
 
     /**
-     * Get the revolute joint motor speed
+     * Get the revolute joint motor speed in radians per second
      */
-    public static float getMotorSpeed(long jointId) {
-        return Raw.getMotorSpeed(jointId);
+    public static float getTargetMotorSpeed(long jointId) {
+        return Raw.getTargetMotorSpeed(jointId);
     }
 
     /**
-     * Get the revolute joint motor torque
-     */
-    public static float getMotorTorque(long jointId) {
-        return Raw.getMotorTorque(jointId);
-    }
-
-    /**
-     * Set the maximum revolute joint motor torque
+     * Set the revolute joint maximum motor torque, usually in newton-meters
      */
     public static void setMaxMotorTorque(long jointId, float torque) {
         Raw.setMaxMotorTorque(jointId, torque);
     }
 
     /**
-     * Get the maximum revolute joint motor torque
+     * Get the revolute joint maximum motor torque, usually in newton-meters
      */
     public static float getMaxMotorTorque(long jointId) {
         return Raw.getMaxMotorTorque(jointId);
+    }
+
+    /**
+     * Get the revolute joint current angle in radians. This is the relative rotation of the joint
+     * frames.
+     */
+    public static float getCurrentAngle(long jointId) {
+        return Raw.getCurrentAngle(jointId);
+    }
+
+    /**
+     * Get the current revolute joint motor speed in radians per second
+     */
+    public static float getCurrentSpeed(long jointId) {
+        return Raw.getCurrentSpeed(jointId);
+    }
+
+    /**
+     * Get the revolute joint current motor torque, usually in newton-meters
+     */
+    public static float getCurrentMotorTorque(long jointId) {
+        return Raw.getCurrentMotorTorque(jointId);
     }
 
     public static class Raw {
@@ -197,7 +206,6 @@ public class B2_RevoluteJoint extends NativeObject {
         public static native float getSpringDampingRatio(long jointId);
         public static native void setTargetAngle(long jointId, float angle);
         public static native float getTargetAngle(long jointId);
-        public static native float getAngle(long jointId);
         public static native void enableLimit(long jointId, boolean enableLimit);
         public static native boolean isLimitEnabled(long jointId);
         public static native float getLowerLimit(long jointId);
@@ -205,10 +213,12 @@ public class B2_RevoluteJoint extends NativeObject {
         public static native void setLimits(long jointId, float lower, float upper);
         public static native void enableMotor(long jointId, boolean enableMotor);
         public static native boolean isMotorEnabled(long jointId);
-        public static native void setMotorSpeed(long jointId, float motorSpeed);
-        public static native float getMotorSpeed(long jointId);
-        public static native float getMotorTorque(long jointId);
+        public static native void setTargetMotorSpeed(long jointId, float motorSpeed);
+        public static native float getTargetMotorSpeed(long jointId);
         public static native void setMaxMotorTorque(long jointId, float torque);
         public static native float getMaxMotorTorque(long jointId);
+        public static native float getCurrentAngle(long jointId);
+        public static native float getCurrentSpeed(long jointId);
+        public static native float getCurrentMotorTorque(long jointId);
     }
 }

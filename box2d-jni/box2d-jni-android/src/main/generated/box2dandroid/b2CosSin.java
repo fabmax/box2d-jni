@@ -2,8 +2,7 @@ package box2dandroid;
 
 
 /**
- * Cosine and sine pair
- * This uses a custom implementation designed for cross-platform determinism
+ * Cosine and sine pair This uses a custom implementation designed for cross-platform determinism
  */
 public class b2CosSin extends NativeObject {
 

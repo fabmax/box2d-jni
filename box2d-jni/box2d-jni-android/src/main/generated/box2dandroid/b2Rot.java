@@ -2,8 +2,7 @@ package box2dandroid;
 
 
 /**
- * 2D rotation
- * This is similar to using a complex number for rotation
+ * 2D rotation This is similar to using a complex number for rotation
  */
 public class b2Rot extends NativeObject {
 

@@ -40,56 +40,56 @@ public class B2_WeldJoint extends NativeObject {
     }
 
     /**
-     * Set the weld joint linear hertz
+     * Set the weld joint linear stiffness in Hertz. 0 is rigid.
      */
     public static void setLinearHertz(long jointId, float hertz) {
         Raw.setLinearHertz(jointId, hertz);
     }
 
     /**
-     * Get the weld joint linear hertz
+     * Get the weld joint linear stiffness in Hertz
      */
     public static float getLinearHertz(long jointId) {
         return Raw.getLinearHertz(jointId);
     }
 
     /**
-     * Set the weld joint linear damping ratio
+     * Set the weld joint linear damping ratio (non-dimensional)
      */
     public static void setLinearDampingRatio(long jointId, float dampingRatio) {
         Raw.setLinearDampingRatio(jointId, dampingRatio);
     }
 
     /**
-     * Get the weld joint linear damping ratio
+     * Get the weld joint linear damping ratio (non-dimensional)
      */
     public static float getLinearDampingRatio(long jointId) {
         return Raw.getLinearDampingRatio(jointId);
     }
 
     /**
-     * Set the weld joint angular hertz
+     * Set the weld joint angular stiffness in Hertz. 0 is rigid.
      */
     public static void setAngularHertz(long jointId, float hertz) {
         Raw.setAngularHertz(jointId, hertz);
     }
 
     /**
-     * Get the weld joint angular hertz
+     * Get the weld joint angular stiffness in Hertz
      */
     public static float getAngularHertz(long jointId) {
         return Raw.getAngularHertz(jointId);
     }
 
     /**
-     * Set the weld joint angular damping ratio
+     * Set weld joint angular damping ratio, non-dimensional
      */
     public static void setAngularDampingRatio(long jointId, float dampingRatio) {
         Raw.setAngularDampingRatio(jointId, dampingRatio);
     }
 
     /**
-     * Get the weld joint angular damping ratio
+     * Get the weld joint angular damping ratio, non-dimensional
      */
     public static float getAngularDampingRatio(long jointId) {
         return Raw.getAngularDampingRatio(jointId);

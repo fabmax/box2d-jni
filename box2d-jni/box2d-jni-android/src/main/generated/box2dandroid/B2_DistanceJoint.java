@@ -40,21 +40,23 @@ public class B2_DistanceJoint extends NativeObject {
     }
 
     /**
-     * Set the distance joint length
+     * Set the rest length of a distance joint
+     * @param jointId The id for a distance joint
+     * @param length The new distance joint length
      */
-    public static void setLength(long jointId, float length) {
-        Raw.setLength(jointId, length);
+    public static void setRestLength(long jointId, float length) {
+        Raw.setRestLength(jointId, length);
     }
 
     /**
-     * Get the distance joint length
+     * Get the rest length of a distance joint
      */
-    public static float getLength(long jointId) {
-        return Raw.getLength(jointId);
+    public static float getRestLength(long jointId) {
+        return Raw.getRestLength(jointId);
     }
 
     /**
-     * Enable/disable the distance joint spring
+     * Enable/disable the distance joint spring. When disabled the distance joint is rigid.
      */
     public static void enableSpring(long jointId, boolean enableSpring) {
         Raw.enableSpring(jointId, enableSpring);
@@ -68,36 +70,64 @@ public class B2_DistanceJoint extends NativeObject {
     }
 
     /**
-     * Set the distance joint spring hertz
+     * Set the force range for the spring.
+     */
+    public static void setSpringForceRange(long jointId, float lowerForce, float upperForce) {
+        Raw.setSpringForceRange(jointId, lowerForce, upperForce);
+    }
+
+    /**
+     * Get the lower force of the spring force range.
+     */
+    public static float getSpringForceRangeLower(long jointId) {
+        return Raw.getSpringForceRangeLower(jointId);
+    }
+
+    /**
+     * Get the upper force of the spring force range.
+     */
+    public static float getSpringForceRangeUpper(long jointId) {
+        return Raw.getSpringForceRangeUpper(jointId);
+    }
+
+    /**
+     * Set the spring stiffness in Hertz
      */
     public static void setSpringHertz(long jointId, float hertz) {
         Raw.setSpringHertz(jointId, hertz);
     }
 
     /**
-     * Set the distance joint spring damping ratio
+     * Set the spring damping ratio, non-dimensional
      */
     public static void setSpringDampingRatio(long jointId, float dampingRatio) {
         Raw.setSpringDampingRatio(jointId, dampingRatio);
     }
 
     /**
-     * Get the distance joint spring hertz
+     * Get the spring Hertz
      */
     public static float getSpringHertz(long jointId) {
         return Raw.getSpringHertz(jointId);
     }
 
     /**
-     * Get the distance joint spring damping ratio
+     * Get the spring damping ratio
      */
     public static float getSpringDampingRatio(long jointId) {
         return Raw.getSpringDampingRatio(jointId);
     }
 
     /**
-     * Enable/disable the distance joint limit
-     * The limit only works if the joint spring is enabled. Otherwise the joint is rigid and the limit has no effect.
+     * Get the current spring force.
+     */
+    public static float getSpringForce(long jointId) {
+        return Raw.getSpringForce(jointId);
+    }
+
+    /**
+     * Enable joint limit. The limit only works if the joint spring is enabled. Otherwise the joint is
+     * rigid and the limit has no effect.
      */
     public static void enableLimit(long jointId, boolean enableLimit) {
         Raw.enableLimit(jointId, enableLimit);
@@ -111,28 +141,28 @@ public class B2_DistanceJoint extends NativeObject {
     }
 
     /**
-     * Set the distance joint length range
+     * Set the minimum and maximum length parameters of a distance joint
      */
-    public static void setLengthRange(long jointId, float minLength, float maxLength) {
-        Raw.setLengthRange(jointId, minLength, maxLength);
+    public static void setLimits(long jointId, float minLength, float maxLength) {
+        Raw.setLimits(jointId, minLength, maxLength);
     }
 
     /**
      * Get the distance joint minimum length
      */
-    public static float getMinLength(long jointId) {
-        return Raw.getMinLength(jointId);
+    public static float getLowerLimit(long jointId) {
+        return Raw.getLowerLimit(jointId);
     }
 
     /**
      * Get the distance joint maximum length
      */
-    public static float getMaxLength(long jointId) {
-        return Raw.getMaxLength(jointId);
+    public static float getUpperLimit(long jointId) {
+        return Raw.getUpperLimit(jointId);
     }
 
     /**
-     * Get the current distance joint length
+     * Get the current length of a distance joint
      */
     public static float getCurrentLength(long jointId) {
         return Raw.getCurrentLength(jointId);
@@ -153,63 +183,67 @@ public class B2_DistanceJoint extends NativeObject {
     }
 
     /**
-     * Set the distance joint motor speed
+     * Set the distance joint motor speed, usually in meters per second
      */
-    public static void setMotorSpeed(long jointId, float motorSpeed) {
-        Raw.setMotorSpeed(jointId, motorSpeed);
+    public static void setTargetMotorSpeed(long jointId, float motorSpeed) {
+        Raw.setTargetMotorSpeed(jointId, motorSpeed);
     }
 
     /**
-     * Get the distance joint motor speed
+     * Get the distance joint motor speed, usually in meters per second
      */
-    public static float getMotorSpeed(long jointId) {
-        return Raw.getMotorSpeed(jointId);
+    public static float getTargetMotorSpeed(long jointId) {
+        return Raw.getTargetMotorSpeed(jointId);
     }
 
     /**
-     * Set the maximum distance joint motor force
+     * Set the distance joint maximum motor force, usually in newtons
      */
     public static void setMaxMotorForce(long jointId, float force) {
         Raw.setMaxMotorForce(jointId, force);
     }
 
     /**
-     * Get the maximum distance joint motor force
+     * Get the distance joint maximum motor force, usually in newtons
      */
     public static float getMaxMotorForce(long jointId) {
         return Raw.getMaxMotorForce(jointId);
     }
 
     /**
-     * Get the current distance joint motor force
+     * Get the distance joint current motor force, usually in newtons
      */
-    public static float getMotorForce(long jointId) {
-        return Raw.getMotorForce(jointId);
+    public static float getCurrentMotorForce(long jointId) {
+        return Raw.getCurrentMotorForce(jointId);
     }
 
     public static class Raw {
         public static native long createDistanceJoint(long worldId, long def);
         public static native void defaultDistanceJointDef(long result);
-        public static native void setLength(long jointId, float length);
-        public static native float getLength(long jointId);
+        public static native void setRestLength(long jointId, float length);
+        public static native float getRestLength(long jointId);
         public static native void enableSpring(long jointId, boolean enableSpring);
         public static native boolean isSpringEnabled(long jointId);
+        public static native void setSpringForceRange(long jointId, float lowerForce, float upperForce);
+        public static native float getSpringForceRangeLower(long jointId);
+        public static native float getSpringForceRangeUpper(long jointId);
         public static native void setSpringHertz(long jointId, float hertz);
         public static native void setSpringDampingRatio(long jointId, float dampingRatio);
         public static native float getSpringHertz(long jointId);
         public static native float getSpringDampingRatio(long jointId);
+        public static native float getSpringForce(long jointId);
         public static native void enableLimit(long jointId, boolean enableLimit);
         public static native boolean isLimitEnabled(long jointId);
-        public static native void setLengthRange(long jointId, float minLength, float maxLength);
-        public static native float getMinLength(long jointId);
-        public static native float getMaxLength(long jointId);
+        public static native void setLimits(long jointId, float minLength, float maxLength);
+        public static native float getLowerLimit(long jointId);
+        public static native float getUpperLimit(long jointId);
         public static native float getCurrentLength(long jointId);
         public static native void enableMotor(long jointId, boolean enableMotor);
         public static native boolean isMotorEnabled(long jointId);
-        public static native void setMotorSpeed(long jointId, float motorSpeed);
-        public static native float getMotorSpeed(long jointId);
+        public static native void setTargetMotorSpeed(long jointId, float motorSpeed);
+        public static native float getTargetMotorSpeed(long jointId);
         public static native void setMaxMotorForce(long jointId, float force);
         public static native float getMaxMotorForce(long jointId);
-        public static native float getMotorForce(long jointId);
+        public static native float getCurrentMotorForce(long jointId);
     }
 }

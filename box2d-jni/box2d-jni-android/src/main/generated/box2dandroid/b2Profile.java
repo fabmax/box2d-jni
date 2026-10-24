@@ -3,6 +3,7 @@ package box2dandroid;
 
 /**
  * Profiling data. Times are in milliseconds.
+ * @ingroup world
  */
 public class b2Profile extends NativeObject {
 
@@ -54,211 +55,353 @@ public class b2Profile extends NativeObject {
         Raw.setStep(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getPairs() {
         checkNotNull();
         return Raw.getPairs(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setPairs(float value) {
         checkNotNull();
         Raw.setPairs(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getCollide() {
         checkNotNull();
         return Raw.getCollide(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setCollide(float value) {
         checkNotNull();
         Raw.setCollide(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getSolve() {
         checkNotNull();
         return Raw.getSolve(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setSolve(float value) {
         checkNotNull();
         Raw.setSolve(address, value);
     }
 
-    public float getMergeIslands() {
+    /**
+     * &lt;
+     */
+    public float getSolverSetup() {
         checkNotNull();
-        return Raw.getMergeIslands(address);
+        return Raw.getSolverSetup(address);
     }
 
-    public void setMergeIslands(float value) {
+    /**
+     * &lt;
+     */
+    public void setSolverSetup(float value) {
         checkNotNull();
-        Raw.setMergeIslands(address, value);
+        Raw.setSolverSetup(address, value);
     }
 
-    public float getPrepareStages() {
+    /**
+     * &lt;
+     */
+    public float getConstraints() {
         checkNotNull();
-        return Raw.getPrepareStages(address);
+        return Raw.getConstraints(address);
     }
 
-    public void setPrepareStages(float value) {
+    /**
+     * &lt;
+     */
+    public void setConstraints(float value) {
         checkNotNull();
-        Raw.setPrepareStages(address, value);
+        Raw.setConstraints(address, value);
     }
 
-    public float getSolveConstraints() {
-        checkNotNull();
-        return Raw.getSolveConstraints(address);
-    }
-
-    public void setSolveConstraints(float value) {
-        checkNotNull();
-        Raw.setSolveConstraints(address, value);
-    }
-
+    /**
+     * &lt;
+     */
     public float getPrepareConstraints() {
         checkNotNull();
         return Raw.getPrepareConstraints(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setPrepareConstraints(float value) {
         checkNotNull();
         Raw.setPrepareConstraints(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getIntegrateVelocities() {
         checkNotNull();
         return Raw.getIntegrateVelocities(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setIntegrateVelocities(float value) {
         checkNotNull();
         Raw.setIntegrateVelocities(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getWarmStart() {
         checkNotNull();
         return Raw.getWarmStart(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setWarmStart(float value) {
         checkNotNull();
         Raw.setWarmStart(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getSolveImpulses() {
         checkNotNull();
         return Raw.getSolveImpulses(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setSolveImpulses(float value) {
         checkNotNull();
         Raw.setSolveImpulses(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getIntegratePositions() {
         checkNotNull();
         return Raw.getIntegratePositions(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setIntegratePositions(float value) {
         checkNotNull();
         Raw.setIntegratePositions(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getRelaxImpulses() {
         checkNotNull();
         return Raw.getRelaxImpulses(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setRelaxImpulses(float value) {
         checkNotNull();
         Raw.setRelaxImpulses(address, value);
     }
 
-    public float getApplyRestitution() {
+    /**
+     * &lt;
+     */
+    public float getRestitution() {
         checkNotNull();
-        return Raw.getApplyRestitution(address);
+        return Raw.getRestitution(address);
     }
 
-    public void setApplyRestitution(float value) {
+    /**
+     * &lt;
+     */
+    public void setRestitution(float value) {
         checkNotNull();
-        Raw.setApplyRestitution(address, value);
+        Raw.setRestitution(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getStoreImpulses() {
         checkNotNull();
         return Raw.getStoreImpulses(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setStoreImpulses(float value) {
         checkNotNull();
         Raw.setStoreImpulses(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getSplitIslands() {
         checkNotNull();
         return Raw.getSplitIslands(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setSplitIslands(float value) {
         checkNotNull();
         Raw.setSplitIslands(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getTransforms() {
         checkNotNull();
         return Raw.getTransforms(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setTransforms(float value) {
         checkNotNull();
         Raw.setTransforms(address, value);
     }
 
+    /**
+     * &lt;
+     */
+    public float getSensorHits() {
+        checkNotNull();
+        return Raw.getSensorHits(address);
+    }
+
+    /**
+     * &lt;
+     */
+    public void setSensorHits(float value) {
+        checkNotNull();
+        Raw.setSensorHits(address, value);
+    }
+
+    /**
+     * &lt;
+     */
+    public float getJointEvents() {
+        checkNotNull();
+        return Raw.getJointEvents(address);
+    }
+
+    /**
+     * &lt;
+     */
+    public void setJointEvents(float value) {
+        checkNotNull();
+        Raw.setJointEvents(address, value);
+    }
+
+    /**
+     * &lt;
+     */
     public float getHitEvents() {
         checkNotNull();
         return Raw.getHitEvents(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setHitEvents(float value) {
         checkNotNull();
         Raw.setHitEvents(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getRefit() {
         checkNotNull();
         return Raw.getRefit(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setRefit(float value) {
         checkNotNull();
         Raw.setRefit(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getBullets() {
         checkNotNull();
         return Raw.getBullets(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setBullets(float value) {
         checkNotNull();
         Raw.setBullets(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getSleepIslands() {
         checkNotNull();
         return Raw.getSleepIslands(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setSleepIslands(float value) {
         checkNotNull();
         Raw.setSleepIslands(address, value);
     }
 
+    /**
+     * &lt;
+     */
     public float getSensors() {
         checkNotNull();
         return Raw.getSensors(address);
     }
 
+    /**
+     * &lt;
+     */
     public void setSensors(float value) {
         checkNotNull();
         Raw.setSensors(address, value);
@@ -275,12 +418,10 @@ public class b2Profile extends NativeObject {
         public static native void setCollide(long address, float value);
         public static native float getSolve(long address);
         public static native void setSolve(long address, float value);
-        public static native float getMergeIslands(long address);
-        public static native void setMergeIslands(long address, float value);
-        public static native float getPrepareStages(long address);
-        public static native void setPrepareStages(long address, float value);
-        public static native float getSolveConstraints(long address);
-        public static native void setSolveConstraints(long address, float value);
+        public static native float getSolverSetup(long address);
+        public static native void setSolverSetup(long address, float value);
+        public static native float getConstraints(long address);
+        public static native void setConstraints(long address, float value);
         public static native float getPrepareConstraints(long address);
         public static native void setPrepareConstraints(long address, float value);
         public static native float getIntegrateVelocities(long address);
@@ -293,14 +434,18 @@ public class b2Profile extends NativeObject {
         public static native void setIntegratePositions(long address, float value);
         public static native float getRelaxImpulses(long address);
         public static native void setRelaxImpulses(long address, float value);
-        public static native float getApplyRestitution(long address);
-        public static native void setApplyRestitution(long address, float value);
+        public static native float getRestitution(long address);
+        public static native void setRestitution(long address, float value);
         public static native float getStoreImpulses(long address);
         public static native void setStoreImpulses(long address, float value);
         public static native float getSplitIslands(long address);
         public static native void setSplitIslands(long address, float value);
         public static native float getTransforms(long address);
         public static native void setTransforms(long address, float value);
+        public static native float getSensorHits(long address);
+        public static native void setSensorHits(long address, float value);
+        public static native float getJointEvents(long address);
+        public static native void setJointEvents(long address, float value);
         public static native float getHitEvents(long address);
         public static native void setHitEvents(long address, float value);
         public static native float getRefit(long address);
