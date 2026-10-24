@@ -2,8 +2,7 @@ package box2d;
 
 
 /**
- * 2D vector
- * This can be used to represent a point or free vector
+ * 2D vector This can be used to represent a point or free vector
  */
 public class b2Vec2 extends NativeObject {
 

@@ -2,8 +2,7 @@ package box2d;
 
 
 /**
- * A solid capsule can be viewed as two semicircles connected
- * by a rectangle.
+ * A solid capsule can be viewed as two semicircles connected by a rectangle.
  */
 public class b2Capsule extends NativeObject {
 

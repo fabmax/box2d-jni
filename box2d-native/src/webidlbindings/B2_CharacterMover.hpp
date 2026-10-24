@@ -6,7 +6,8 @@ class B2_CharacterMover {
     public:
 
     /// Solves the position of a mover that satisfies the given collision planes.
-    /// @param targetDelta the desired movement from the position used to generate the collision planes
+    /// @param targetDelta the desired translation from the position used to generate the collision
+    /// planes
     /// @param planes the collision planes
     static inline b2PlaneSolverResult solvePlanes(b2Vec2 targetDelta, b2CollisionPlaneArray* planes) {
         return b2SolvePlanes(targetDelta, planes->array, planes->length);

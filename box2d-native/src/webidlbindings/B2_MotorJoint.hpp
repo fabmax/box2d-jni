@@ -16,53 +16,103 @@ class B2_MotorJoint {
         result = b2DefaultMotorJointDef();
     }
 
-    /// Set the motor joint linear offset
-    static inline void setLinearOffset(uint64_t jointId, b2Vec2 linearOffset) {
-        b2MotorJoint_SetLinearOffset(b2LoadJointId(jointId), linearOffset);
+    /// Set the desired relative linear velocity in meters per second
+    static inline void setLinearVelocity(uint64_t jointId, b2Vec2 velocity) {
+        b2MotorJoint_SetLinearVelocity(b2LoadJointId(jointId), velocity);
     }
 
-    /// Get the motor joint linear offset
-    static inline b2Vec2 getLinearOffset(uint64_t jointId) {
-        return b2MotorJoint_GetLinearOffset(b2LoadJointId(jointId));
+    /// Get the desired relative linear velocity in meters per second
+    static inline b2Vec2 getLinearVelocity(uint64_t jointId) {
+        return b2MotorJoint_GetLinearVelocity(b2LoadJointId(jointId));
     }
 
-    /// Set the motor joint angular offset
-    static inline void setAngularOffset(uint64_t jointId, float angularOffset) {
-        b2MotorJoint_SetAngularOffset(b2LoadJointId(jointId), angularOffset);
+    /// Set the desired relative angular velocity in radians per second
+    static inline void setAngularVelocity(uint64_t jointId, float velocity) {
+        b2MotorJoint_SetAngularVelocity(b2LoadJointId(jointId), velocity);
     }
 
-    /// Get the motor joint angular offset
-    static inline float getAngularOffset(uint64_t jointId) {
-        return b2MotorJoint_GetAngularOffset(b2LoadJointId(jointId));
+    /// Get the desired relative angular velocity in radians per second
+    static inline float getAngularVelocity(uint64_t jointId) {
+        return b2MotorJoint_GetAngularVelocity(b2LoadJointId(jointId));
     }
 
-    /// Set the maximum motor joint force
-    static inline void setMaxForce(uint64_t jointId, float maxForce) {
-        b2MotorJoint_SetMaxForce(b2LoadJointId(jointId), maxForce);
+    /// Set the motor joint maximum force, usually in newtons
+    static inline void setMaxVelocityForce(uint64_t jointId, float maxForce) {
+        b2MotorJoint_SetMaxVelocityForce(b2LoadJointId(jointId), maxForce);
     }
 
-    /// Get the maximum motor joint force
-    static inline float getMaxForce(uint64_t jointId) {
-        return b2MotorJoint_GetMaxForce(b2LoadJointId(jointId));
+    /// Get the motor joint maximum force, usually in newtons
+    static inline float getMaxVelocityForce(uint64_t jointId) {
+        return b2MotorJoint_GetMaxVelocityForce(b2LoadJointId(jointId));
     }
 
-    /// Set the maximum motor joint torque
-    static inline void setMaxTorque(uint64_t jointId, float maxTorque) {
-        b2MotorJoint_SetMaxTorque(b2LoadJointId(jointId), maxTorque);
+    /// Set the motor joint maximum torque, usually in newton-meters
+    static inline void setMaxVelocityTorque(uint64_t jointId, float maxTorque) {
+        b2MotorJoint_SetMaxVelocityTorque(b2LoadJointId(jointId), maxTorque);
     }
 
-    /// Get the maximum motor joint torque
-    static inline float getMaxTorque(uint64_t jointId) {
-        return b2MotorJoint_GetMaxTorque(b2LoadJointId(jointId));
+    /// Get the motor joint maximum torque, usually in newton-meters
+    static inline float getMaxVelocityTorque(uint64_t jointId) {
+        return b2MotorJoint_GetMaxVelocityTorque(b2LoadJointId(jointId));
     }
 
-    /// Set the motor joint correction factor
-    static inline void setCorrectionFactor(uint64_t jointId, float correctionFactor) {
-        b2MotorJoint_SetCorrectionFactor(b2LoadJointId(jointId), correctionFactor);
+    /// Set the spring linear hertz stiffness
+    static inline void setLinearHertz(uint64_t jointId, float hertz) {
+        b2MotorJoint_SetLinearHertz(b2LoadJointId(jointId), hertz);
     }
 
-    /// Get the motor joint correction factor
-    static inline float getCorrectionFactor(uint64_t jointId) {
-        return b2MotorJoint_GetCorrectionFactor(b2LoadJointId(jointId));
+    /// Get the spring linear hertz stiffness
+    static inline float getLinearHertz(uint64_t jointId) {
+        return b2MotorJoint_GetLinearHertz(b2LoadJointId(jointId));
+    }
+
+    /// Set the spring linear damping ratio. Use 1.0 for critical damping.
+    static inline void setLinearDampingRatio(uint64_t jointId, float damping) {
+        b2MotorJoint_SetLinearDampingRatio(b2LoadJointId(jointId), damping);
+    }
+
+    /// Get the spring linear damping ratio.
+    static inline float getLinearDampingRatio(uint64_t jointId) {
+        return b2MotorJoint_GetLinearDampingRatio(b2LoadJointId(jointId));
+    }
+
+    /// Set the spring angular hertz stiffness
+    static inline void setAngularHertz(uint64_t jointId, float hertz) {
+        b2MotorJoint_SetAngularHertz(b2LoadJointId(jointId), hertz);
+    }
+
+    /// Get the spring angular hertz stiffness
+    static inline float getAngularHertz(uint64_t jointId) {
+        return b2MotorJoint_GetAngularHertz(b2LoadJointId(jointId));
+    }
+
+    /// Set the spring angular damping ratio. Use 1.0 for critical damping.
+    static inline void setAngularDampingRatio(uint64_t jointId, float damping) {
+        b2MotorJoint_SetAngularDampingRatio(b2LoadJointId(jointId), damping);
+    }
+
+    /// Get the spring angular damping ratio.
+    static inline float getAngularDampingRatio(uint64_t jointId) {
+        return b2MotorJoint_GetAngularDampingRatio(b2LoadJointId(jointId));
+    }
+
+    /// Set the maximum spring force in newtons.
+    static inline void setMaxSpringForce(uint64_t jointId, float maxForce) {
+        b2MotorJoint_SetMaxSpringForce(b2LoadJointId(jointId), maxForce);
+    }
+
+    /// Get the maximum spring force in newtons.
+    static inline float getMaxSpringForce(uint64_t jointId) {
+        return b2MotorJoint_GetMaxSpringForce(b2LoadJointId(jointId));
+    }
+
+    /// Set the maximum spring torque in newtons * meters
+    static inline void setMaxSpringTorque(uint64_t jointId, float maxTorque) {
+        b2MotorJoint_SetMaxSpringTorque(b2LoadJointId(jointId), maxTorque);
+    }
+
+    /// Get the maximum spring torque in newtons * meters
+    static inline float getMaxSpringTorque(uint64_t jointId) {
+        return b2MotorJoint_GetMaxSpringTorque(b2LoadJointId(jointId));
     }
 };

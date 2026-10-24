@@ -6,7 +6,7 @@
 class B2_Joint {
     public:
 
-    /// Destroy a joint
+    /// Destroy a joint.
     static inline void destroyJoint(uint64_t jointId) {
         b2DestroyJoint(b2LoadJointId(jointId));
     }
@@ -36,44 +36,24 @@ class B2_Joint {
         return b2StoreWorldId(b2Joint_GetWorld(b2LoadJointId(jointId)));
     }
 
-    /// Get the local anchor on bodyA
-    static inline b2Vec2 getLocalAnchorA(uint64_t jointId) {
-        return b2Joint_GetLocalAnchorA(b2LoadJointId(jointId));
+    /// Set the local frame on bodyA
+    static inline void setLocalFrameA(uint64_t jointId, b2Transform localFrame) {
+        b2Joint_SetLocalFrameA(b2LoadJointId(jointId), localFrame);
     }
 
-    /// Get the local anchor on bodyB
-    static inline b2Vec2 getLocalAnchorB(uint64_t jointId) {
-        return b2Joint_GetLocalAnchorB(b2LoadJointId(jointId));
+    /// Get the local frame on bodyA
+    static inline b2Transform getLocalFrameA(uint64_t jointId) {
+        return b2Joint_GetLocalFrameA(b2LoadJointId(jointId));
     }
 
-    /// Set the local anchor on bodyA
-    static inline void setLocalAnchorA(uint64_t jointId, b2Vec2 localAnchor) {
-        b2Joint_SetLocalAnchorA(b2LoadJointId(jointId), localAnchor);
+    /// Set the local frame on bodyB
+    static inline void setLocalFrameB(uint64_t jointId, b2Transform localFrame) {
+        b2Joint_SetLocalFrameB(b2LoadJointId(jointId), localFrame);
     }
 
-    /// Set the local anchor on bodyB
-    static inline void setLocalAnchorB(uint64_t jointId, b2Vec2 localAnchor) {
-        b2Joint_SetLocalAnchorB(b2LoadJointId(jointId), localAnchor);
-    }
-
-    /// Get the reference angle for this joint (in radians)
-    static inline float getReferenceAngle(uint64_t jointId) {
-        return b2Joint_GetReferenceAngle(b2LoadJointId(jointId));
-    }
-
-    /// Set the reference angle for this joint (in radians)
-    static inline void setReferenceAngle(uint64_t jointId, float angleInRadians) {
-        b2Joint_SetReferenceAngle(b2LoadJointId(jointId), angleInRadians);
-    }
-
-    /// Set the local axis on bodyA
-    static inline void setLocalAxisA(uint64_t jointId, b2Vec2 localAxis) {
-        b2Joint_SetLocalAxisA(b2LoadJointId(jointId), localAxis);
-    }
-
-    /// Get the local axis on bodyA
-    static inline b2Vec2 getLocalAxisA(uint64_t jointId) {
-        return b2Joint_GetLocalAxisA(b2LoadJointId(jointId));
+    /// Get the local frame on bodyB
+    static inline b2Transform getLocalFrameB(uint64_t jointId) {
+        return b2Joint_GetLocalFrameB(b2LoadJointId(jointId));
     }
 
     /// Toggle collision between connected bodies
@@ -96,7 +76,7 @@ class B2_Joint {
         return b2Joint_GetUserData(b2LoadJointId(jointId));
     }
 
-    /// Wake the bodies connect to this joint
+    /// Wake the bodies connected to this joint
     static inline void wakeBodies(uint64_t jointId) {
         b2Joint_WakeBodies(b2LoadJointId(jointId));
     }
@@ -111,14 +91,44 @@ class B2_Joint {
         return b2Joint_GetConstraintTorque(b2LoadJointId(jointId));
     }
 
-    /// Get the linear separation between anchor points for this joint
+    /// Get the current linear separation error for this joint. Does not consider admissible movement.
+    /// Usually in meters.
     static inline float getLinearSeparation(uint64_t jointId) {
         return b2Joint_GetLinearSeparation(b2LoadJointId(jointId));
     }
 
-    /// Get the angular separation for this joint
+    /// Get the current angular separation error for this joint. Does not consider admissible movement.
+    /// Radians.
     static inline float getAngularSeparation(uint64_t jointId) {
         return b2Joint_GetAngularSeparation(b2LoadJointId(jointId));
+    }
+
+    /// Set the joint constraint tuning. Advanced feature.
+    /// @param jointId the joint
+    /// @param hertz the stiffness in Hertz (cycles per second)
+    /// @param dampingRatio the non-dimensional damping ratio (one for critical damping)
+    static inline void setConstraintTuning(uint64_t jointId, float hertz, float dampingRatio) {
+        b2Joint_SetConstraintTuning(b2LoadJointId(jointId), hertz, dampingRatio);
+    }
+
+    /// Set the force threshold for joint events (Newtons)
+    static inline void setForceThreshold(uint64_t jointId, float threshold) {
+        b2Joint_SetForceThreshold(b2LoadJointId(jointId), threshold);
+    }
+
+    /// Get the force threshold for joint events (Newtons)
+    static inline float getForceThreshold(uint64_t jointId) {
+        return b2Joint_GetForceThreshold(b2LoadJointId(jointId));
+    }
+
+    /// Set the torque threshold for joint events (N-m)
+    static inline void setTorqueThreshold(uint64_t jointId, float threshold) {
+        b2Joint_SetTorqueThreshold(b2LoadJointId(jointId), threshold);
+    }
+
+    /// Get the torque threshold for joint events (N-m)
+    static inline float getTorqueThreshold(uint64_t jointId) {
+        return b2Joint_GetTorqueThreshold(b2LoadJointId(jointId));
     }
 
     /// Get the constraint tuning hertz parameter for this joint
@@ -133,13 +143,5 @@ class B2_Joint {
         float hertz, dampingRatio;
         b2Joint_GetConstraintTuning(b2LoadJointId(jointId), &hertz, &dampingRatio);
         return dampingRatio;
-    }
-
-    /// Set the joint constraint tuning. Advanced feature.
-    /// @param jointId the joint
-    /// @param hertz the stiffness in Hertz (cycles per second)
-    /// @param dampingRatio the non-dimensional damping ratio (one for critical damping)
-    static inline void setConstraintTuning(uint64_t jointId, float hertz, float dampingRatio) {
-        b2Joint_SetConstraintTuning(b2LoadJointId(jointId), hertz, dampingRatio);
     }
 };

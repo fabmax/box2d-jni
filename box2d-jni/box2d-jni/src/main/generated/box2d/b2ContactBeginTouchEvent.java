@@ -72,24 +72,6 @@ public class b2ContactBeginTouchEvent extends NativeObject {
     // Attributes
 
     /**
-     * The initial contact manifold. This is recorded before the solver is called,
-     * so all the impulses will be zero.
-     */
-    public b2Manifold getManifold() {
-        checkNotNull();
-        return b2Manifold.wrapPointer(Raw.getManifold(address));
-    }
-
-    /**
-     * The initial contact manifold. This is recorded before the solver is called,
-     * so all the impulses will be zero.
-     */
-    public void setManifold(b2Manifold value) {
-        checkNotNull();
-        Raw.setManifold(address, value.getAddress());
-    }
-
-    /**
      * Id of the first shape
      */
     public b2ShapeId getShapeIdA() {
@@ -121,15 +103,33 @@ public class b2ContactBeginTouchEvent extends NativeObject {
         Raw.setShapeIdB(address, value.getAddress());
     }
 
+    /**
+     * The transient contact id. This contact may be destroyed automatically when the world is
+     * modified or simulated. Use b2Contact_IsValid before using this id.
+     */
+    public b2ContactId getContactId() {
+        checkNotNull();
+        return b2ContactId.wrapPointer(Raw.getContactId(address));
+    }
+
+    /**
+     * The transient contact id. This contact may be destroyed automatically when the world is
+     * modified or simulated. Use b2Contact_IsValid before using this id.
+     */
+    public void setContactId(b2ContactId value) {
+        checkNotNull();
+        Raw.setContactId(address, value.getAddress());
+    }
+
     public static class Raw {
         public static native void b2ContactBeginTouchEvent_placed(long address);
         public static native long b2ContactBeginTouchEvent();
         public static native void destroy(long address);
-        public static native long getManifold(long address);
-        public static native void setManifold(long address, long value);
         public static native long getShapeIdA(long address);
         public static native void setShapeIdA(long address, long value);
         public static native long getShapeIdB(long address);
         public static native void setShapeIdB(long address, long value);
+        public static native long getContactId(long address);
+        public static native void setContactId(long address, long value);
     }
 }

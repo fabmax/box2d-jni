@@ -2,9 +2,8 @@ package box2d;
 
 
 /**
- * Contact events are buffered in the Box2D world and are available
- * as event arrays after the time step is complete.
- * Note: these may become invalid if bodies and/or shapes are destroyed
+ * Contact events are buffered in the Box2D world and are available as event arrays after the time
+ * step is complete. Note: these may become invalid if bodies and/or shapes are destroyed
  */
 public class b2ContactEvents extends NativeObject {
 

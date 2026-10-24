@@ -2,8 +2,8 @@ package box2d;
 
 
 /**
- * A line segment with one-sided collision. Only collides on the right side.
- * Several of these are generated for a chain shape.
+ * A line segment with one-sided collision. Only collides on the right side. Several of these are
+ * generated for a chain shape.
  * ghost1 -&gt; point1 -&gt; point2 -&gt; ghost2
  */
 public class b2ChainSegment extends NativeObject {

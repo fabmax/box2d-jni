@@ -32,10 +32,24 @@ public class B2_Base extends NativeObject {
     }
 
     /**
-     * @return WebIDL type: long
+     * @return WebIDL type: unsigned long long
      */
-    public static int getByteCount() {
+    public static long getByteCount() {
         return Raw.getByteCount();
+    }
+
+    /**
+     * @return true if the library was built with BOX2D_DOUBLE_PRECISION (large world mode)
+     */
+    public static boolean isDoublePrecision() {
+        return Raw.isDoublePrecision();
+    }
+
+    /**
+     * @return true if the current CPU has the AVX2 instruction set.
+     */
+    public static boolean isAVX2Available() {
+        return Raw.isAVX2Available();
     }
 
     /**
@@ -120,7 +134,9 @@ public class B2_Base extends NativeObject {
 
     public static class Raw {
         public static native long getVersion();
-        public static native int getByteCount();
+        public static native long getByteCount();
+        public static native boolean isDoublePrecision();
+        public static native boolean isAVX2Available();
         public static native long storeWorldId(long worldId);
         public static native void loadWorldId(long worldId, long result);
         public static native long storeBodyId(long bodyId);

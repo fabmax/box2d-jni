@@ -161,6 +161,16 @@ class B2_Rot {
         result = b2MakeRot(radians);
     }
 
+    /// Make a rotation using a unit vector
+    static inline void makeRotFromUnitVector(b2Vec2 unitVector, b2Rot& result) {
+        result = b2MakeRotFromUnitVector(unitVector);
+    }
+
+    /// Get the inverse of a rotation
+    static inline void invertRot(b2Rot a, b2Rot& result) {
+        result = b2InvertRot(a);
+    }
+
     /// Normalize rotation
     static inline void normalize(b2Rot q, b2Rot& result) {
         result = b2NormalizeRot(q);
@@ -190,14 +200,15 @@ class B2_Rot {
         result = b2MulRot(q, r);
     }
 
-    /// Transpose multiply two rotations: qT * r
-    static inline void invMulRot(b2Rot q, b2Rot r, b2Rot& result) {
-        result = b2InvMulRot(q, r);
+    /// Transpose multiply two rotations: inv(a) * b This rotates a vector local in frame b into a
+    /// vector local in frame a
+    static inline void invMulRot(b2Rot a, b2Rot b, b2Rot& result) {
+        result = b2InvMulRot(a, b);
     }
 
-    /// relative angle between b and a (rot_b * inv(rot_a))
-    static inline float relativeAngle(b2Rot b, b2Rot a) {
-        return b2RelativeAngle(b, a);
+    /// The angle of rotation b relative to rotation a. Radians.
+    static inline float relativeAngle(b2Rot a, b2Rot b) {
+        return b2RelativeAngle(a, b);
     }
 
     /// Convert any angle into the range [-pi, pi]
@@ -230,7 +241,7 @@ class B2_Rot {
 
     /// Is this a valid rotation? Not NaN or infinity. Is normalized.
     static inline bool isValid(b2Rot q) {
-        return b2IsValidRotation(q);
+        return b2IsValidRot(q);
     }
 };
 
@@ -260,6 +271,11 @@ class B2_Transform {
     ///    = A.q' * B.q * v1 + A.q' * (B.p - A.p)
     static inline void invMulTransforms(b2Transform A, b2Transform B, b2Transform& result) {
         result = b2InvMulTransforms(A, B);
+    }
+
+    /// Is this a valid transform? Not NaN or infinity. Rotation is normalized.
+    static inline bool isValid(b2Transform t) {
+        return b2IsValidTransform(t);
     }
 };
 
@@ -375,8 +391,13 @@ class B2_Math {
     }
 
     /// Is this a valid rotation? Not NaN or infinity. Is normalized.
-    static inline bool isValidRotation(b2Rot q) {
-        return b2IsValidRotation(q);
+    static inline bool isValidRot(b2Rot q) {
+        return b2IsValidRot(q);
+    }
+
+    /// Is this a valid transform? Not NaN or infinity. Rotation is normalized.
+    static inline bool isValidTransform(b2Transform t) {
+        return b2IsValidTransform(t);
     }
 
     /// Is this a valid bounding box? Not Nan or infinity. Upper bound greater than or equal to lower bound.

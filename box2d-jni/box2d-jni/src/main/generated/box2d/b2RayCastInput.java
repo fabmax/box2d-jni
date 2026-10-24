@@ -2,8 +2,8 @@ package box2d;
 
 
 /**
- * The maximum number of vertices on a convex polygon. Changing this affects performance even if you
- * don't use more vertices.
+ * The maximum number of vertices on a convex polygon. Changing this affects performance even if
+ * you don't use more vertices.
  * Low level ray cast input data
  */
 public class b2RayCastInput extends NativeObject {

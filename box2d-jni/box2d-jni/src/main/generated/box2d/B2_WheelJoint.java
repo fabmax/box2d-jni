@@ -25,7 +25,7 @@ public class B2_WheelJoint extends NativeObject {
     // Functions
 
     /**
-     * Create a weld joint
+     * Create a wheel joint
      * @see b2WheelJointDef
      */
     public static long createWheelJoint(long worldId, b2WheelJointDef def) {
@@ -54,28 +54,28 @@ public class B2_WheelJoint extends NativeObject {
     }
 
     /**
-     * Set the wheel joint spring hertz
+     * Set the wheel joint stiffness in Hertz
      */
     public static void setSpringHertz(long jointId, float hertz) {
         Raw.setSpringHertz(jointId, hertz);
     }
 
     /**
-     * Get the wheel joint spring hertz
+     * Get the wheel joint stiffness in Hertz
      */
     public static float getSpringHertz(long jointId) {
         return Raw.getSpringHertz(jointId);
     }
 
     /**
-     * Set the wheel joint spring damping ratio
+     * Set the wheel joint damping ratio, non-dimensional
      */
     public static void setSpringDampingRatio(long jointId, float dampingRatio) {
         Raw.setSpringDampingRatio(jointId, dampingRatio);
     }
 
     /**
-     * Get the wheel joint spring damping ratio
+     * Get the wheel joint damping ratio, non-dimensional
      */
     public static float getSpringDampingRatio(long jointId) {
         return Raw.getSpringDampingRatio(jointId);
@@ -131,38 +131,38 @@ public class B2_WheelJoint extends NativeObject {
     }
 
     /**
-     * Set the wheel joint motor speed
+     * Set the wheel joint motor speed in radians per second
      */
-    public static void setMotorSpeed(long jointId, float motorSpeed) {
-        Raw.setMotorSpeed(jointId, motorSpeed);
+    public static void setTargetMotorSpeed(long jointId, float motorSpeed) {
+        Raw.setTargetMotorSpeed(jointId, motorSpeed);
     }
 
     /**
-     * Get the wheel joint motor speed
+     * Get the wheel joint motor speed in radians per second
      */
-    public static float getMotorSpeed(long jointId) {
-        return Raw.getMotorSpeed(jointId);
+    public static float getTargetMotorSpeed(long jointId) {
+        return Raw.getTargetMotorSpeed(jointId);
     }
 
     /**
-     * Set the maximum wheel joint motor torque
+     * Set the wheel joint maximum motor torque, usually in newton-meters
      */
     public static void setMaxMotorTorque(long jointId, float torque) {
         Raw.setMaxMotorTorque(jointId, torque);
     }
 
     /**
-     * Get the maximum wheel joint motor torque
+     * Get the wheel joint maximum motor torque, usually in newton-meters
      */
     public static float getMaxMotorTorque(long jointId) {
         return Raw.getMaxMotorTorque(jointId);
     }
 
     /**
-     * Get the wheel joint motor torque
+     * Get the wheel joint current motor torque, usually in newton-meters
      */
-    public static float getMotorTorque(long jointId) {
-        return Raw.getMotorTorque(jointId);
+    public static float getCurrentMotorTorque(long jointId) {
+        return Raw.getCurrentMotorTorque(jointId);
     }
 
     public static class Raw {
@@ -181,10 +181,10 @@ public class B2_WheelJoint extends NativeObject {
         public static native void setLimits(long jointId, float lower, float upper);
         public static native void enableMotor(long jointId, boolean enableMotor);
         public static native boolean isMotorEnabled(long jointId);
-        public static native void setMotorSpeed(long jointId, float motorSpeed);
-        public static native float getMotorSpeed(long jointId);
+        public static native void setTargetMotorSpeed(long jointId, float motorSpeed);
+        public static native float getTargetMotorSpeed(long jointId);
         public static native void setMaxMotorTorque(long jointId, float torque);
         public static native float getMaxMotorTorque(long jointId);
-        public static native float getMotorTorque(long jointId);
+        public static native float getCurrentMotorTorque(long jointId);
     }
 }

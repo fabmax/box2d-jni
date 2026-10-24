@@ -1,0 +1,5 @@
+[NoDelete]
+interface B2_Contact {
+    static boolean isValid([Ref] b2ContactId id);
+    [Value] static b2ContactData getData([Ref] b2ContactId contactId);
+};

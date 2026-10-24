@@ -53,6 +53,20 @@ public class B2_Rot extends NativeObject {
     }
 
     /**
+     * Make a rotation using a unit vector
+     */
+    public static void makeRotFromUnitVector(b2Vec2 unitVector, b2Rot result) {
+        Raw.makeRotFromUnitVector(unitVector.getAddress(), result.getAddress());
+    }
+
+    /**
+     * Get the inverse of a rotation
+     */
+    public static void invertRot(b2Rot a, b2Rot result) {
+        Raw.invertRot(a.getAddress(), result.getAddress());
+    }
+
+    /**
      * Normalize rotation
      */
     public static void normalize(b2Rot q, b2Rot result) {
@@ -92,17 +106,18 @@ public class B2_Rot extends NativeObject {
     }
 
     /**
-     * Transpose multiply two rotations: qT * r
+     * Transpose multiply two rotations: inv(a) * b This rotates a vector local in frame b into a
+     * vector local in frame a
      */
-    public static void invMulRot(b2Rot q, b2Rot r, b2Rot result) {
-        Raw.invMulRot(q.getAddress(), r.getAddress(), result.getAddress());
+    public static void invMulRot(b2Rot a, b2Rot b, b2Rot result) {
+        Raw.invMulRot(a.getAddress(), b.getAddress(), result.getAddress());
     }
 
     /**
-     * relative angle between b and a (rot_b * inv(rot_a))
+     * The angle of rotation b relative to rotation a. Radians.
      */
-    public static float relativeAngle(b2Rot b, b2Rot a) {
-        return Raw.relativeAngle(b.getAddress(), a.getAddress());
+    public static float relativeAngle(b2Rot a, b2Rot b) {
+        return Raw.relativeAngle(a.getAddress(), b.getAddress());
     }
 
     /**
@@ -155,13 +170,15 @@ public class B2_Rot extends NativeObject {
         public static native void getXAxis(long q, long result);
         public static native void getYAxis(long q, long result);
         public static native void makeRot(float radians, long result);
+        public static native void makeRotFromUnitVector(long unitVector, long result);
+        public static native void invertRot(long a, long result);
         public static native void normalize(long q, long result);
         public static native boolean isNormalized(long q);
         public static native void integrateRotation(long q1, float deltaAngle, long result);
         public static native void nLerp(long q1, long q2, float t, long result);
         public static native void mulRot(long q, long r, long result);
-        public static native void invMulRot(long q, long r, long result);
-        public static native float relativeAngle(long b, long a);
+        public static native void invMulRot(long a, long b, long result);
+        public static native float relativeAngle(long a, long b);
         public static native float unwindAngle(float radians);
         public static native void rotateVector(long q, long v, long result);
         public static native void invRotateVector(long q, long v, long result);

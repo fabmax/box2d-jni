@@ -47,20 +47,16 @@ public class TaskManager extends NativeObject {
     }
 
     /**
-     * @param start        WebIDL type: unsigned long
-     * @param end          WebIDL type: unsigned long
-     * @param threadIndex  WebIDL type: unsigned long
-     * @param box2dTask    WebIDL type: unsigned long long
-     * @param box2dContext WebIDL type: unsigned long long
+     * Runs the given box2d task. Box2D expects each enqueued task to be executed exactly once.
      */
-    public void executeTask(int start, int end, int threadIndex, long box2dTask, long box2dContext) {
+    public void executeTask(long box2dTask, long box2dContext) {
         checkNotNull();
-        Raw.executeTask(address, start, end, threadIndex, box2dTask, box2dContext);
+        Raw.executeTask(address, box2dTask, box2dContext);
     }
 
     public static class Raw {
         public static native void destroy(long address);
         public static native void install(long address, long worldDef, int threadCount);
-        public static native void executeTask(long address, int start, int end, int threadIndex, long box2dTask, long box2dContext);
+        public static native void executeTask(long address, long box2dTask, long box2dContext);
     }
 }

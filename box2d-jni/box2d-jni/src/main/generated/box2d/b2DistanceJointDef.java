@@ -2,11 +2,8 @@ package box2d;
 
 
 /**
- * Distance joint definition
- * This requires defining an anchor point on both
- * bodies and the non-zero distance of the distance joint. The definition uses
- * local anchor points so that the initial configuration can violate the
- * constraint slightly. This helps when saving and loading a game.
+ * Distance joint definition Connects a point on body A with a point on body B by a segment. Useful
+ * for ropes and springs.
  * @ingroup distance_joint
  */
 public class b2DistanceJointDef extends NativeObject {
@@ -77,51 +74,101 @@ public class b2DistanceJointDef extends NativeObject {
     // Attributes
 
     /**
-     * The first attached body
+     * Base joint definition
      */
-    public b2BodyId getBodyIdA() {
+    public b2JointDef getBase() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdA(address));
+        return b2JointDef.wrapPointer(Raw.getBase(address));
     }
 
     /**
-     * The first attached body
+     * Base joint definition
      */
-    public void setBodyIdA(b2BodyId value) {
+    public void setBase(b2JointDef value) {
         checkNotNull();
-        Raw.setBodyIdA(address, value.getAddress());
+        Raw.setBase(address, value.getAddress());
     }
 
     /**
-     * The second attached body
+     * The rest length of this joint. Clamped to a stable minimum value.
      */
-    public b2BodyId getBodyIdB() {
+    public float getLength() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdB(address));
+        return Raw.getLength(address);
     }
 
     /**
-     * The second attached body
+     * The rest length of this joint. Clamped to a stable minimum value.
      */
-    public void setBodyIdB(b2BodyId value) {
+    public void setLength(float value) {
         checkNotNull();
-        Raw.setBodyIdB(address, value.getAddress());
+        Raw.setLength(address, value);
     }
 
     /**
-     * Set this flag to true if the attached bodies should collide
+     * Enable the distance constraint to behave like a spring. If false then the distance joint
+     * will be rigid, overriding the limit and motor.
      */
-    public boolean getCollideConnected() {
+    public boolean getEnableSpring() {
         checkNotNull();
-        return Raw.getCollideConnected(address);
+        return Raw.getEnableSpring(address);
     }
 
     /**
-     * Set this flag to true if the attached bodies should collide
+     * Enable the distance constraint to behave like a spring. If false then the distance joint
+     * will be rigid, overriding the limit and motor.
      */
-    public void setCollideConnected(boolean value) {
+    public void setEnableSpring(boolean value) {
         checkNotNull();
-        Raw.setCollideConnected(address, value);
+        Raw.setEnableSpring(address, value);
+    }
+
+    /**
+     * The lower spring force controls how much tension it can sustain.
+     */
+    public float getLowerSpringForce() {
+        checkNotNull();
+        return Raw.getLowerSpringForce(address);
+    }
+
+    /**
+     * The lower spring force controls how much tension it can sustain.
+     */
+    public void setLowerSpringForce(float value) {
+        checkNotNull();
+        Raw.setLowerSpringForce(address, value);
+    }
+
+    /**
+     * The upper spring force controls how much compression it can sustain.
+     */
+    public float getUpperSpringForce() {
+        checkNotNull();
+        return Raw.getUpperSpringForce(address);
+    }
+
+    /**
+     * The upper spring force controls how much compression it can sustain.
+     */
+    public void setUpperSpringForce(float value) {
+        checkNotNull();
+        Raw.setUpperSpringForce(address, value);
+    }
+
+    /**
+     * The spring linear stiffness Hertz, cycles per second.
+     */
+    public float getHertz() {
+        checkNotNull();
+        return Raw.getHertz(address);
+    }
+
+    /**
+     * The spring linear stiffness Hertz, cycles per second.
+     */
+    public void setHertz(float value) {
+        checkNotNull();
+        Raw.setHertz(address, value);
     }
 
     /**
@@ -157,6 +204,38 @@ public class b2DistanceJointDef extends NativeObject {
     }
 
     /**
+     * Minimum length for limit. Clamped to a stable minimum value.
+     */
+    public float getMinLength() {
+        checkNotNull();
+        return Raw.getMinLength(address);
+    }
+
+    /**
+     * Minimum length for limit. Clamped to a stable minimum value.
+     */
+    public void setMinLength(float value) {
+        checkNotNull();
+        Raw.setMinLength(address, value);
+    }
+
+    /**
+     * Maximum length for limit. Must be greater than or equal to the minimum length.
+     */
+    public float getMaxLength() {
+        checkNotNull();
+        return Raw.getMaxLength(address);
+    }
+
+    /**
+     * Maximum length for limit. Must be greater than or equal to the minimum length.
+     */
+    public void setMaxLength(float value) {
+        checkNotNull();
+        Raw.setMaxLength(address, value);
+    }
+
+    /**
      * Enable/disable the joint motor
      */
     public boolean getEnableMotor() {
@@ -170,120 +249,6 @@ public class b2DistanceJointDef extends NativeObject {
     public void setEnableMotor(boolean value) {
         checkNotNull();
         Raw.setEnableMotor(address, value);
-    }
-
-    /**
-     * Enable the distance constraint to behave like a spring. If false
-     * then the distance joint will be rigid, overriding the limit and motor.
-     */
-    public boolean getEnableSpring() {
-        checkNotNull();
-        return Raw.getEnableSpring(address);
-    }
-
-    /**
-     * Enable the distance constraint to behave like a spring. If false
-     * then the distance joint will be rigid, overriding the limit and motor.
-     */
-    public void setEnableSpring(boolean value) {
-        checkNotNull();
-        Raw.setEnableSpring(address, value);
-    }
-
-    /**
-     * The spring linear stiffness Hertz, cycles per second
-     */
-    public float getHertz() {
-        checkNotNull();
-        return Raw.getHertz(address);
-    }
-
-    /**
-     * The spring linear stiffness Hertz, cycles per second
-     */
-    public void setHertz(float value) {
-        checkNotNull();
-        Raw.setHertz(address, value);
-    }
-
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public int getInternalValue() {
-        checkNotNull();
-        return Raw.getInternalValue(address);
-    }
-
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public void setInternalValue(int value) {
-        checkNotNull();
-        Raw.setInternalValue(address, value);
-    }
-
-    /**
-     * The rest length of this joint. Clamped to a stable minimum value.
-     */
-    public float getLength() {
-        checkNotNull();
-        return Raw.getLength(address);
-    }
-
-    /**
-     * The rest length of this joint. Clamped to a stable minimum value.
-     */
-    public void setLength(float value) {
-        checkNotNull();
-        Raw.setLength(address, value);
-    }
-
-    /**
-     * The local anchor point relative to bodyA's origin
-     */
-    public b2Vec2 getLocalAnchorA() {
-        checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorA(address));
-    }
-
-    /**
-     * The local anchor point relative to bodyA's origin
-     */
-    public void setLocalAnchorA(b2Vec2 value) {
-        checkNotNull();
-        Raw.setLocalAnchorA(address, value.getAddress());
-    }
-
-    /**
-     * The local anchor point relative to bodyB's origin
-     */
-    public b2Vec2 getLocalAnchorB() {
-        checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorB(address));
-    }
-
-    /**
-     * The local anchor point relative to bodyB's origin
-     */
-    public void setLocalAnchorB(b2Vec2 value) {
-        checkNotNull();
-        Raw.setLocalAnchorB(address, value.getAddress());
-    }
-
-    /**
-     * Maximum length. Must be greater than or equal to the minimum length.
-     */
-    public float getMaxLength() {
-        checkNotNull();
-        return Raw.getMaxLength(address);
-    }
-
-    /**
-     * Maximum length. Must be greater than or equal to the minimum length.
-     */
-    public void setMaxLength(float value) {
-        checkNotNull();
-        Raw.setMaxLength(address, value);
     }
 
     /**
@@ -303,22 +268,6 @@ public class b2DistanceJointDef extends NativeObject {
     }
 
     /**
-     * Minimum length. Clamped to a stable minimum value.
-     */
-    public float getMinLength() {
-        checkNotNull();
-        return Raw.getMinLength(address);
-    }
-
-    /**
-     * Minimum length. Clamped to a stable minimum value.
-     */
-    public void setMinLength(float value) {
-        checkNotNull();
-        Raw.setMinLength(address, value);
-    }
-
-    /**
      * The desired motor speed, usually in meters per second
      */
     public float getMotorSpeed() {
@@ -335,58 +284,52 @@ public class b2DistanceJointDef extends NativeObject {
     }
 
     /**
-     * User data pointer
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public NativeObject getUserData() {
+    public int getInternalValue() {
         checkNotNull();
-        return NativeObject.wrapPointer(Raw.getUserData(address));
+        return Raw.getInternalValue(address);
     }
 
     /**
-     * User data pointer
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public void setUserData(NativeObject value) {
+    public void setInternalValue(int value) {
         checkNotNull();
-        Raw.setUserData(address, value.getAddress());
+        Raw.setInternalValue(address, value);
     }
 
     public static class Raw {
         public static native void b2DistanceJointDef_placed(long address);
         public static native long b2DistanceJointDef();
         public static native void destroy(long address);
-        public static native long getBodyIdA(long address);
-        public static native void setBodyIdA(long address, long value);
-        public static native long getBodyIdB(long address);
-        public static native void setBodyIdB(long address, long value);
-        public static native boolean getCollideConnected(long address);
-        public static native void setCollideConnected(long address, boolean value);
+        public static native long getBase(long address);
+        public static native void setBase(long address, long value);
+        public static native float getLength(long address);
+        public static native void setLength(long address, float value);
+        public static native boolean getEnableSpring(long address);
+        public static native void setEnableSpring(long address, boolean value);
+        public static native float getLowerSpringForce(long address);
+        public static native void setLowerSpringForce(long address, float value);
+        public static native float getUpperSpringForce(long address);
+        public static native void setUpperSpringForce(long address, float value);
+        public static native float getHertz(long address);
+        public static native void setHertz(long address, float value);
         public static native float getDampingRatio(long address);
         public static native void setDampingRatio(long address, float value);
         public static native boolean getEnableLimit(long address);
         public static native void setEnableLimit(long address, boolean value);
-        public static native boolean getEnableMotor(long address);
-        public static native void setEnableMotor(long address, boolean value);
-        public static native boolean getEnableSpring(long address);
-        public static native void setEnableSpring(long address, boolean value);
-        public static native float getHertz(long address);
-        public static native void setHertz(long address, float value);
-        public static native int getInternalValue(long address);
-        public static native void setInternalValue(long address, int value);
-        public static native float getLength(long address);
-        public static native void setLength(long address, float value);
-        public static native long getLocalAnchorA(long address);
-        public static native void setLocalAnchorA(long address, long value);
-        public static native long getLocalAnchorB(long address);
-        public static native void setLocalAnchorB(long address, long value);
-        public static native float getMaxLength(long address);
-        public static native void setMaxLength(long address, float value);
-        public static native float getMaxMotorForce(long address);
-        public static native void setMaxMotorForce(long address, float value);
         public static native float getMinLength(long address);
         public static native void setMinLength(long address, float value);
+        public static native float getMaxLength(long address);
+        public static native void setMaxLength(long address, float value);
+        public static native boolean getEnableMotor(long address);
+        public static native void setEnableMotor(long address, boolean value);
+        public static native float getMaxMotorForce(long address);
+        public static native void setMaxMotorForce(long address, float value);
         public static native float getMotorSpeed(long address);
         public static native void setMotorSpeed(long address, float value);
-        public static native long getUserData(long address);
-        public static native void setUserData(long address, long value);
+        public static native int getInternalValue(long address);
+        public static native void setInternalValue(long address, int value);
     }
 }

@@ -9,6 +9,7 @@ interface b2PlaneResult {
     void b2PlaneResult();
     attribute boolean hit;
     [Value] attribute b2Plane plane;
+    [Value] attribute b2Vec2 point;
 };
 
 [StackAllocatable]
@@ -24,5 +25,5 @@ interface b2CollisionPlane {
 interface b2PlaneSolverResult {
     void b2PlaneSolverResult();
     attribute long iterationCount;
-    [Value] attribute b2Vec2 translation;
+    [Value] attribute b2Vec2 delta;
 };

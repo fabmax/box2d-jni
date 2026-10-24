@@ -2,10 +2,11 @@ package box2d;
 
 
 /**
- * An end touch event is generated when a shape stops overlapping a sensor shape.
- * These include things like setting the transform, destroying a body or shape, or changing
- * a filter. You will also get an end event if the sensor or visitor are destroyed.
- * Therefore you should always confirm the shape id is valid using b2Shape_IsValid.
+ * An end touch event is generated when a shape stops overlapping a sensor shape. Normally this
+ * event is generated from simulation movement. However, this event can also be generated from API
+ * interactions: setting the body transform, destroying a body or shape, or changing a filter. You
+ * will also get an end event if the sensor is destroyed. Therefore you should always confirm the
+ * shape id is valid using b2Shape_IsValid.
  */
 public class b2SensorEndTouchEvent extends NativeObject {
 
@@ -93,7 +94,7 @@ public class b2SensorEndTouchEvent extends NativeObject {
     }
 
     /**
-     * The id of the dynamic shape that stopped touching the sensor shape
+     * The id of the shape that stopped touching the sensor shape
      * @warning this shape may have been destroyed
      */
     public b2ShapeId getVisitorShapeId() {
@@ -102,7 +103,7 @@ public class b2SensorEndTouchEvent extends NativeObject {
     }
 
     /**
-     * The id of the dynamic shape that stopped touching the sensor shape
+     * The id of the shape that stopped touching the sensor shape
      * @warning this shape may have been destroyed
      */
     public void setVisitorShapeId(b2ShapeId value) {

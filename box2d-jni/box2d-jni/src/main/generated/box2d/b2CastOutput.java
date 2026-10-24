@@ -2,7 +2,8 @@ package box2d;
 
 
 /**
- * Low level ray cast or shape-cast output data. Returns a zero fraction and normal in the case of initial overlap.
+ * Low level ray cast or shape cast output data. The hit point is in the local or relative frame of
+ * the input. Returns a zero fraction and normal in the case of initial overlap.
  */
 public class b2CastOutput extends NativeObject {
 

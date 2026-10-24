@@ -43,18 +43,16 @@ public class TaskManagerImpl extends TaskManager {
     /*
      * Called from native code
      */
-    private long _enqueueTask(long box2dTask, int itemCount, int minRange, long box2dContext) {
-        return enqueueTask(box2dTask, itemCount, minRange, box2dContext);
+    private long _enqueueTask(long box2dTask, long box2dContext) {
+        return enqueueTask(box2dTask, box2dContext);
     }
 
     /**
      * @param box2dTask    WebIDL type: unsigned long long
-     * @param itemCount    WebIDL type: long
-     * @param minRange     WebIDL type: long
      * @param box2dContext WebIDL type: unsigned long long
      * @return WebIDL type: unsigned long long
      */
-    public long enqueueTask(long box2dTask, int itemCount, int minRange, long box2dContext) {
+    public long enqueueTask(long box2dTask, long box2dContext) {
         return 0;
     }
 

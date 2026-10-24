@@ -16,42 +16,42 @@ class B2_WeldJoint {
         result = b2DefaultWeldJointDef();
     }
 
-    /// Set the weld joint linear hertz
+    /// Set the weld joint linear stiffness in Hertz. 0 is rigid.
     static inline void setLinearHertz(uint64_t jointId, float hertz) {
         b2WeldJoint_SetLinearHertz(b2LoadJointId(jointId), hertz);
     }
 
-    /// Get the weld joint linear hertz
+    /// Get the weld joint linear stiffness in Hertz
     static inline float getLinearHertz(uint64_t jointId) {
         return b2WeldJoint_GetLinearHertz(b2LoadJointId(jointId));
     }
 
-    /// Set the weld joint linear damping ratio
+    /// Set the weld joint linear damping ratio (non-dimensional)
     static inline void setLinearDampingRatio(uint64_t jointId, float dampingRatio) {
         b2WeldJoint_SetLinearDampingRatio(b2LoadJointId(jointId), dampingRatio);
     }
 
-    /// Get the weld joint linear damping ratio
+    /// Get the weld joint linear damping ratio (non-dimensional)
     static inline float getLinearDampingRatio(uint64_t jointId) {
         return b2WeldJoint_GetLinearDampingRatio(b2LoadJointId(jointId));
     }
 
-    /// Set the weld joint angular hertz
+    /// Set the weld joint angular stiffness in Hertz. 0 is rigid.
     static inline void setAngularHertz(uint64_t jointId, float hertz) {
         b2WeldJoint_SetAngularHertz(b2LoadJointId(jointId), hertz);
     }
 
-    /// Get the weld joint angular hertz
+    /// Get the weld joint angular stiffness in Hertz
     static inline float getAngularHertz(uint64_t jointId) {
         return b2WeldJoint_GetAngularHertz(b2LoadJointId(jointId));
     }
 
-    /// Set the weld joint angular damping ratio
+    /// Set weld joint angular damping ratio, non-dimensional
     static inline void setAngularDampingRatio(uint64_t jointId, float dampingRatio) {
         b2WeldJoint_SetAngularDampingRatio(b2LoadJointId(jointId), dampingRatio);
     }
 
-    /// Get the weld joint angular damping ratio
+    /// Get the weld joint angular damping ratio, non-dimensional
     static inline float getAngularDampingRatio(uint64_t jointId) {
         return b2WeldJoint_GetAngularDampingRatio(b2LoadJointId(jointId));
     }

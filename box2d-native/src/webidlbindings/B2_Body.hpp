@@ -44,12 +44,12 @@ class B2_Body {
         b2Body_SetType(b2LoadBodyId(bodyId), type);
     }
 
-    /// Set the body name. Up to 31 characters excluding 0 termination.
+    /// Set the body name. See B2_NAME_LENGTH.
     static inline void setName(uint64_t bodyId, const char* name) {
         b2Body_SetName(b2LoadBodyId(bodyId), name);
     }
 
-    /// Get the body name. May be null.
+    /// Get the body name.
     static inline const char* getName(uint64_t bodyId) {
         return b2Body_GetName(b2LoadBodyId(bodyId));
     }
@@ -80,8 +80,8 @@ class B2_Body {
     }
 
     /// Set the world transform of a body. This acts as a teleport and is fairly expensive.
-    /// @note Generally you should create a body with then intended transform.
-    /// @see b2BodyDef::position and b2BodyDef::angle
+    /// @note Generally you should create a body with the intended transform.
+    /// @see b2BodyDef::position and b2BodyDef::rotation
     static inline void setTransform(uint64_t bodyId, b2Vec2 position, b2Rot rotation) {
         b2Body_SetTransform(b2LoadBodyId(bodyId), position, rotation);
     }
@@ -126,12 +126,15 @@ class B2_Body {
         b2Body_SetAngularVelocity(b2LoadBodyId(bodyId), angularVelocity);
     }
 
-    /// Set the velocity to reach the given transform after a given time step.
-    /// The result will be close but maybe not exact. This is meant for kinematic bodies.
-    /// The target is not applied if the velocity would be below the sleep threshold.
-    /// This will automatically wake the body if asleep.
-    static inline void setTargetTransform(uint64_t bodyId, b2Transform target, float timeStep) {
-        b2Body_SetTargetTransform(b2LoadBodyId(bodyId), target, timeStep);
+    /// Set the velocity to reach the given transform after a given time step. The result will be close
+    /// but may not be exact. This is meant for kinematic bodies. The target is not applied if the
+    /// velocity would be below the sleep threshold and the body is currently asleep.
+    /// @param bodyId The body id
+    /// @param target The target transform for the body
+    /// @param timeStep The time step of the next call to b2World_Step
+    /// @param wake Option to wake the body or not
+    static inline void setTargetTransform(uint64_t bodyId, b2Transform target, float timeStep, bool wake) {
+        b2Body_SetTargetTransform(b2LoadBodyId(bodyId), target, timeStep, wake);
     }
 
     /// Get the linear velocity of a local point attached to a body. Usually in meters per second.
@@ -171,6 +174,14 @@ class B2_Body {
     /// @param wake also wake up the body
     static inline void applyTorque(uint64_t bodyId, float torque, bool wake) {
         b2Body_ApplyTorque(b2LoadBodyId(bodyId), torque, wake);
+    }
+
+    /// Clear the force and torque on this body. Forces and torques are automatically cleared after each
+    /// world step. So this only needs to be called if the application wants to remove the effect of
+    /// previous calls to apply forces and torques before the world step is called.
+    /// @param bodyId The body id
+    static inline void clearForces(uint64_t bodyId) {
+        b2Body_ClearForces(b2LoadBodyId(bodyId));
     }
 
     /// Apply an impulse at a point. This immediately modifies the velocity.
@@ -219,19 +230,20 @@ class B2_Body {
         return b2Body_GetRotationalInertia(b2LoadBodyId(bodyId));
     }
 
-    /// Get the center of mass position of the body in local space
-    static inline b2Vec2 getLocalCenterOfMass(uint64_t bodyId) {
-        return b2Body_GetLocalCenterOfMass(b2LoadBodyId(bodyId));
+    /// Get the center of mass position of the body in local space.
+    static inline b2Vec2 getLocalCenter(uint64_t bodyId) {
+        return b2Body_GetLocalCenter(b2LoadBodyId(bodyId));
     }
 
-    /// Get the center of mass position of the body in world space
-    static inline b2Vec2 getWorldCenterOfMass(uint64_t bodyId) {
-        return b2Body_GetWorldCenterOfMass(b2LoadBodyId(bodyId));
+    /// Get the center of mass position of the body in world space.
+    static inline b2Vec2 getWorldCenter(uint64_t bodyId) {
+        return b2Body_GetWorldCenter(b2LoadBodyId(bodyId));
     }
 
-    /// Override the body's mass properties. Normally this is computed automatically using the
-    /// shape geometry and density. This information is lost if a shape is added or removed or if the
-    /// body type changes.
+    /// Override the body's mass properties. Normally this is computed automatically using the shape
+    /// geometry and density. This information is lost if a shape is added or removed or if the body
+    /// type changes. If motion locks are used to fix rotation then the rotational inertia value is
+    /// ignored and rotational inertia remains fixed at zero.
     static inline void setMassData(uint64_t bodyId, b2MassData massData) {
         b2Body_SetMassData(b2LoadBodyId(bodyId), massData);
     }
@@ -241,14 +253,12 @@ class B2_Body {
         return b2Body_GetMassData(b2LoadBodyId(bodyId));
     }
 
-    /// This update the mass properties to the sum of the mass properties of the shapes.
-    /// This normally does not need to be called unless you called SetMassData to override
-    /// the mass and you later want to reset the mass.
-    /// You may also use this when automatic mass computation has been disabled.
-    /// You should call this regardless of body type.
-    /// Note that sensor shapes may have mass.
-    static inline void applyMassFromShapes(uint64_t bodyId) {
-        b2Body_ApplyMassFromShapes(b2LoadBodyId(bodyId));
+    /// This updates the mass properties to the sum of the mass properties of the shapes. This normally
+    /// does not need to be called unless you called b2Body_SetMassData to override the mass and you
+    /// later want to reset the mass. You may also use this when automatic mass computation has been
+    /// disabled. You should call this regardless of body type. Note that sensor shapes may have mass.
+    static inline void updateMassFromShapes(uint64_t bodyId) {
+        b2Body_UpdateMassFromShapes(b2LoadBodyId(bodyId));
     }
 
     /// Adjust the linear damping. Normally this is set in b2BodyDef before creation.
@@ -294,14 +304,20 @@ class B2_Body {
         b2Body_SetAwake(b2LoadBodyId(bodyId), awake);
     }
 
-    /// Enable or disable sleeping for this body. If sleeping is disabled the body will wake.
-    static inline void enableSleep(uint64_t bodyId, bool enableSleep) {
-        b2Body_EnableSleep(b2LoadBodyId(bodyId), enableSleep);
+    /// Wake bodies touching this body. Works for static bodies.
+    static inline void wakeTouching(uint64_t bodyId) {
+        b2Body_WakeTouching(b2LoadBodyId(bodyId));
+    }
+
+    /// Enable or disable sleeping for this body. If sleeping is disabled the body will wake (and the
+    /// entire island).
+    static inline void enableSleeping(uint64_t bodyId, bool enableSleep) {
+        b2Body_EnableSleeping(b2LoadBodyId(bodyId), enableSleep);
     }
 
     /// Returns true if sleeping is enabled for this body
-    static inline bool isSleepEnabled(uint64_t bodyId) {
-        return b2Body_IsSleepEnabled(b2LoadBodyId(bodyId));
+    static inline bool isSleepingEnabled(uint64_t bodyId) {
+        return b2Body_IsSleepingEnabled(b2LoadBodyId(bodyId));
     }
 
     /// Set the sleep threshold, usually in meters per second
@@ -312,6 +328,17 @@ class B2_Body {
     /// Get the sleep threshold, usually in meters per second.
     static inline float getSleepThreshold(uint64_t bodyId) {
         return b2Body_GetSleepThreshold(b2LoadBodyId(bodyId));
+    }
+
+    /// Set the continuous collision safety factor. Smaller is safer but can lead to hitching.
+    /// Recommended range [0.01, 0.5]. Non-dimensional.
+    static inline void setSafetyFactor(uint64_t bodyId, float safetyFactor) {
+        b2Body_SetSafetyFactor(b2LoadBodyId(bodyId), safetyFactor);
+    }
+
+    /// Get the continuous collision safety factor. Non-dimensional.
+    static inline float getSafetyFactor(uint64_t bodyId) {
+        return b2Body_GetSafetyFactor(b2LoadBodyId(bodyId));
     }
 
     /// Returns true if this body is enabled
@@ -329,18 +356,19 @@ class B2_Body {
         b2Body_Enable(b2LoadBodyId(bodyId));
     }
 
-    /// Set this body to have fixed rotation. This causes the mass to be reset in all cases.
-    static inline void setFixedRotation(uint64_t bodyId, bool flag) {
-        b2Body_SetFixedRotation(b2LoadBodyId(bodyId), flag);
+    /// Set the motion locks on this body. This causes mass properties to be recomputed because fixed
+    /// rotation sets the rotational inertia to zero.
+    static inline void setMotionLocks(uint64_t bodyId, b2MotionLocks locks) {
+        b2Body_SetMotionLocks(b2LoadBodyId(bodyId), locks);
     }
 
-    /// Does this body have fixed rotation?
-    static inline bool isFixedRotation(uint64_t bodyId) {
-        return b2Body_IsFixedRotation(b2LoadBodyId(bodyId));
+    /// Get the motion locks for this body.
+    static inline b2MotionLocks getMotionLocks(uint64_t bodyId) {
+        return b2Body_GetMotionLocks(b2LoadBodyId(bodyId));
     }
 
-    /// Set this body to be a bullet. A bullet does continuous collision detection
-    /// against dynamic bodies (but not other bullets).
+    /// Set this body to be a bullet. A bullet does continuous collision detection against dynamic
+    /// and kinematic bodies (but not other bullets). This only works on dynamic bodies.
     static inline void setBullet(uint64_t bodyId, bool flag) {
         b2Body_SetBullet(b2LoadBodyId(bodyId), flag);
     }
@@ -348,6 +376,20 @@ class B2_Body {
     /// Is this body a bullet?
     static inline bool isBullet(uint64_t bodyId) {
         return b2Body_IsBullet(b2LoadBodyId(bodyId));
+    }
+
+    /// Enable or disable contact recycling for this body. Contact recycling is a performance
+    /// optimization that reuses contact manifolds when bodies move slightly. Disabling it can avoid
+    /// ghost collisions on characters at the cost of higher per-step work. Existing contacts retain
+    /// their prior setting; only contacts created after this call see the new value.
+    /// @see b2BodyDef::enableContactRecycling
+    static inline void enableContactRecycling(uint64_t bodyId, bool flag) {
+        b2Body_EnableContactRecycling(b2LoadBodyId(bodyId), flag);
+    }
+
+    /// Is contact recycling enabled on this body?
+    static inline bool isContactRecyclingEnabled(uint64_t bodyId) {
+        return b2Body_IsContactRecyclingEnabled(b2LoadBodyId(bodyId));
     }
 
     /// Enable/disable contact events on all shapes.
@@ -403,9 +445,25 @@ class B2_Body {
          return b2Body_GetContactData(b2LoadBodyId(bodyId), contactData->array, contactData->length);
     }
 
-    /// Get the current world AABB that contains all the attached shapes. Note that this may not encompass the body origin.
-    /// If there are no shapes attached then the returned AABB is empty and centered on the body origin.
-    static inline b2AABB computeAABB(uint64_t bodyId) {
-        return b2Body_ComputeAABB(b2LoadBodyId(bodyId));
+    /// Get the current world AABB that contains all the attached shapes. Note that this may not
+    /// encompass the body origin. If there are no shapes attached then the returned AABB is empty and
+    /// centered on the body origin.
+    static inline b2AABB computeBounds(uint64_t bodyId) {
+        return b2Body_ComputeBounds(b2LoadBodyId(bodyId));
+    }
+
+    /// The minimum distance from any point on the body shapes to the center of mass.
+    static inline float getMinExtent(uint64_t bodyId) {
+        return b2Body_GetMinExtent(b2LoadBodyId(bodyId));
+    }
+
+    /// The maximum distance from any point on the body shapes to the center of mass.
+    static inline float getMaxExtent(uint64_t bodyId) {
+        return b2Body_GetMaxExtent(b2LoadBodyId(bodyId));
+    }
+
+    /// The maximum distance from any point on the body shapes to the body origin. Conservative.
+    static inline float getMaxExtentFromOrigin(uint64_t bodyId) {
+        return b2Body_GetMaxExtentFromOrigin(b2LoadBodyId(bodyId));
     }
 };

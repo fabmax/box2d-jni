@@ -19,14 +19,23 @@ class B2_Shape {
 
     /// Create a line segment shape and attach it to a body. The shape definition and geometry are fully cloned.
     /// Contacts are not created until the next time step.
-    /// @return the shape id for accessing the shape
+    /// @return the shape id or b2_nullShapeId if the segment is too short.
     static inline uint64_t createSegmentShape(uint64_t bodyId, const b2ShapeDef* def, const b2Segment* segment) {
         return b2StoreShapeId(b2CreateSegmentShape(b2LoadBodyId(bodyId), def, segment));
     }
 
+    /// Create a chain segment shape and attach it to a body. The shape definition and geometry are
+    /// fully cloned. The segment is not owned by any chain shape (b2Shape_GetParentChain returns
+    /// b2_nullChainId). Contacts are not created until the next time step. The chainId on the segment
+    /// is ignored. This uses more memory than using a chain shape, so I don't recommend using this.
+    /// @return the shape id, or b2_nullShapeId if the segment is too short.
+    static inline uint64_t createChainSegmentShape(uint64_t bodyId, const b2ShapeDef* def, const b2ChainSegment* chainSegment) {
+        return b2StoreShapeId(b2CreateChainSegmentShape(b2LoadBodyId(bodyId), def, chainSegment));
+    }
+
     /// Create a capsule shape and attach it to a body. The shape definition and geometry are fully cloned.
     /// Contacts are not created until the next time step.
-    /// @return the shape id for accessing the shape
+    /// @return the shape id for accessing the shape, this will be b2_nullShapeId if the length is too small.
     static inline uint64_t createCapsuleShape(uint64_t bodyId, const b2ShapeDef* def, const b2Capsule* capsule) {
         return b2StoreShapeId(b2CreateCapsuleShape(b2LoadBodyId(bodyId), def, capsule));
     }
@@ -40,7 +49,7 @@ class B2_Shape {
 
     /// Destroy a shape. You may defer the body mass update which can improve performance if several shapes on a
     ///	body are destroyed at once.
-    ///	@see b2Body_ApplyMassFromShapes
+    ///	@see b2Body_UpdateMassFromShapes
     static inline void destroyShape(uint64_t shapeId, bool updateBodyMass) {
         b2DestroyShape(b2LoadShapeId(shapeId), updateBodyMass);
     }
@@ -85,7 +94,7 @@ class B2_Shape {
 
     /// Set the mass density of a shape, usually in kg/m^2.
     /// This will optionally update the mass properties on the parent body.
-    /// @see b2ShapeDef::density, b2Body_ApplyMassFromShapes
+    /// @see b2ShapeDef::density, b2Body_UpdateMassFromShapes
     static inline void setDensity(uint64_t shapeId, float density, bool updateBodyMass) {
         b2Shape_SetDensity(b2LoadShapeId(shapeId), density, updateBodyMass);
     }
@@ -96,7 +105,6 @@ class B2_Shape {
     }
 
     /// Set the friction on a shape
-    /// @see b2ShapeDef::friction
     static inline void setFriction(uint64_t shapeId, float friction) {
         b2Shape_SetFriction(b2LoadShapeId(shapeId), friction);
     }
@@ -107,7 +115,6 @@ class B2_Shape {
     }
 
     /// Set the shape restitution (bounciness)
-    /// @see b2ShapeDef::restitution
     static inline void setRestitution(uint64_t shapeId, float restitution) {
         b2Shape_SetRestitution(b2LoadShapeId(shapeId), restitution);
     }
@@ -117,20 +124,19 @@ class B2_Shape {
         return b2Shape_GetRestitution(b2LoadShapeId(shapeId));
     }
 
-    /// Set the shape material identifier
-    /// @see b2ShapeDef::material
-    static inline void setMaterial(uint64_t shapeId, int material) {
-        b2Shape_SetMaterial(b2LoadShapeId(shapeId), material);
+    /// Set the user material identifier
+    static inline void setUserMaterial(uint64_t shapeId, uint64_t material) {
+        b2Shape_SetUserMaterial(b2LoadShapeId(shapeId), material);
     }
 
-    /// Get the shape material identifier
-    static inline int getMaterial(uint64_t shapeId) {
-        return b2Shape_GetMaterial(b2LoadShapeId(shapeId));
+    /// Get the user material identifier
+    static inline uint64_t getUserMaterial(uint64_t shapeId) {
+        return b2Shape_GetUserMaterial(b2LoadShapeId(shapeId));
     }
 
     /// Set the shape surface material
     static inline void setSurfaceMaterial(uint64_t shapeId, b2SurfaceMaterial surfaceMaterial) {
-        b2Shape_SetSurfaceMaterial(b2LoadShapeId(shapeId), surfaceMaterial);
+        b2Shape_SetSurfaceMaterial(b2LoadShapeId(shapeId), &surfaceMaterial);
     }
 
     /// Get the shape surface material
@@ -176,7 +182,7 @@ class B2_Shape {
 
     /// Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are expensive
     /// and must be carefully handled due to multithreading. Ignored for sensors.
-    /// @see b2PreSolveFcn
+    /// @see b2PreSolveCallbackFcn
     static inline void enablePreSolveEvents(uint64_t shapeId, bool flag) {
         b2Shape_EnablePreSolveEvents(b2LoadShapeId(shapeId), flag);
     }
@@ -187,7 +193,7 @@ class B2_Shape {
     }
 
     /// Enable contact hit events for this shape. Ignored for sensors.
-    /// @see b2WorldDef.hitEventThreshold
+    /// @see b2WorldDef::hitEventThreshold
     static inline void enableHitEvents(uint64_t shapeId, bool flag) {
         b2Shape_EnableHitEvents(b2LoadShapeId(shapeId), flag);
     }
@@ -197,14 +203,15 @@ class B2_Shape {
         return b2Shape_AreHitEventsEnabled(b2LoadShapeId(shapeId));
     }
 
-    /// Test a point for overlap with a shape
+    /// Test a world point for overlap with a shape
     static inline bool testPoint(uint64_t shapeId, b2Vec2 point) {
         return b2Shape_TestPoint(b2LoadShapeId(shapeId), point);
     }
 
-    /// Ray cast a shape directly
-    static inline b2CastOutput rayCast(uint64_t shapeId, const b2RayCastInput* input) {
-        return b2Shape_RayCast(b2LoadShapeId(shapeId), input);
+    /// Ray cast a single shape. The ray starts at the origin and extends by the translation. The output
+    /// point is a world position.
+    static inline b2CastOutput castRay(uint64_t shapeId, b2Vec2 origin, b2Vec2 translation) {
+        return b2Shape_CastRay(b2LoadShapeId(shapeId), origin, translation);
     }
 
     /// Get a copy of the shape's circle. Asserts the type is correct.
@@ -235,14 +242,14 @@ class B2_Shape {
 
     /// Allows you to change a shape to be a circle or update the current circle.
     /// This does not modify the mass properties.
-    /// @see b2Body_ApplyMassFromShapes
+    /// @see b2Body_UpdateMassFromShapes
     static inline void setCircle(uint64_t shapeId, const b2Circle* circle) {
         b2Shape_SetCircle(b2LoadShapeId(shapeId), circle);
     }
 
     /// Allows you to change a shape to be a capsule or update the current capsule.
     /// This does not modify the mass properties.
-    /// @see b2Body_ApplyMassFromShapes
+    /// @see b2Body_UpdateMassFromShapes
     static inline void setCapsule(uint64_t shapeId, const b2Capsule* capsule) {
         b2Shape_SetCapsule(b2LoadShapeId(shapeId), capsule);
     }
@@ -254,9 +261,16 @@ class B2_Shape {
 
     /// Allows you to change a shape to be a polygon or update the current polygon.
     /// This does not modify the mass properties.
-    /// @see b2Body_ApplyMassFromShapes
+    /// @see b2Body_UpdateMassFromShapes
     static inline void setPolygon(uint64_t shapeId, const b2Polygon* polygon) {
         b2Shape_SetPolygon(b2LoadShapeId(shapeId), polygon);
+    }
+
+    /// Allows you to change a shape to be a loose chain segment or update the current chain segment.
+    /// The resulting shape does not belong to a chain shape. Asserts if the shape is already a chain
+    /// segment owned by a chain shape (chainId != B2_NULL_INDEX).
+    static inline void setChainSegment(uint64_t shapeId, const b2ChainSegment* chainSegment) {
+        b2Shape_SetChainSegment(b2LoadShapeId(shapeId), chainSegment);
     }
 
     /// Get the parent chain id if the shape type is a chain segment, otherwise
@@ -281,34 +295,46 @@ class B2_Shape {
     /// Get the maximum capacity required for retrieving all the overlapped shapes on a sensor shape.
     /// This returns 0 if the provided shape is not a sensor.
     /// @param shapeId the id of a sensor shape
-    /// @returns the required capacity to get all the overlaps in b2Shape_GetSensorOverlaps
+    /// @returns the required capacity to get all the overlaps in b2Shape_GetSensorData
     static inline int getSensorCapacity(uint64_t shapeId) {
         return b2Shape_GetSensorCapacity(b2LoadShapeId(shapeId));
     }
 
-    /// Get the overlapped shapes for a sensor shape.
+    /// Get the overlap data for a sensor shape computed during the previous world step.
     /// @param shapeId the id of a sensor shape
-    /// @param overlaps a user allocated array that is filled with the overlapping shapes
+    /// @param visitorIds a user allocated array that is filled with the overlapping shapes (visitors)
     /// @returns the number of elements filled in the provided array
     /// @warning do not ignore the return value, it specifies the valid number of elements
     /// @warning overlaps may contain destroyed shapes so use b2Shape_IsValid to confirm each overlap
-    static inline int getSensorOverlaps(uint64_t shapeId, b2ShapeIdArray* overlaps) {
-        return b2Shape_GetSensorOverlaps(b2LoadShapeId(shapeId), overlaps->array, overlaps->length);
+    static inline int getSensorData(uint64_t shapeId, b2ShapeIdArray* visitorIds) {
+        return b2Shape_GetSensorData(b2LoadShapeId(shapeId), visitorIds->array, visitorIds->length);
     }
 
     /// Get the current world AABB
-    static inline b2AABB getAABB(uint64_t shapeId) {
-        return b2Shape_GetAABB(b2LoadShapeId(shapeId));
+    static inline b2AABB getBounds(uint64_t shapeId) {
+        return b2Shape_GetBounds(b2LoadShapeId(shapeId));
     }
 
-    /// Get the mass data for a shape
-    static inline b2MassData getMassData(uint64_t shapeId) {
-        return b2Shape_GetMassData(b2LoadShapeId(shapeId));
+    /// Compute the mass data for a shape
+    static inline b2MassData computeMassData(uint64_t shapeId) {
+        return b2Shape_ComputeMassData(b2LoadShapeId(shapeId));
     }
 
-    /// Get the closest point on a shape to a target point. Target and result are in world space.
+    /// Get the closest point on a shape to a target point. Target and result are world positions.
     static inline b2Vec2 getClosestPoint(uint64_t shapeId, b2Vec2 target) {
         return b2Shape_GetClosestPoint(b2LoadShapeId(shapeId), target);
+    }
+
+    /// Apply a wind force to the body for this shape using the density of air. This considers the
+    /// projected area of the shape in the wind direction. This also considers the relative velocity of
+    /// the shape.
+    /// @param shapeId the shape id
+    /// @param wind the wind velocity in world space
+    /// @param drag the drag coefficient, the force that opposes the relative velocity
+    /// @param lift the lift coefficient, the force that is perpendicular to the relative velocity
+    /// @param wake should this wake the body
+    static inline void applyWind(uint64_t shapeId, b2Vec2 wind, float drag, float lift, bool wake) {
+        b2Shape_ApplyWind(b2LoadShapeId(shapeId), wind, drag, lift, wake);
     }
 };
 
@@ -352,36 +378,18 @@ class B2_Chain {
         return b2Chain_GetSegments(b2LoadChainId(chainId), segmentArray->array, segmentArray->length);
     }
 
-    /// Set the chain friction
-    /// @see b2ChainDef::friction
-    static inline void setFriction(uint64_t chainId, float friction) {
-        b2Chain_SetFriction(b2LoadChainId(chainId), friction);
+    /// Set the chain material on all segments.
+    static inline void setAllSurfaceMaterials(uint64_t chainId, const b2SurfaceMaterial* material) {
+        b2Chain_SetAllSurfaceMaterials(b2LoadChainId(chainId), material);
     }
 
-    /// Get the chain friction
-    static inline float getFriction(uint64_t chainId) {
-        return b2Chain_GetFriction(b2LoadChainId(chainId));
+    /// Set a chain material by segment index.
+    static inline void setSurfaceMaterial(uint64_t chainId, const b2SurfaceMaterial* material, int segmentIndex) {
+        b2Chain_SetSurfaceMaterial(b2LoadChainId(chainId), material, segmentIndex);
     }
 
-    /// Set the chain restitution (bounciness)
-    /// @see b2ChainDef::restitution
-    static inline void setRestitution(uint64_t chainId, float restitution) {
-        b2Chain_SetRestitution(b2LoadChainId(chainId), restitution);
-    }
-
-    /// Get the chain restitution
-    static inline float getRestitution(uint64_t chainId) {
-        return b2Chain_GetRestitution(b2LoadChainId(chainId));
-    }
-
-    /// Set the chain material
-    /// @see b2ChainDef::material
-    static inline void setMaterial(uint64_t chainId, int material) {
-        b2Chain_SetMaterial(b2LoadChainId(chainId), material);
-    }
-
-    /// Get the chain material
-    static inline int getMaterial(uint64_t chainId) {
-        return b2Chain_GetMaterial(b2LoadChainId(chainId));
+    /// Get a chain material by segment index.
+    static inline b2SurfaceMaterial getSurfaceMaterial(uint64_t chainId, int segmentIndex) {
+        return b2Chain_GetSurfaceMaterial(b2LoadChainId(chainId), segmentIndex);
     }
 };
