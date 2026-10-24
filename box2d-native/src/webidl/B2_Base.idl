@@ -1,7 +1,9 @@
 [NoDelete]
 interface B2_Base {
     [Value] static b2Version getVersion();
-    static long getByteCount();
+    static unsigned long long getByteCount();
+    static boolean isDoublePrecision();
+    static boolean isAVX2Available();
 
     static unsigned long long storeWorldId([Ref] b2WorldId worldId);
     static void loadWorldId(unsigned long long worldId, [Ref] b2WorldId result);
@@ -57,6 +59,15 @@ interface b2JointId {
     void b2JointId();
     attribute unsigned short generation;
     attribute long index1;
+    attribute unsigned short world0;
+};
+
+[StackAllocatable]
+interface b2ContactId {
+    void b2ContactId();
+    attribute unsigned long generation;
+    attribute long index1;
+    attribute short padding;
     attribute unsigned short world0;
 };
 

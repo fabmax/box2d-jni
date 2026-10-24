@@ -25,7 +25,7 @@ public class B2_FilterJoint extends NativeObject {
     // Functions
 
     /**
-     * Create a filter joint
+     * Create a filter joint.
      * @see b2FilterJointDef
      */
     public static long createFilterJoint(long worldId, b2FilterJointDef def) {

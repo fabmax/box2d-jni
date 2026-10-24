@@ -15,7 +15,7 @@ interface B2_Body {
     [Value] static b2Rot getRotation(unsigned long long bodyId);
     [Value] static b2Transform getTransform(unsigned long long bodyId);
     static void setTransform(unsigned long long bodyId, [Ref] b2Vec2 position, [Ref] b2Rot rotation);
-    [Value] static b2AABB computeAABB(unsigned long long bodyId);
+    [Value] static b2AABB computeBounds(unsigned long long bodyId);
 
     // Coordinate transformations
     [Value] static b2Vec2 getLocalPoint(unsigned long long bodyId, [Ref] b2Vec2 worldPoint);
@@ -28,7 +28,7 @@ interface B2_Body {
     static float getAngularVelocity(unsigned long long bodyId);
     static void setLinearVelocity(unsigned long long bodyId, [Ref] b2Vec2 linearVelocity);
     static void setAngularVelocity(unsigned long long bodyId, float angularVelocity);
-    static void setTargetTransform(unsigned long long bodyId, [Ref] b2Transform target, float timeStep);
+    static void setTargetTransform(unsigned long long bodyId, [Ref] b2Transform target, float timeStep, boolean wake);
     [Value] static b2Vec2 getLocalPointVelocity(unsigned long long bodyId, [Ref] b2Vec2 localPoint);
     [Value] static b2Vec2 getWorldPointVelocity(unsigned long long bodyId, [Ref] b2Vec2 worldPoint);
 
@@ -36,6 +36,7 @@ interface B2_Body {
     static void applyForce(unsigned long long bodyId, [Ref] b2Vec2 force, [Ref] b2Vec2 point, boolean wake);
     static void applyForceToCenter(unsigned long long bodyId, [Ref] b2Vec2 force, boolean wake);
     static void applyTorque(unsigned long long bodyId, float torque, boolean wake);
+    static void clearForces(unsigned long long bodyId);
     static void applyLinearImpulse(unsigned long long bodyId, [Ref] b2Vec2 impulse, [Ref] b2Vec2 point, boolean wake);
     static void applyLinearImpulseToCenter(unsigned long long bodyId, [Ref] b2Vec2 impulse, boolean wake);
     static void applyAngularImpulse(unsigned long long bodyId, float impulse, boolean wake);
@@ -43,11 +44,11 @@ interface B2_Body {
     // Mass properties
     static float getMass(unsigned long long bodyId);
     static float getRotationalInertia(unsigned long long bodyId);
-    [Value] static b2Vec2 getLocalCenterOfMass(unsigned long long bodyId);
-    [Value] static b2Vec2 getWorldCenterOfMass(unsigned long long bodyId);
+    [Value] static b2Vec2 getLocalCenter(unsigned long long bodyId);
+    [Value] static b2Vec2 getWorldCenter(unsigned long long bodyId);
     static void setMassData(unsigned long long bodyId, [Ref] b2MassData massData);
     [Value] static b2MassData getMassData(unsigned long long bodyId);
-    static void applyMassFromShapes(unsigned long long bodyId);
+    static void updateMassFromShapes(unsigned long long bodyId);
 
     // Damping
     static void setLinearDamping(unsigned long long bodyId, float linearDamping);
@@ -62,23 +63,32 @@ interface B2_Body {
     // Sleep state
     static boolean isAwake(unsigned long long bodyId);
     static void setAwake(unsigned long long bodyId, boolean awake);
-    static void enableSleep(unsigned long long bodyId, boolean enableSleep);
-    static boolean isSleepEnabled(unsigned long long bodyId);
+    static void wakeTouching(unsigned long long bodyId);
+    static void enableSleeping(unsigned long long bodyId, boolean enableSleep);
+    static boolean isSleepingEnabled(unsigned long long bodyId);
     static void setSleepThreshold(unsigned long long bodyId, float sleepThreshold);
     static float getSleepThreshold(unsigned long long bodyId);
+
+    // Continuous collision
+    static void setSafetyFactor(unsigned long long bodyId, float safetyFactor);
+    static float getSafetyFactor(unsigned long long bodyId);
 
     // Enable/disable state
     static boolean isEnabled(unsigned long long bodyId);
     static void disable(unsigned long long bodyId);
     static void enable(unsigned long long bodyId);
 
-    // Fixed rotation
-    static void setFixedRotation(unsigned long long bodyId, boolean flag);
-    static boolean isFixedRotation(unsigned long long bodyId);
+    // Motion locks
+    static void setMotionLocks(unsigned long long bodyId, [Ref] b2MotionLocks locks);
+    [Value] static b2MotionLocks getMotionLocks(unsigned long long bodyId);
 
     // Bullet
     static void setBullet(unsigned long long bodyId, boolean flag);
     static boolean isBullet(unsigned long long bodyId);
+
+    // Contact recycling
+    static void enableContactRecycling(unsigned long long bodyId, boolean flag);
+    static boolean isContactRecyclingEnabled(unsigned long long bodyId);
 
     // World and relationships
     [Value] static b2WorldId getWorld(unsigned long long bodyId);
@@ -94,6 +104,11 @@ interface B2_Body {
     // Contacts
     static long getContactCapacity(unsigned long long bodyId);
     static long getContactData(unsigned long long bodyId, b2ContactDataArray contactData);
+
+    // Extents
+    static float getMinExtent(unsigned long long bodyId);
+    static float getMaxExtent(unsigned long long bodyId);
+    static float getMaxExtentFromOrigin(unsigned long long bodyId);
 
     // Body name and user data
     static void setName(unsigned long long bodyId, DOMString name);
@@ -114,14 +129,25 @@ interface b2BodyDef {
     attribute float angularDamping;
     attribute float gravityScale;
     attribute float sleepThreshold;
+    attribute float safetyFactor;
     [Const] attribute DOMString name;
     attribute VoidPtr userData;
+    [Value] attribute b2MotionLocks motionLocks;
     attribute boolean enableSleep;
     attribute boolean isAwake;
-    attribute boolean fixedRotation;
     attribute boolean isBullet;
     attribute boolean isEnabled;
     attribute boolean allowFastRotation;
+    attribute boolean enableContactRecycling;
+    attribute long internalValue;
+};
+
+[StackAllocatable]
+interface b2MotionLocks {
+    void b2MotionLocks();
+    attribute boolean linearX;
+    attribute boolean linearY;
+    attribute boolean angularZ;
 };
 
 enum b2BodyType {

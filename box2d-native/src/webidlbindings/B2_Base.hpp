@@ -5,7 +5,13 @@
 class B2_Base {
     public:
     static inline b2Version getVersion() { return b2GetVersion(); }
-    static inline int getByteCount() { return b2GetByteCount(); }
+    static inline uint64_t getByteCount() { return b2GetByteCount(); }
+
+    /// @return true if the library was built with BOX2D_DOUBLE_PRECISION (large world mode)
+    static inline bool isDoublePrecision() { return b2IsDoublePrecision(); }
+
+    /// @return true if the current CPU has the AVX2 instruction set.
+    static inline bool isAVX2Available() { return b2IsAVX2Available(); }
     
     static inline uint64_t storeWorldId(b2WorldId worldId) {
         return b2StoreWorldId(worldId);

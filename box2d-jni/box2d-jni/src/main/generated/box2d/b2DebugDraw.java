@@ -2,9 +2,11 @@ package box2d;
 
 
 /**
- * This struct holds callbacks you can implement to draw a Box2D world.
- * This structure should be zero initialized.
- * @ingroup world
+ * This struct holds callbacks you can implement to draw a Box2D world. Callbacks receive world
+ * coordinates. In large world mode the translation is double precision so it stays accurate far
+ * from the origin. Shift into your own camera frame inside the callbacks. Initialize with
+ * b2DefaultDebugDraw.
+ * @ingroup debug
  */
 public class b2DebugDraw extends NativeObject {
 
@@ -74,7 +76,7 @@ public class b2DebugDraw extends NativeObject {
     // Attributes
 
     /**
-     * Bounds to use if restricting drawing to a rectangular region
+     * World bounds used for debug draw. An empty box draws nothing.
      */
     public b2AABB getDrawingBounds() {
         checkNotNull();
@@ -82,7 +84,7 @@ public class b2DebugDraw extends NativeObject {
     }
 
     /**
-     * Bounds to use if restricting drawing to a rectangular region
+     * World bounds used for debug draw. An empty box draws nothing.
      */
     public void setDrawingBounds(b2AABB value) {
         checkNotNull();
@@ -90,19 +92,67 @@ public class b2DebugDraw extends NativeObject {
     }
 
     /**
-     * Option to restrict drawing to a rectangular region. May suffer from unstable depth sorting.
+     * Scale to use when drawing forces
      */
-    public boolean getUseDrawingBounds() {
+    public float getForceScale() {
         checkNotNull();
-        return Raw.getUseDrawingBounds(address);
+        return Raw.getForceScale(address);
     }
 
     /**
-     * Option to restrict drawing to a rectangular region. May suffer from unstable depth sorting.
+     * Scale to use when drawing forces
      */
-    public void setUseDrawingBounds(boolean value) {
+    public void setForceScale(float value) {
         checkNotNull();
-        Raw.setUseDrawingBounds(address, value);
+        Raw.setForceScale(address, value);
+    }
+
+    /**
+     * Global scaling for joint drawing
+     */
+    public float getJointScale() {
+        checkNotNull();
+        return Raw.getJointScale(address);
+    }
+
+    /**
+     * Global scaling for joint drawing
+     */
+    public void setJointScale(float value) {
+        checkNotNull();
+        Raw.setJointScale(address, value);
+    }
+
+    /**
+     * Option to draw contact points
+     */
+    public boolean getDrawContacts() {
+        checkNotNull();
+        return Raw.getDrawContacts(address);
+    }
+
+    /**
+     * Option to draw contact points
+     */
+    public void setDrawContacts(boolean value) {
+        checkNotNull();
+        Raw.setDrawContacts(address, value);
+    }
+
+    /**
+     * Draw anchor A for contact points (instead of anchorB)
+     */
+    public boolean getDrawAnchorA() {
+        checkNotNull();
+        return Raw.getDrawAnchorA(address);
+    }
+
+    /**
+     * Draw anchor A for contact points (instead of anchorB)
+     */
+    public void setDrawAnchorA(boolean value) {
+        checkNotNull();
+        Raw.setDrawAnchorA(address, value);
     }
 
     /**
@@ -119,6 +169,22 @@ public class b2DebugDraw extends NativeObject {
     public void setDrawShapes(boolean value) {
         checkNotNull();
         Raw.setDrawShapes(address, value);
+    }
+
+    /**
+     * Option to draw chain shape normals
+     */
+    public boolean getDrawChainNormals() {
+        checkNotNull();
+        return Raw.getDrawChainNormals(address);
+    }
+
+    /**
+     * Option to draw chain shape normals
+     */
+    public void setDrawChainNormals(boolean value) {
+        checkNotNull();
+        Raw.setDrawChainNormals(address, value);
     }
 
     /**
@@ -202,22 +268,6 @@ public class b2DebugDraw extends NativeObject {
     }
 
     /**
-     * Option to draw contact points
-     */
-    public boolean getDrawContacts() {
-        checkNotNull();
-        return Raw.getDrawContacts(address);
-    }
-
-    /**
-     * Option to draw contact points
-     */
-    public void setDrawContacts(boolean value) {
-        checkNotNull();
-        Raw.setDrawContacts(address, value);
-    }
-
-    /**
      * Option to visualize the graph coloring used for contacts and joints
      */
     public boolean getDrawGraphColors() {
@@ -231,38 +281,6 @@ public class b2DebugDraw extends NativeObject {
     public void setDrawGraphColors(boolean value) {
         checkNotNull();
         Raw.setDrawGraphColors(address, value);
-    }
-
-    /**
-     * Option to draw contact normals
-     */
-    public boolean getDrawContactNormals() {
-        checkNotNull();
-        return Raw.getDrawContactNormals(address);
-    }
-
-    /**
-     * Option to draw contact normals
-     */
-    public void setDrawContactNormals(boolean value) {
-        checkNotNull();
-        Raw.setDrawContactNormals(address, value);
-    }
-
-    /**
-     * Option to draw contact normal impulses
-     */
-    public boolean getDrawContactImpulses() {
-        checkNotNull();
-        return Raw.getDrawContactImpulses(address);
-    }
-
-    /**
-     * Option to draw contact normal impulses
-     */
-    public void setDrawContactImpulses(boolean value) {
-        checkNotNull();
-        Raw.setDrawContactImpulses(address, value);
     }
 
     /**
@@ -282,19 +300,51 @@ public class b2DebugDraw extends NativeObject {
     }
 
     /**
-     * Option to draw contact friction impulses
+     * Option to draw contact normals
      */
-    public boolean getDrawFrictionImpulses() {
+    public boolean getDrawContactNormals() {
         checkNotNull();
-        return Raw.getDrawFrictionImpulses(address);
+        return Raw.getDrawContactNormals(address);
     }
 
     /**
-     * Option to draw contact friction impulses
+     * Option to draw contact normals
      */
-    public void setDrawFrictionImpulses(boolean value) {
+    public void setDrawContactNormals(boolean value) {
         checkNotNull();
-        Raw.setDrawFrictionImpulses(address, value);
+        Raw.setDrawContactNormals(address, value);
+    }
+
+    /**
+     * Option to draw contact normal forces
+     */
+    public boolean getDrawContactForces() {
+        checkNotNull();
+        return Raw.getDrawContactForces(address);
+    }
+
+    /**
+     * Option to draw contact normal forces
+     */
+    public void setDrawContactForces(boolean value) {
+        checkNotNull();
+        Raw.setDrawContactForces(address, value);
+    }
+
+    /**
+     * Option to draw contact friction forces
+     */
+    public boolean getDrawFrictionForces() {
+        checkNotNull();
+        return Raw.getDrawFrictionForces(address);
+    }
+
+    /**
+     * Option to draw contact friction forces
+     */
+    public void setDrawFrictionForces(boolean value) {
+        checkNotNull();
+        Raw.setDrawFrictionForces(address, value);
     }
 
     /**
@@ -319,10 +369,18 @@ public class b2DebugDraw extends NativeObject {
         public static native void destroy(long address);
         public static native long getDrawingBounds(long address);
         public static native void setDrawingBounds(long address, long value);
-        public static native boolean getUseDrawingBounds(long address);
-        public static native void setUseDrawingBounds(long address, boolean value);
+        public static native float getForceScale(long address);
+        public static native void setForceScale(long address, float value);
+        public static native float getJointScale(long address);
+        public static native void setJointScale(long address, float value);
+        public static native boolean getDrawContacts(long address);
+        public static native void setDrawContacts(long address, boolean value);
+        public static native boolean getDrawAnchorA(long address);
+        public static native void setDrawAnchorA(long address, boolean value);
         public static native boolean getDrawShapes(long address);
         public static native void setDrawShapes(long address, boolean value);
+        public static native boolean getDrawChainNormals(long address);
+        public static native void setDrawChainNormals(long address, boolean value);
         public static native boolean getDrawJoints(long address);
         public static native void setDrawJoints(long address, boolean value);
         public static native boolean getDrawJointExtras(long address);
@@ -333,18 +391,16 @@ public class b2DebugDraw extends NativeObject {
         public static native void setDrawMass(long address, boolean value);
         public static native boolean getDrawBodyNames(long address);
         public static native void setDrawBodyNames(long address, boolean value);
-        public static native boolean getDrawContacts(long address);
-        public static native void setDrawContacts(long address, boolean value);
         public static native boolean getDrawGraphColors(long address);
         public static native void setDrawGraphColors(long address, boolean value);
-        public static native boolean getDrawContactNormals(long address);
-        public static native void setDrawContactNormals(long address, boolean value);
-        public static native boolean getDrawContactImpulses(long address);
-        public static native void setDrawContactImpulses(long address, boolean value);
         public static native boolean getDrawContactFeatures(long address);
         public static native void setDrawContactFeatures(long address, boolean value);
-        public static native boolean getDrawFrictionImpulses(long address);
-        public static native void setDrawFrictionImpulses(long address, boolean value);
+        public static native boolean getDrawContactNormals(long address);
+        public static native void setDrawContactNormals(long address, boolean value);
+        public static native boolean getDrawContactForces(long address);
+        public static native void setDrawContactForces(long address, boolean value);
+        public static native boolean getDrawFrictionForces(long address);
+        public static native void setDrawFrictionForces(long address, boolean value);
         public static native boolean getDrawIslands(long address);
         public static native void setDrawIslands(long address, boolean value);
     }

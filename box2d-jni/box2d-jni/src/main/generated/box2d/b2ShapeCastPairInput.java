@@ -2,7 +2,7 @@ package box2d;
 
 
 /**
- * Input parameters for b2ShapeCast
+ * Input parameters for b2CastShape
  */
 public class b2ShapeCastPairInput extends NativeObject {
 
@@ -100,37 +100,21 @@ public class b2ShapeCastPairInput extends NativeObject {
     /**
      * &lt; The proxy for shape B
      */
-    public b2Transform getTransformA() {
+    public b2Transform getTransform() {
         checkNotNull();
-        return b2Transform.wrapPointer(Raw.getTransformA(address));
+        return b2Transform.wrapPointer(Raw.getTransform(address));
     }
 
     /**
      * &lt; The proxy for shape B
      */
-    public void setTransformA(b2Transform value) {
+    public void setTransform(b2Transform value) {
         checkNotNull();
-        Raw.setTransformA(address, value.getAddress());
+        Raw.setTransform(address, value.getAddress());
     }
 
     /**
-     * &lt; The world transform for shape A
-     */
-    public b2Transform getTransformB() {
-        checkNotNull();
-        return b2Transform.wrapPointer(Raw.getTransformB(address));
-    }
-
-    /**
-     * &lt; The world transform for shape A
-     */
-    public void setTransformB(b2Transform value) {
-        checkNotNull();
-        Raw.setTransformB(address, value.getAddress());
-    }
-
-    /**
-     * &lt; The world transform for shape B
+     * &lt; Transform of shape B in shape A's frame, the relative pose B in A
      */
     public b2Vec2 getTranslationB() {
         checkNotNull();
@@ -138,7 +122,7 @@ public class b2ShapeCastPairInput extends NativeObject {
     }
 
     /**
-     * &lt; The world transform for shape B
+     * &lt; Transform of shape B in shape A's frame, the relative pose B in A
      */
     public void setTranslationB(b2Vec2 value) {
         checkNotNull();
@@ -146,7 +130,7 @@ public class b2ShapeCastPairInput extends NativeObject {
     }
 
     /**
-     * &lt; The translation of shape B
+     * &lt; The translation of shape B, in A's frame
      */
     public float getMaxFraction() {
         checkNotNull();
@@ -154,7 +138,7 @@ public class b2ShapeCastPairInput extends NativeObject {
     }
 
     /**
-     * &lt; The translation of shape B
+     * &lt; The translation of shape B, in A's frame
      */
     public void setMaxFraction(float value) {
         checkNotNull();
@@ -185,10 +169,8 @@ public class b2ShapeCastPairInput extends NativeObject {
         public static native void setProxyA(long address, long value);
         public static native long getProxyB(long address);
         public static native void setProxyB(long address, long value);
-        public static native long getTransformA(long address);
-        public static native void setTransformA(long address, long value);
-        public static native long getTransformB(long address);
-        public static native void setTransformB(long address, long value);
+        public static native long getTransform(long address);
+        public static native void setTransform(long address, long value);
         public static native long getTranslationB(long address);
         public static native void setTranslationB(long address, long value);
         public static native float getMaxFraction(long address);

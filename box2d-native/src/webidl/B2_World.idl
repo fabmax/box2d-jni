@@ -8,21 +8,24 @@ interface B2_World {
 
     // Simulation
     static void step(unsigned long long worldId, float timeStep, long subStepCount);
+    static void defaultDebugDraw([Ref] b2DebugDraw result);
     static void draw(unsigned long long worldId, b2DebugDraw draw, b2DebugDrawCallbacks callbacks);
+    [Value] static b2AABB getBounds(unsigned long long worldId);
 
     // Event handling
     [Value] static b2BodyEvents getBodyEvents(unsigned long long worldId);
     [Value] static b2SensorEvents getSensorEvents(unsigned long long worldId);
     [Value] static b2ContactEvents getContactEvents(unsigned long long worldId);
+    [Value] static b2JointEvents getJointEvents(unsigned long long worldId);
 
     // Query and collision detection
-    [Value] static b2TreeStats overlapAABB(unsigned long long worldId, [Ref] b2AABB aabb, [Ref] b2QueryFilter filter, b2OverlapResultFcnI fcn);
-    [Value] static b2TreeStats overlapShape(unsigned long long worldId, [Const] b2ShapeProxy proxy, [Ref] b2QueryFilter filter, b2OverlapResultFcnI fcn);
+    [Value] static b2TreeStats overlapAABB(unsigned long long worldId, [Ref] b2Vec2 origin, [Ref] b2AABB aabb, [Ref] b2QueryFilter filter, b2OverlapResultFcnI fcn);
+    [Value] static b2TreeStats overlapShape(unsigned long long worldId, [Ref] b2Vec2 origin, [Const] b2ShapeProxy proxy, [Ref] b2QueryFilter filter, b2OverlapResultFcnI fcn);
     [Value] static b2TreeStats castRay(unsigned long long worldId, [Ref] b2Vec2 origin, [Ref] b2Vec2 translation, [Ref] b2QueryFilter filter, b2CastResultFcnI fcn);
     [Value] static b2RayResult castRayClosest(unsigned long long worldId, [Ref] b2Vec2 origin, [Ref] b2Vec2 translation, [Ref] b2QueryFilter filter);
-    [Value] static b2TreeStats castShape(unsigned long long worldId, [Const] b2ShapeProxy proxy, [Ref] b2Vec2 translation, [Ref] b2QueryFilter filter, b2CastResultFcnI fcn);
-    static float castMover(unsigned long long worldId, [Const] b2Capsule mover, [Ref] b2Vec2 translation, [Ref] b2QueryFilter filter);
-    static void collideMover(unsigned long long worldId, [Const] b2Capsule mover, [Ref] b2QueryFilter filter, b2PlaneResultFcnI fcn);
+    [Value] static b2TreeStats castShape(unsigned long long worldId, [Ref] b2Vec2 origin, [Const] b2ShapeProxy proxy, [Ref] b2Vec2 translation, [Ref] b2QueryFilter filter, b2CastResultFcnI fcn);
+    static float castMover(unsigned long long worldId, [Ref] b2Vec2 origin, [Const] b2Capsule mover, [Ref] b2Vec2 translation, [Ref] b2QueryFilter filter);
+    static void collideMover(unsigned long long worldId, [Ref] b2Vec2 origin, [Const] b2Capsule mover, [Ref] b2QueryFilter filter, b2PlaneResultFcnI fcn);
 
     // World settings
     static void enableSleeping(unsigned long long worldId, boolean flag);
@@ -31,6 +34,10 @@ interface B2_World {
     static boolean isContinuousEnabled(unsigned long long worldId);
     static void setRestitutionThreshold(unsigned long long worldId, float value);
     static float getRestitutionThreshold(unsigned long long worldId);
+    static void setRestitutionIterations(unsigned long long worldId, long iterations);
+    static long getRestitutionIterations(unsigned long long worldId);
+    static void enableRestitutionPropagation(unsigned long long worldId, boolean flag);
+    static boolean isRestitutionPropagationEnabled(unsigned long long worldId);
     static void setHitEventThreshold(unsigned long long worldId, float value);
     static float getHitEventThreshold(unsigned long long worldId);
     static void setGravity(unsigned long long worldId, [Ref] b2Vec2 gravity);
@@ -45,16 +52,25 @@ interface B2_World {
     // Advanced features
     static void explode(unsigned long long worldId, [Const] b2ExplosionDef explosionDef);
     static void setContactTuning(unsigned long long worldId, float hertz, float dampingRatio, float pushSpeed);
-    static void setMaximumLinearSpeed(unsigned long long worldId, float maximumLinearSpeed);
-    static float getMaximumLinearSpeed(unsigned long long worldId);
+    static float getContactTuningHertz(unsigned long long worldId);
+    static float getContactTuningDampingRatio(unsigned long long worldId);
+    static float getContactTuningPushSpeed(unsigned long long worldId);
+    static void setContactRecycleDistance(unsigned long long worldId, float recycleDistance);
+    static float getContactRecycleDistance(unsigned long long worldId);
+    static void setMaxLinearSpeed(unsigned long long worldId, float maximumLinearSpeed);
+    static float getMaxLinearSpeed(unsigned long long worldId);
     static void enableWarmStarting(unsigned long long worldId, boolean flag);
     static boolean isWarmStartingEnabled(unsigned long long worldId);
+    static void setWorkerCount(unsigned long long worldId, long count);
+    static long getWorkerCount(unsigned long long worldId);
 
     // Statistics and debugging
     static long getAwakeBodyCount(unsigned long long worldId);
     [Value] static b2Profile getProfile(unsigned long long worldId);
     [Value] static b2Counters getCounters(unsigned long long worldId);
+    [Value] static b2Capacity getMaxCapacity(unsigned long long worldId);
     static void dumpMemoryStats(unsigned long long worldId);
+    static unsigned long long getStateHash(unsigned long long worldId);
 
     // User data
     static void setUserData(unsigned long long worldId, VoidPtr userData);
@@ -62,18 +78,58 @@ interface B2_World {
 
     // Internal testing functions
     static void rebuildStaticTree(unsigned long long worldId);
-    static void enableSpeculative(unsigned long long worldId, boolean flag);
+    static void enableSSE2Fallback(unsigned long long worldId, boolean flag);
+
+    // Recording
+    // static b2Recording createRecording(long byteCapacity);
+    // static void destroyRecording(b2Recording recording);
+    // static octet[] recordingGetData([Const] b2Recording recording);
+    // static long recordingGetSize([Const] b2Recording recording);
+    // static void startRecording(unsigned long long worldId, b2Recording recording);
+    // static void stopRecording(unsigned long long worldId);
+    // static boolean recordingSaveToFile([Const] b2Recording recording, [Const] DOMString path);
+    // static b2Recording createRecordingFromFile([Const] DOMString path);
+
+    // Snapshot
+    // static long getSnapshot(unsigned long long worldId, octet[] image, long capacity);
+    // static boolean restoreFromSnapshot(unsigned long long worldId, [Const] octet[] image, long size);
+    // static unsigned long long createWorldFromSnapshot([Const] octet[] image, long size, long workerCount);
+
+    // Replay
+    // static boolean validateRecording([Const] VoidPtr data, long size, long workerCount);
+    // static b2Replay createReplay([Const] VoidPtr data, long size, long workerCount);
+    // static void destroyReplay(b2Replay player);
+    // static boolean replayStepFrame(b2Replay player);
+    // static unsigned long long replayGetWorldId([Const] b2Replay player);
+    // static void replayRestart(b2Replay player);
+    // static void replaySeekFrame(b2Replay player, long targetFrame);
+    // static long replayGetFrame([Const] b2Replay player);
+    // [Value] static b2ReplayInfo replayGetInfo([Const] b2Replay player);
+    // static boolean replayIsAtEnd([Const] b2Replay player);
+    // static boolean replayHasDiverged([Const] b2Replay player);
+    // static long replayGetDivergeFrame([Const] b2Replay player);
+    // static void replaySetKeyframePolicy(b2Replay player, unsigned long long budgetBytes, long minIntervalFrames);
+    // static unsigned long long replayGetKeyframeBudget([Const] b2Replay player);
+    // static long replayGetKeyframeMinInterval([Const] b2Replay player);
+    // static long replayGetKeyframeInterval([Const] b2Replay player);
+    // static unsigned long long replayGetKeyframeBytes([Const] b2Replay player);
+    // static void replayDrawFrameQueries(b2Replay player, b2DebugDraw draw, long queryIndex);
+    // static long replayGetFrameQueryCount([Const] b2Replay player);
+    // [Value] static b2ReplayQueryInfo replayGetFrameQuery([Const] b2Replay player, long index);
+    // [Value] static b2ReplayQueryHit replayGetFrameQueryHit([Const] b2Replay player, long queryIndex, long hitIndex);
+    // static long replayGetBodyCount([Const] b2Replay player);
+    // static unsigned long long replayGetBodyId([Const] b2Replay player, long index);
 };
 
 interface TaskManager {
     void install([Ref] b2WorldDef worldDef, long threadCount);
-    void executeTask(unsigned long start, unsigned long end, unsigned long threadIndex, unsigned long long box2dTask, unsigned long long box2dContext);
+    void executeTask(unsigned long long box2dTask, unsigned long long box2dContext);
 };
 
 [JSImplementation="TaskManager"]
 interface TaskManagerImpl {
     void TaskManagerImpl();
-    unsigned long long enqueueTask(unsigned long long box2dTask, long itemCount, long minRange, unsigned long long box2dContext);
+    unsigned long long enqueueTask(unsigned long long box2dTask, unsigned long long box2dContext);
     void finishTask(unsigned long long userTask);
 };
 
@@ -90,6 +146,20 @@ interface b2BodyMoveEvent {
     [Value] attribute b2BodyId bodyId;
     attribute boolean fellAsleep;
     [Value] attribute b2Transform transform;
+    attribute VoidPtr userData;
+};
+
+[StackAllocatable]
+interface b2JointEvents {
+    void b2JointEvents();
+    attribute long count;
+    attribute b2JointEvent jointEvents;
+};
+
+[StackAllocatable]
+interface b2JointEvent {
+    void b2JointEvent();
+    [Value] attribute b2JointId jointId;
     attribute VoidPtr userData;
 };
 
@@ -130,9 +200,9 @@ interface b2ContactEvents {
 [StackAllocatable]
 interface b2ContactBeginTouchEvent {
     void b2ContactBeginTouchEvent();
-    [Value] attribute b2Manifold manifold;
     [Value] attribute b2ShapeId shapeIdA;
     [Value] attribute b2ShapeId shapeIdB;
+    [Value] attribute b2ContactId contactId;
 };
 
 [StackAllocatable]
@@ -140,6 +210,7 @@ interface b2ContactEndTouchEvent {
     void b2ContactEndTouchEvent();
     [Value] attribute b2ShapeId shapeIdA;
     [Value] attribute b2ShapeId shapeIdB;
+    [Value] attribute b2ContactId contactId;
 };
 
 [StackAllocatable]
@@ -150,6 +221,7 @@ interface b2ContactHitEvent {
     [Value] attribute b2Vec2 point;
     [Value] attribute b2ShapeId shapeIdA;
     [Value] attribute b2ShapeId shapeIdB;
+    [Value] attribute b2ContactId contactId;
 };
 
 [StackAllocatable]
@@ -182,37 +254,56 @@ interface b2ExplosionDef {
 };
 
 [StackAllocatable]
+interface b2Capacity {
+    void b2Capacity();
+    attribute long staticShapeCount;
+    attribute long dynamicShapeCount;
+    attribute long staticBodyCount;
+    attribute long dynamicBodyCount;
+    attribute long contactCount;
+    attribute long arenaByteCount;
+};
+
+[StackAllocatable]
 interface b2WorldDef {
     void b2WorldDef();
     [Value] attribute b2Vec2 gravity;
     attribute float restitutionThreshold;
+    attribute long restitutionIterations;
+    attribute boolean enableRestitutionPropagation;
     attribute float hitEventThreshold;
     attribute float contactHertz;
     attribute float contactDampingRatio;
-    attribute float maxContactPushSpeed;
+    attribute float contactSpeed;
     attribute float maximumLinearSpeed;
     attribute boolean enableSleep;
     attribute boolean enableContinuous;
+    attribute long workerCount;
     attribute VoidPtr userData;
+    [Value] attribute b2Capacity capacity;
+    attribute long internalValue;
 };
 
 [StackAllocatable]
 interface b2DebugDraw {
     void b2DebugDraw();
     [Value] attribute b2AABB drawingBounds;
-    attribute boolean useDrawingBounds;
+    attribute float forceScale;
+    attribute float jointScale;
+    attribute boolean drawContacts;
+    attribute boolean drawAnchorA;
     attribute boolean drawShapes;
+    attribute boolean drawChainNormals;
     attribute boolean drawJoints;
     attribute boolean drawJointExtras;
     attribute boolean drawBounds;
     attribute boolean drawMass;
     attribute boolean drawBodyNames;
-    attribute boolean drawContacts;
     attribute boolean drawGraphColors;
-    attribute boolean drawContactNormals;
-    attribute boolean drawContactImpulses;
     attribute boolean drawContactFeatures;
-    attribute boolean drawFrictionImpulses;
+    attribute boolean drawContactNormals;
+    attribute boolean drawContactForces;
+    attribute boolean drawFrictionForces;
     attribute boolean drawIslands;
 };
 
@@ -228,15 +319,16 @@ interface b2PlaneResultFcnI { };
 [JSImplementation="b2DebugDrawCallbacks"]
 interface b2DebugDrawCallbacksImpl {
     void b2DebugDrawCallbacksImpl();
-    void drawPolygon([Const] b2Vec2 vertices, long vertexCount, long color);
+    void drawPolygon([Ref] b2Transform transform, [Const] b2Vec2 vertices, long vertexCount, long color);
     void drawSolidPolygon([Ref] b2Transform transform, [Const] b2Vec2 vertices, long vertexCount, float radius, long color);
     void drawCircle([Ref] b2Vec2 center, float radius, long color);
-    void drawSolidCircle([Ref] b2Transform transform, float radius, long color);
+    void drawSolidCircle([Ref] b2Transform transform, [Ref] b2Vec2 center, float radius, long color);
     void drawSolidCapsule([Ref] b2Vec2 p1, [Ref] b2Vec2 p2, float radius, long color);
-    void drawSegment([Ref] b2Vec2 p1, [Ref] b2Vec2 p2, long color);
+    void drawLine([Ref] b2Vec2 p1, [Ref] b2Vec2 p2, long color);
     void drawTransform([Ref] b2Transform transform);
     void drawPoint([Ref] b2Vec2 p, float size, long color);
     void drawString([Ref] b2Vec2 p, [Const] DOMString s, long color);
+    void drawBounds([Ref] b2AABB aabb, long color);
 };
 
 [JSImplementation="b2CustomFilterFcnI"]
@@ -248,19 +340,20 @@ interface b2CustomFilterFcnImpl {
 [JSImplementation="b2PreSolveFcnI"]
 interface b2PreSolveFcnImpl {
     void b2PreSolveFcnImpl();
-    boolean preSolveFcn(unsigned long long shapeIdA, unsigned long long shapeIdB, b2Manifold manifold);
+    void preSolveFcn(unsigned long long shapeIdA, unsigned long long shapeIdB, b2Manifold manifold);
+    boolean preContinuousFcn(unsigned long long shapeIdA, unsigned long long shapeIdB, [Ref] b2Vec2 point, [Ref] b2Vec2 normal);
 };
 
 [JSImplementation="b2FrictionCallbackI"]
 interface b2FrictionCallbackImpl {
     void b2FrictionCallbackImpl();
-    float frictionCallback(float frictionA, long userMaterialIdA, float frictionB, long userMaterialIdB);
+    float frictionCallback(float frictionA, unsigned long long userMaterialIdA, float frictionB, unsigned long long userMaterialIdB);
 };
 
 [JSImplementation="b2RestitutionCallbackI"]
 interface b2RestitutionCallbackImpl {
     void b2RestitutionCallbackImpl();
-    float restitutionCallback(float restitutionA, long userMaterialIdA, float restitutionB, long userMaterialIdB);
+    float restitutionCallback(float restitutionA, unsigned long long userMaterialIdA, float restitutionB, unsigned long long userMaterialIdB);
 };
 
 [JSImplementation="b2OverlapResultFcnI"]
@@ -272,7 +365,7 @@ interface b2OverlapResultFcnImpl {
 [JSImplementation="b2CastResultFcnI"]
 interface b2CastResultFcnImpl {
     void b2CastResultFcnImpl();
-    boolean castResultFcn(unsigned long long shapeId, [Ref] b2Vec2 point, [Ref] b2Vec2 normal, float fraction);
+    float castResultFcn(unsigned long long shapeId, [Ref] b2Vec2 point, [Ref] b2Vec2 normal, float fraction);
 };
 
 [JSImplementation="b2PlaneResultFcnI"]
@@ -283,6 +376,7 @@ interface b2PlaneResultFcnImpl {
 
 interface b2Counters {
     void b2Counters();
+    attribute unsigned long long byteCount;
     attribute long bodyCount;
     attribute long shapeCount;
     attribute long contactCount;
@@ -291,9 +385,10 @@ interface b2Counters {
     attribute long stackUsed;
     attribute long staticTreeHeight;
     attribute long treeHeight;
-    attribute long byteCount;
     attribute long taskCount;
     attribute long[] colorCounts;
+    attribute long awakeContactCount;
+    attribute long recycledContactCount;
 };
 
 interface b2Profile {
@@ -302,19 +397,20 @@ interface b2Profile {
     attribute float pairs;
     attribute float collide;
     attribute float solve;
-    attribute float mergeIslands;
-    attribute float prepareStages;
-    attribute float solveConstraints;
+    attribute float solverSetup;
+    attribute float constraints;
     attribute float prepareConstraints;
     attribute float integrateVelocities;
     attribute float warmStart;
     attribute float solveImpulses;
     attribute float integratePositions;
     attribute float relaxImpulses;
-    attribute float applyRestitution;
+    attribute float restitution;
     attribute float storeImpulses;
     attribute float splitIslands;
     attribute float transforms;
+    attribute float sensorHits;
+    attribute float jointEvents;
     attribute float hitEvents;
     attribute float refit;
     attribute float bullets;

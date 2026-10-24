@@ -1,13 +1,13 @@
 [NoDelete]
 interface B2_Distance {
     // Distance computation functions
-    [Value] static b2SegmentDistanceResult segmentDistance([Ref] b2Vec2 p1, [Ref] b2Vec2 q1, [Ref] b2Vec2 p2, [Ref] b2Vec2 q2);
-    [Value] static b2DistanceOutput shapeDistance([Const] b2DistanceInput input, b2SimplexCache cache, b2Simplex simplexes, long simplexCapacity);
-    [Value] static b2CastOutput shapeCast([Const] b2ShapeCastPairInput input);
+    [Value] static b2SegmentDistanceResult computeSegmentDistance([Ref] b2Vec2 p1, [Ref] b2Vec2 q1, [Ref] b2Vec2 p2, [Ref] b2Vec2 q2);
+    [Value] static b2DistanceOutput computeShapeDistance([Const] b2DistanceInput input, b2SimplexCache cache, b2Simplex simplexes, long simplexCapacity);
+    [Value] static b2CastOutput castShape([Const] b2ShapeCastPairInput input);
     [Value] static b2ShapeProxy makeProxy(b2Vec2Array points, float radius);
     [Value] static b2ShapeProxy makeOffsetProxy(b2Vec2Array points, float radius, [Ref] b2Vec2 position, [Ref] b2Rot rotation);
     static void getSweepTransform([Const] b2Sweep sweep, float time, [Ref] b2Transform result);
-    [Value] static b2TOIOutput timeOfImpact([Const] b2TOIInput input);
+    [Value] static b2TOIOutput computeTimeOfImpact([Const] b2TOIInput input);
 };
 
 [StackAllocatable]
@@ -33,8 +33,7 @@ interface b2DistanceInput {
     void b2DistanceInput();
     [Value] attribute b2ShapeProxy proxyA;
     [Value] attribute b2ShapeProxy proxyB;
-    [Value] attribute b2Transform transformA;
-    [Value] attribute b2Transform transformB;
+    [Value] attribute b2Transform transform;
     attribute boolean useRadii;
 };
 
@@ -74,8 +73,7 @@ interface b2ShapeCastPairInput {
     void b2ShapeCastPairInput();
     [Value] attribute b2ShapeProxy proxyA;
     [Value] attribute b2ShapeProxy proxyB;
-    [Value] attribute b2Transform transformA;
-    [Value] attribute b2Transform transformB;
+    [Value] attribute b2Transform transform;
     [Value] attribute b2Vec2 translationB;
     attribute float maxFraction;
     attribute boolean canEncroach;
@@ -113,5 +111,7 @@ enum b2TOIState {
 interface b2TOIOutput {
     void b2TOIOutput();
     attribute b2TOIState state;
+    [Value] attribute b2Vec2 point;
+    [Value] attribute b2Vec2 normal;
     attribute float fraction;
 };

@@ -5,7 +5,7 @@
 class B2_WheelJoint {
     public:
 
-    /// Create a weld joint
+    /// Create a wheel joint
     /// @see b2WheelJointDef for details
     static inline uint64_t createWheelJoint(uint64_t worldId, const b2WheelJointDef *def) {
         return b2StoreJointId(b2CreateWheelJoint(b2LoadWorldId(worldId), def));
@@ -26,22 +26,22 @@ class B2_WheelJoint {
         return b2WheelJoint_IsSpringEnabled(b2LoadJointId(jointId));
     }
 
-    /// Set the wheel joint spring hertz
+    /// Set the wheel joint stiffness in Hertz
     static inline void setSpringHertz(uint64_t jointId, float hertz) {
         b2WheelJoint_SetSpringHertz(b2LoadJointId(jointId), hertz);
     }
 
-    /// Get the wheel joint spring hertz
+    /// Get the wheel joint stiffness in Hertz
     static inline float getSpringHertz(uint64_t jointId) {
         return b2WheelJoint_GetSpringHertz(b2LoadJointId(jointId));
     }
 
-    /// Set the wheel joint spring damping ratio
+    /// Set the wheel joint damping ratio, non-dimensional
     static inline void setSpringDampingRatio(uint64_t jointId, float dampingRatio) {
         b2WheelJoint_SetSpringDampingRatio(b2LoadJointId(jointId), dampingRatio);
     }
 
-    /// Get the wheel joint spring damping ratio
+    /// Get the wheel joint damping ratio, non-dimensional
     static inline float getSpringDampingRatio(uint64_t jointId) {
         return b2WheelJoint_GetSpringDampingRatio(b2LoadJointId(jointId));
     }
@@ -81,28 +81,28 @@ class B2_WheelJoint {
         return b2WheelJoint_IsMotorEnabled(b2LoadJointId(jointId));
     }
 
-    /// Set the wheel joint motor speed
-    static inline void setMotorSpeed(uint64_t jointId, float motorSpeed) {
-        b2WheelJoint_SetMotorSpeed(b2LoadJointId(jointId), motorSpeed);
+    /// Set the wheel joint motor speed in radians per second
+    static inline void setTargetMotorSpeed(uint64_t jointId, float motorSpeed) {
+        b2WheelJoint_SetTargetMotorSpeed(b2LoadJointId(jointId), motorSpeed);
     }
 
-    /// Get the wheel joint motor speed
-    static inline float getMotorSpeed(uint64_t jointId) {
-        return b2WheelJoint_GetMotorSpeed(b2LoadJointId(jointId));
+    /// Get the wheel joint motor speed in radians per second
+    static inline float getTargetMotorSpeed(uint64_t jointId) {
+        return b2WheelJoint_GetTargetMotorSpeed(b2LoadJointId(jointId));
     }
 
-    /// Set the maximum wheel joint motor torque
+    /// Set the wheel joint maximum motor torque, usually in newton-meters
     static inline void setMaxMotorTorque(uint64_t jointId, float torque) {
         b2WheelJoint_SetMaxMotorTorque(b2LoadJointId(jointId), torque);
     }
 
-    /// Get the maximum wheel joint motor torque
+    /// Get the wheel joint maximum motor torque, usually in newton-meters
     static inline float getMaxMotorTorque(uint64_t jointId) {
         return b2WheelJoint_GetMaxMotorTorque(b2LoadJointId(jointId));
     }
 
-    /// Get the wheel joint motor torque
-    static inline float getMotorTorque(uint64_t jointId) {
-        return b2WheelJoint_GetMotorTorque(b2LoadJointId(jointId));
+    /// Get the wheel joint current motor torque, usually in newton-meters
+    static inline float getCurrentMotorTorque(uint64_t jointId) {
+        return b2WheelJoint_GetCurrentMotorTorque(b2LoadJointId(jointId));
     }
 };

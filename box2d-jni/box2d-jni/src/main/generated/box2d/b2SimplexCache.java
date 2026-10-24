@@ -2,10 +2,9 @@ package box2d;
 
 
 /**
- * Used to warm start the GJK simplex. If you call this function multiple times with nearby
- * transforms this might improve performance. Otherwise you can zero initialize this.
- * The distance cache must be initialized to zero on the first call.
- * Users should generally just zero initialize this structure for each call.
+ * Used to warm start the GJK simplex. If you call b2ComputeShapeDistance multiple times with
+ * nearby transforms this might improve performance. The distance cache must be initialized to zero
+ * on the first call.
  */
 public class b2SimplexCache extends NativeObject {
 

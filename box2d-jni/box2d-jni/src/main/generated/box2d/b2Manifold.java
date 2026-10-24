@@ -73,7 +73,7 @@ public class b2Manifold extends NativeObject {
     // Attributes
 
     /**
-     * The unit normal vector in world space, points from shape A to bodyB
+     * The unit normal vector in world space, points from shape A to shape B.
      */
     public b2Vec2 getNormal() {
         checkNotNull();
@@ -81,7 +81,7 @@ public class b2Manifold extends NativeObject {
     }
 
     /**
-     * The unit normal vector in world space, points from shape A to bodyB
+     * The unit normal vector in world space, points from shape A to shape B.
      */
     public void setNormal(b2Vec2 value) {
         checkNotNull();
@@ -89,7 +89,7 @@ public class b2Manifold extends NativeObject {
     }
 
     /**
-     * The number of contacts points, will be 0, 1, or 2
+     * The number of contact points, will be 0, 1, or 2.
      */
     public int getPointCount() {
         checkNotNull();
@@ -97,7 +97,7 @@ public class b2Manifold extends NativeObject {
     }
 
     /**
-     * The number of contacts points, will be 0, 1, or 2
+     * The number of contact points, will be 0, 1, or 2.
      */
     public void setPointCount(int value) {
         checkNotNull();

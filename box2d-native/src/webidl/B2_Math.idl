@@ -33,13 +33,15 @@ interface B2_Rot {
     static void getXAxis([Ref] b2Rot q, [Ref] b2Vec2 result);
     static void getYAxis([Ref] b2Rot q, [Ref] b2Vec2 result);
     static void makeRot(float radians, [Ref] b2Rot result);
+    static void makeRotFromUnitVector([Ref] b2Vec2 unitVector, [Ref] b2Rot result);
+    static void invertRot([Ref] b2Rot a, [Ref] b2Rot result);
     static void normalize([Ref] b2Rot q, [Ref] b2Rot result);
     static boolean isNormalized([Ref] b2Rot q);
     static void integrateRotation([Ref] b2Rot q1, float deltaAngle, [Ref] b2Rot result);
     static void nLerp([Ref] b2Rot q1, [Ref] b2Rot q2, float t, [Ref] b2Rot result);
     static void mulRot([Ref] b2Rot q, [Ref] b2Rot r, [Ref] b2Rot result);
-    static void invMulRot([Ref] b2Rot q, [Ref] b2Rot r, [Ref] b2Rot result);
-    static float relativeAngle([Ref] b2Rot b, [Ref] b2Rot a);
+    static void invMulRot([Ref] b2Rot a, [Ref] b2Rot b, [Ref] b2Rot result);
+    static float relativeAngle([Ref] b2Rot a, [Ref] b2Rot b);
     static float unwindAngle(float radians);
     static void rotateVector([Ref] b2Rot q, [Ref] b2Vec2 v, [Ref] b2Vec2 result);
     static void invRotateVector([Ref] b2Rot q, [Ref] b2Vec2 v, [Ref] b2Vec2 result);
@@ -54,6 +56,7 @@ interface B2_Transform {
     static void invTransformPoint([Ref] b2Transform t, [Ref] b2Vec2 p, [Ref] b2Vec2 result);
     static void mulTransforms([Ref] b2Transform A, [Ref] b2Transform B, [Ref] b2Transform result);
     static void invMulTransforms([Ref] b2Transform A, [Ref] b2Transform B, [Ref] b2Transform result);
+    static boolean isValid([Ref] b2Transform t);
 };
 
 [NoDelete]
@@ -89,7 +92,8 @@ interface B2_Math {
 
     static boolean isValidFloat(float a);
     static boolean isValidVec2([Ref] b2Vec2 v);
-    static boolean isValidRotation([Ref] b2Rot q);
+    static boolean isValidRot([Ref] b2Rot q);
+    static boolean isValidTransform([Ref] b2Transform t);
     static boolean isValidAABB([Ref] b2AABB aabb);
     static boolean isValidPlane([Ref] b2Plane a);
 };

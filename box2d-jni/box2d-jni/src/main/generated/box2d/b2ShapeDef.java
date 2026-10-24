@@ -2,10 +2,9 @@ package box2d;
 
 
 /**
- * Used to create a shape.
- * This is a temporary object used to bundle shape creation parameters. You may use
- * the same shape definition to create multiple shapes.
- * Must be initialized using b2DefaultShapeDef().
+ * Used to create a shape. This is a temporary object used to bundle shape creation parameters. You
+ * may use the same shape definition to create multiple shapes. Must be initialized using
+ * b2DefaultShapeDef().
  * @ingroup shape
  */
 public class b2ShapeDef extends NativeObject {
@@ -108,9 +107,9 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * The density, usually in kg/m^2.
-     * This is not part of the surface material because this is for the interior, which may have
-     * other considerations, such as being hollow. For example a wood barrel may be hollow or full of water.
+     * The density, usually in kg/m^2. This is not part of the surface material because this is for
+     * the interior, which may have other considerations, such as being hollow. For example a wood
+     * barrel may be hollow or full of water.
      */
     public float getDensity() {
         checkNotNull();
@@ -118,9 +117,9 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * The density, usually in kg/m^2.
-     * This is not part of the surface material because this is for the interior, which may have
-     * other considerations, such as being hollow. For example a wood barrel may be hollow or full of water.
+     * The density, usually in kg/m^2. This is not part of the surface material because this is for
+     * the interior, which may have other considerations, such as being hollow. For example a wood
+     * barrel may be hollow or full of water.
      */
     public void setDensity(float value) {
         checkNotNull();
@@ -144,8 +143,26 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * A sensor shape generates overlap events but never generates a collision response.
-     * Sensors do not have continuous collision. Instead, use a ray or shape cast for those scenarios.
+     * Enable custom filtering. Only one of the two shapes needs to enable custom filtering. See
+     * b2World_SetCustomFilterCallback.
+     */
+    public boolean getEnableCustomFiltering() {
+        checkNotNull();
+        return Raw.getEnableCustomFiltering(address);
+    }
+
+    /**
+     * Enable custom filtering. Only one of the two shapes needs to enable custom filtering. See
+     * b2World_SetCustomFilterCallback.
+     */
+    public void setEnableCustomFiltering(boolean value) {
+        checkNotNull();
+        Raw.setEnableCustomFiltering(address, value);
+    }
+
+    /**
+     * A sensor shape generates overlap events but never generates a collision response. Fast
+     * moving sensors may miss overlaps. Instead, use a ray or shape cast for those scenarios.
      * Sensors still contribute to the body mass if they have non-zero density.
      * @note Sensor events are disabled by default.
      */
@@ -155,8 +172,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * A sensor shape generates overlap events but never generates a collision response.
-     * Sensors do not have continuous collision. Instead, use a ray or shape cast for those scenarios.
+     * A sensor shape generates overlap events but never generates a collision response. Fast
+     * moving sensors may miss overlaps. Instead, use a ray or shape cast for those scenarios.
      * Sensors still contribute to the body mass if they have non-zero density.
      * @note Sensor events are disabled by default.
      */
@@ -166,7 +183,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * Enable sensor events for this shape. This applies to sensors and non-sensors. False by default, even for sensors.
+     * Enable sensor events for this shape. This applies to sensors and non-sensors. Both shapes
+     * involved must have this flag set to true. False by default, even for sensors.
      */
     public boolean getEnableSensorEvents() {
         checkNotNull();
@@ -174,7 +192,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * Enable sensor events for this shape. This applies to sensors and non-sensors. False by default, even for sensors.
+     * Enable sensor events for this shape. This applies to sensors and non-sensors. Both shapes
+     * involved must have this flag set to true. False by default, even for sensors.
      */
     public void setEnableSensorEvents(boolean value) {
         checkNotNull();
@@ -182,7 +201,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors. False by default.
+     * Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Only one
+     * shape involved needs this flag set to true. Ignored for sensors. False by default.
      */
     public boolean getEnableContactEvents() {
         checkNotNull();
@@ -190,7 +210,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors. False by default.
+     * Enable contact events for this shape. Only applies to kinematic and dynamic bodies. Only one
+     * shape involved needs this flag set to true. Ignored for sensors. False by default.
      */
     public void setEnableContactEvents(boolean value) {
         checkNotNull();
@@ -198,7 +219,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * Enable hit events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors. False by default.
+     * Enable hit events for this shape. Only applies to kinematic and dynamic bodies. Only one
+     * shape involved needs this flag set to true. Ignored for sensors. False by default.
      */
     public boolean getEnableHitEvents() {
         checkNotNull();
@@ -206,7 +228,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * Enable hit events for this shape. Only applies to kinematic and dynamic bodies. Ignored for sensors. False by default.
+     * Enable hit events for this shape. Only applies to kinematic and dynamic bodies. Only one
+     * shape involved needs this flag set to true. Ignored for sensors. False by default.
      */
     public void setEnableHitEvents(boolean value) {
         checkNotNull();
@@ -214,8 +237,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are expensive
-     * and must be carefully handled due to threading. Ignored for sensors.
+     * Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are
+     * expensive and must be carefully handled due to multithreading. Ignored for sensors.
      */
     public boolean getEnablePreSolveEvents() {
         checkNotNull();
@@ -223,8 +246,8 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are expensive
-     * and must be carefully handled due to threading. Ignored for sensors.
+     * Enable pre-solve contact events for this shape. Only applies to dynamic bodies. These are
+     * expensive and must be carefully handled due to multithreading. Ignored for sensors.
      */
     public void setEnablePreSolveEvents(boolean value) {
         checkNotNull();
@@ -232,9 +255,9 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * When shapes are created they will scan the environment for collision the next time step. This can significantly slow down
-     * static body creation when there are many static shapes.
-     * This is flag is ignored for dynamic and kinematic shapes which always invoke contact creation.
+     * When shapes are created they will scan the environment for collision the next time step.
+     * This can significantly slow down static body creation when there are many static shapes.
+     * This flag is ignored for dynamic and kinematic shapes which always invoke contact creation.
      */
     public boolean getInvokeContactCreation() {
         checkNotNull();
@@ -242,9 +265,9 @@ public class b2ShapeDef extends NativeObject {
     }
 
     /**
-     * When shapes are created they will scan the environment for collision the next time step. This can significantly slow down
-     * static body creation when there are many static shapes.
-     * This is flag is ignored for dynamic and kinematic shapes which always invoke contact creation.
+     * When shapes are created they will scan the environment for collision the next time step.
+     * This can significantly slow down static body creation when there are many static shapes.
+     * This flag is ignored for dynamic and kinematic shapes which always invoke contact creation.
      */
     public void setInvokeContactCreation(boolean value) {
         checkNotNull();
@@ -253,6 +276,8 @@ public class b2ShapeDef extends NativeObject {
 
     /**
      * Should the body update the mass properties when this shape is created. Default is true.
+     * Warning: if this is false, you MUST call b2Body_UpdateMassFromShapes or b2Body_SetMassData
+     * before simulating the world.
      */
     public boolean getUpdateBodyMass() {
         checkNotNull();
@@ -261,10 +286,28 @@ public class b2ShapeDef extends NativeObject {
 
     /**
      * Should the body update the mass properties when this shape is created. Default is true.
+     * Warning: if this is false, you MUST call b2Body_UpdateMassFromShapes or b2Body_SetMassData
+     * before simulating the world.
      */
     public void setUpdateBodyMass(boolean value) {
         checkNotNull();
         Raw.setUpdateBodyMass(address, value);
+    }
+
+    /**
+     * Used internally to detect a valid definition. DO NOT SET.
+     */
+    public int getInternalValue() {
+        checkNotNull();
+        return Raw.getInternalValue(address);
+    }
+
+    /**
+     * Used internally to detect a valid definition. DO NOT SET.
+     */
+    public void setInternalValue(int value) {
+        checkNotNull();
+        Raw.setInternalValue(address, value);
     }
 
     public static class Raw {
@@ -279,6 +322,8 @@ public class b2ShapeDef extends NativeObject {
         public static native void setDensity(long address, float value);
         public static native long getFilter(long address);
         public static native void setFilter(long address, long value);
+        public static native boolean getEnableCustomFiltering(long address);
+        public static native void setEnableCustomFiltering(long address, boolean value);
         public static native boolean getIsSensor(long address);
         public static native void setIsSensor(long address, boolean value);
         public static native boolean getEnableSensorEvents(long address);
@@ -293,5 +338,7 @@ public class b2ShapeDef extends NativeObject {
         public static native void setInvokeContactCreation(long address, boolean value);
         public static native boolean getUpdateBodyMass(long address);
         public static native void setUpdateBodyMass(long address, boolean value);
+        public static native int getInternalValue(long address);
+        public static native void setInternalValue(long address, int value);
     }
 }

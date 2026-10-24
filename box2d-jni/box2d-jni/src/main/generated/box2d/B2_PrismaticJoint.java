@@ -25,7 +25,7 @@ public class B2_PrismaticJoint extends NativeObject {
     // Functions
 
     /**
-     * Create a prismatic joint
+     * Create a prismatic (slider) joint.
      * @see b2PrismaticJointDef
      */
     public static long createPrismaticJoint(long worldId, b2PrismaticJointDef def) {
@@ -40,63 +40,65 @@ public class B2_PrismaticJoint extends NativeObject {
     }
 
     /**
-     * Enable/disable the prismatic joint spring
+     * Enable/disable the joint spring.
      */
     public static void enableSpring(long jointId, boolean enableSpring) {
         Raw.enableSpring(jointId, enableSpring);
     }
 
     /**
-     * Is the prismatic joint spring enabled?
+     * Is the prismatic joint spring enabled or not?
      */
     public static boolean isSpringEnabled(long jointId) {
         return Raw.isSpringEnabled(jointId);
     }
 
     /**
-     * Set the prismatic joint spring hertz
+     * Set the prismatic joint stiffness in Hertz. This should usually be less than a quarter of the
+     * simulation rate. For example, if the simulation runs at 60Hz then the joint stiffness should be
+     * 15Hz or less.
      */
     public static void setSpringHertz(long jointId, float hertz) {
         Raw.setSpringHertz(jointId, hertz);
     }
 
     /**
-     * Get the prismatic joint spring hertz
+     * Get the prismatic joint stiffness in Hertz
      */
     public static float getSpringHertz(long jointId) {
         return Raw.getSpringHertz(jointId);
     }
 
     /**
-     * Set the prismatic joint spring damping ratio
+     * Set the prismatic joint damping ratio (non-dimensional)
      */
     public static void setSpringDampingRatio(long jointId, float dampingRatio) {
         Raw.setSpringDampingRatio(jointId, dampingRatio);
     }
 
     /**
-     * Get the prismatic joint spring damping ratio
+     * Get the prismatic spring damping ratio (non-dimensional)
      */
     public static float getSpringDampingRatio(long jointId) {
         return Raw.getSpringDampingRatio(jointId);
     }
 
     /**
-     * Set the prismatic joint target translation
+     * Set the prismatic joint spring target translation, usually in meters
      */
     public static void setTargetTranslation(long jointId, float translation) {
         Raw.setTargetTranslation(jointId, translation);
     }
 
     /**
-     * Get the prismatic joint target translation
+     * Get the prismatic joint spring target translation, usually in meters
      */
     public static float getTargetTranslation(long jointId) {
         return Raw.getTargetTranslation(jointId);
     }
 
     /**
-     * Enable/disable the prismatic joint limit
+     * Enable/disable a prismatic joint limit
      */
     public static void enableLimit(long jointId, boolean enableLimit) {
         Raw.enableLimit(jointId, enableLimit);
@@ -131,7 +133,7 @@ public class B2_PrismaticJoint extends NativeObject {
     }
 
     /**
-     * Enable/disable the prismatic joint motor
+     * Enable/disable a prismatic joint motor
      */
     public static void enableMotor(long jointId, boolean enableMotor) {
         Raw.enableMotor(jointId, enableMotor);
@@ -145,52 +147,52 @@ public class B2_PrismaticJoint extends NativeObject {
     }
 
     /**
-     * Set the prismatic joint motor speed
+     * Set the prismatic joint motor speed, usually in meters per second
      */
-    public static void setMotorSpeed(long jointId, float motorSpeed) {
-        Raw.setMotorSpeed(jointId, motorSpeed);
+    public static void setTargetMotorSpeed(long jointId, float motorSpeed) {
+        Raw.setTargetMotorSpeed(jointId, motorSpeed);
     }
 
     /**
-     * Get the prismatic joint motor speed
+     * Get the prismatic joint motor speed, usually in meters per second
      */
-    public static float getMotorSpeed(long jointId) {
-        return Raw.getMotorSpeed(jointId);
+    public static float getTargetMotorSpeed(long jointId) {
+        return Raw.getTargetMotorSpeed(jointId);
     }
 
     /**
-     * Set the maximum prismatic joint motor force
+     * Set the prismatic joint maximum motor force, usually in newtons
      */
     public static void setMaxMotorForce(long jointId, float force) {
         Raw.setMaxMotorForce(jointId, force);
     }
 
     /**
-     * Get the maximum prismatic joint motor force
+     * Get the prismatic joint maximum motor force, usually in newtons
      */
     public static float getMaxMotorForce(long jointId) {
         return Raw.getMaxMotorForce(jointId);
     }
 
     /**
-     * Get the current prismatic joint motor force
+     * Get the current joint translation, usually in meters.
      */
-    public static float getMotorForce(long jointId) {
-        return Raw.getMotorForce(jointId);
+    public static float getCurrentTranslation(long jointId) {
+        return Raw.getCurrentTranslation(jointId);
     }
 
     /**
-     * Get the prismatic joint translation
+     * Get the current joint translation velocity, usually in meters per second.
      */
-    public static float getTranslation(long jointId) {
-        return Raw.getTranslation(jointId);
+    public static float getCurrentSpeed(long jointId) {
+        return Raw.getCurrentSpeed(jointId);
     }
 
     /**
-     * Get the prismatic joint speed
+     * Get the prismatic joint current motor force, usually in newtons
      */
-    public static float getSpeed(long jointId) {
-        return Raw.getSpeed(jointId);
+    public static float getCurrentMotorForce(long jointId) {
+        return Raw.getCurrentMotorForce(jointId);
     }
 
     public static class Raw {
@@ -211,12 +213,12 @@ public class B2_PrismaticJoint extends NativeObject {
         public static native void setLimits(long jointId, float lower, float upper);
         public static native void enableMotor(long jointId, boolean enableMotor);
         public static native boolean isMotorEnabled(long jointId);
-        public static native void setMotorSpeed(long jointId, float motorSpeed);
-        public static native float getMotorSpeed(long jointId);
+        public static native void setTargetMotorSpeed(long jointId, float motorSpeed);
+        public static native float getTargetMotorSpeed(long jointId);
         public static native void setMaxMotorForce(long jointId, float force);
         public static native float getMaxMotorForce(long jointId);
-        public static native float getMotorForce(long jointId);
-        public static native float getTranslation(long jointId);
-        public static native float getSpeed(long jointId);
+        public static native float getCurrentTranslation(long jointId);
+        public static native float getCurrentSpeed(long jointId);
+        public static native float getCurrentMotorForce(long jointId);
     }
 }

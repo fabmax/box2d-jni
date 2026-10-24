@@ -6,6 +6,7 @@ interface B2_Shape {
     // Shape creation functions
     static unsigned long long createCircleShape(unsigned long long bodyId, [Const] b2ShapeDef def, [Const] b2Circle circle);
     static unsigned long long createSegmentShape(unsigned long long bodyId, [Const] b2ShapeDef def, [Const] b2Segment segment);
+    static unsigned long long createChainSegmentShape(unsigned long long bodyId, [Const] b2ShapeDef def, [Const] b2ChainSegment chainSegment);
     static unsigned long long createCapsuleShape(unsigned long long bodyId, [Const] b2ShapeDef def, [Const] b2Capsule capsule);
     static unsigned long long createPolygonShape(unsigned long long bodyId, [Const] b2ShapeDef def, [Const] b2Polygon polygon);
 
@@ -30,8 +31,8 @@ interface B2_Shape {
     static float getFriction(unsigned long long shapeId);
     static void setRestitution(unsigned long long shapeId, float restitution);
     static float getRestitution(unsigned long long shapeId);
-    static void setMaterial(unsigned long long shapeId, long material);
-    static long getMaterial(unsigned long long shapeId);
+    static void setUserMaterial(unsigned long long shapeId, unsigned long long material);
+    static unsigned long long getUserMaterial(unsigned long long shapeId);
     static void setSurfaceMaterial(unsigned long long shapeId, [Ref] b2SurfaceMaterial surfaceMaterial);
     [Value] static b2SurfaceMaterial getSurfaceMaterial(unsigned long long shapeId);
 
@@ -51,7 +52,7 @@ interface B2_Shape {
 
     // Shape testing and casting
     static boolean testPoint(unsigned long long shapeId, [Ref] b2Vec2 point);
-    [Value] static b2CastOutput rayCast(unsigned long long shapeId, [Const] b2RayCastInput input);
+    [Value] static b2CastOutput castRay(unsigned long long shapeId, [Ref] b2Vec2 origin, [Ref] b2Vec2 translation);
 
     // Shape geometry getters
     [Value] static b2Circle getCircle(unsigned long long shapeId);
@@ -65,6 +66,7 @@ interface B2_Shape {
     static void setCapsule(unsigned long long shapeId, [Const] b2Capsule capsule);
     static void setSegment(unsigned long long shapeId, [Const] b2Segment segment);
     static void setPolygon(unsigned long long shapeId, [Const] b2Polygon polygon);
+    static void setChainSegment(unsigned long long shapeId, [Const] b2ChainSegment chainSegment);
 
     // Shape chain functions
     static unsigned long long getParentChain(unsigned long long shapeId);
@@ -73,12 +75,15 @@ interface B2_Shape {
     static long getContactCapacity(unsigned long long shapeId);
     static long getContactData(unsigned long long shapeId, b2ContactDataArray contactData);
     static long getSensorCapacity(unsigned long long shapeId);
-    static long getSensorOverlaps(unsigned long long shapeId, b2ShapeIdArray overlaps);
+    static long getSensorData(unsigned long long shapeId, b2ShapeIdArray visitorIds);
 
-    // Shape AABB and mass
-    [Value] static b2AABB getAABB(unsigned long long shapeId);
-    [Value] static b2MassData getMassData(unsigned long long shapeId);
+    // Shape bounds and mass
+    [Value] static b2AABB getBounds(unsigned long long shapeId);
+    [Value] static b2MassData computeMassData(unsigned long long shapeId);
     [Value] static b2Vec2 getClosestPoint(unsigned long long shapeId, [Ref] b2Vec2 target);
+
+    // Forces
+    static void applyWind(unsigned long long shapeId, [Ref] b2Vec2 wind, float drag, float lift, boolean wake);
 };
 
 [NoDelete]
@@ -97,12 +102,9 @@ interface B2_Chain {
     static long getSegments(unsigned long long chainId, b2ShapeIdArray segmentArray);
 
     // Chain material properties
-    static void setFriction(unsigned long long chainId, float friction);
-    static float getFriction(unsigned long long chainId);
-    static void setRestitution(unsigned long long chainId, float restitution);
-    static float getRestitution(unsigned long long chainId);
-    static void setMaterial(unsigned long long chainId, long material);
-    static long getMaterial(unsigned long long chainId);
+    static void setAllSurfaceMaterials(unsigned long long chainId, [Const] b2SurfaceMaterial material);
+    static void setSurfaceMaterial(unsigned long long chainId, [Const] b2SurfaceMaterial material, long segmentIndex);
+    [Value] static b2SurfaceMaterial getSurfaceMaterial(unsigned long long chainId, long segmentIndex);
 };
 
 [StackAllocatable]
@@ -112,6 +114,7 @@ interface b2ShapeDef {
     [Value] attribute b2SurfaceMaterial material;
     attribute float density;
     [Value] attribute b2Filter filter;
+    attribute boolean enableCustomFiltering;
     attribute boolean isSensor;
     attribute boolean enableSensorEvents;
     attribute boolean enableContactEvents;
@@ -119,20 +122,23 @@ interface b2ShapeDef {
     attribute boolean enablePreSolveEvents;
     attribute boolean invokeContactCreation;
     attribute boolean updateBodyMass;
+    attribute long internalValue;
 };
 
 [StackAllocatable]
 interface b2ChainDef {
     void b2ChainDef();
-	attribute VoidPtr userData;
-	[Const] attribute b2Vec2 points;
-	attribute long count;
-	[Const] attribute b2SurfaceMaterial materials;
-	attribute long materialCount;
-	[Value] attribute b2Filter filter;
-	attribute boolean isLoop;
-	attribute boolean enableSensorEvents;
-	attribute long internalValue;
+    attribute VoidPtr userData;
+    [Const] attribute b2Vec2 points;
+    attribute long pointCount;
+    [Value] attribute b2Vec2 ghost1;
+    [Value] attribute b2Vec2 ghost2;
+    [Const] attribute b2SurfaceMaterial materials;
+    attribute long materialCount;
+    [Value] attribute b2Filter filter;
+    attribute boolean isLoop;
+    attribute boolean enableSensorEvents;
+    attribute long internalValue;
 };
 
 [StackAllocatable]
@@ -158,12 +164,13 @@ interface b2SurfaceMaterial {
     attribute float restitution;
     attribute float rollingResistance;
     attribute float tangentSpeed;
-    attribute long userMaterialId;
+    attribute unsigned long long userMaterialId;
 };
 
 [StackAllocatable]
 interface b2ContactData {
     void b2ContactData();
+    [Value] attribute b2ContactId contactId;
     [Value] attribute b2Manifold manifold;
     [Value] attribute b2ShapeId shapeIdA;
     [Value] attribute b2ShapeId shapeIdB;

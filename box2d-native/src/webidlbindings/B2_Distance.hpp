@@ -6,21 +6,23 @@ class B2_Distance {
     public:
 
     /// Compute the distance between two line segments, clamping at the end points if needed.
-    static inline b2SegmentDistanceResult segmentDistance(b2Vec2 p1, b2Vec2 q1, b2Vec2 p2, b2Vec2 q2) {
-        return b2SegmentDistance(p1, q1, p2, q2);
+    static inline b2SegmentDistanceResult computeSegmentDistance(b2Vec2 p1, b2Vec2 q1, b2Vec2 p2, b2Vec2 q2) {
+        return b2ComputeSegmentDistance(p1, q1, p2, q2);
     }
 
-    /// Compute the closest points between two shapes represented as point clouds.
-    /// b2SimplexCache cache is input/output. On the first call set b2SimplexCache.count to zero.
-    /// The underlying GJK algorithm may be debugged by passing in debug simplexes and capacity. You may pass in NULL and 0 for these.
-    static inline b2DistanceOutput shapeDistance(const b2DistanceInput* input, b2SimplexCache* cache, b2Simplex* simplexes, int simplexCapacity) {
-        return b2ShapeDistance(input, cache, simplexes, simplexCapacity);
+    /// Compute the closest points between two shapes represented as point clouds. b2SimplexCache cache
+    /// is input/output. On the first call set b2SimplexCache.count to zero. The underlying GJK
+    /// algorithm may be debugged by passing in debug simplexes and capacity. You may pass in NULL and 0
+    /// for these.
+    static inline b2DistanceOutput computeShapeDistance(const b2DistanceInput* input, b2SimplexCache* cache, b2Simplex* simplexes, int simplexCapacity) {
+        return b2ComputeShapeDistance(input, cache, simplexes, simplexCapacity);
     }
 
-    /// Perform a linear shape cast of shape B moving and shape A fixed. Determines the hit point, normal, and translation fraction.
-    /// Initially touching shapes are treated as a miss.
-    static inline b2CastOutput shapeCast(const b2ShapeCastPairInput* input) {
-        return b2ShapeCast(input);
+    /// Perform a linear shape cast of shape B moving and shape A fixed. Determines the hit point,
+    /// normal, and translation fraction. The query runs in frame A, so the hit point and normal are
+    /// returned in frame A. Initially touching shapes return a zero fraction in the output.
+    static inline b2CastOutput castShape(const b2ShapeCastPairInput* input) {
+        return b2CastShape(input);
     }
 
     /// Make a proxy for use in overlap, shape cast, and related functions. This is a deep copy of the points.
@@ -38,11 +40,10 @@ class B2_Distance {
         result = b2GetSweepTransform(sweep, time);
     }
 
-    /// Compute the upper bound on time before two shapes penetrate. Time is represented as
-    /// a fraction between [0,tMax]. This uses a swept separating axis and may miss some intermediate,
-    /// non-tunneling collisions. If you change the time interval, you should call this function
-    /// again.
-    static inline b2TOIOutput timeOfImpact(const b2TOIInput* input) {
-        return b2TimeOfImpact(input);
+    /// Compute the upper bound on time before two shapes penetrate. Time is represented as a fraction
+    /// between [0,maxFraction]. This uses a swept separating axis and may miss some intermediate,
+    /// non-tunneling collisions. If you change the time interval, you should call this function again.
+    static inline b2TOIOutput computeTimeOfImpact(const b2TOIInput* input) {
+        return b2ComputeTimeOfImpact(input);
     }
 };

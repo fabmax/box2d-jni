@@ -2,7 +2,7 @@ package box2d;
 
 
 /**
- * Output parameters for b2TimeOfImpact.
+ * Time of impact output
  */
 public class b2TOIOutput extends NativeObject {
 
@@ -71,18 +71,56 @@ public class b2TOIOutput extends NativeObject {
 
     // Attributes
 
+    /**
+     * The type of result
+     */
     public b2TOIState getState() {
         checkNotNull();
         return b2TOIState.forValue(Raw.getState(address));
     }
 
+    /**
+     * The type of result
+     */
     public void setState(b2TOIState value) {
         checkNotNull();
         Raw.setState(address, value.value);
     }
 
     /**
-     * &lt; The type of result
+     * The hit point
+     */
+    public b2Vec2 getPoint() {
+        checkNotNull();
+        return b2Vec2.wrapPointer(Raw.getPoint(address));
+    }
+
+    /**
+     * The hit point
+     */
+    public void setPoint(b2Vec2 value) {
+        checkNotNull();
+        Raw.setPoint(address, value.getAddress());
+    }
+
+    /**
+     * The hit normal
+     */
+    public b2Vec2 getNormal() {
+        checkNotNull();
+        return b2Vec2.wrapPointer(Raw.getNormal(address));
+    }
+
+    /**
+     * The hit normal
+     */
+    public void setNormal(b2Vec2 value) {
+        checkNotNull();
+        Raw.setNormal(address, value.getAddress());
+    }
+
+    /**
+     * The sweep time of the collision
      */
     public float getFraction() {
         checkNotNull();
@@ -90,7 +128,7 @@ public class b2TOIOutput extends NativeObject {
     }
 
     /**
-     * &lt; The type of result
+     * The sweep time of the collision
      */
     public void setFraction(float value) {
         checkNotNull();
@@ -103,6 +141,10 @@ public class b2TOIOutput extends NativeObject {
         public static native void destroy(long address);
         public static native int getState(long address);
         public static native void setState(long address, int value);
+        public static native long getPoint(long address);
+        public static native void setPoint(long address, long value);
+        public static native long getNormal(long address);
+        public static native void setNormal(long address, long value);
         public static native float getFraction(long address);
         public static native void setFraction(long address, float value);
     }

@@ -2,8 +2,8 @@ package box2d;
 
 
 /**
- * World definition used to create a simulation world.
- * Must be initialized using b2DefaultWorldDef().
+ * World definition used to create a simulation world. Must be initialized using
+ * b2DefaultWorldDef().
  * @ingroup world
  */
 public class b2WorldDef extends NativeObject {
@@ -90,8 +90,8 @@ public class b2WorldDef extends NativeObject {
     }
 
     /**
-     * Restitution speed threshold, usually in m/s. Collisions above this
-     * speed have restitution applied (will bounce).
+     * Restitution speed threshold, usually in m/s. Collisions above this speed have restitution
+     * applied (will bounce).
      */
     public float getRestitutionThreshold() {
         checkNotNull();
@@ -99,12 +99,46 @@ public class b2WorldDef extends NativeObject {
     }
 
     /**
-     * Restitution speed threshold, usually in m/s. Collisions above this
-     * speed have restitution applied (will bounce).
+     * Restitution speed threshold, usually in m/s. Collisions above this speed have restitution
+     * applied (will bounce).
      */
     public void setRestitutionThreshold(float value) {
         checkNotNull();
         Raw.setRestitutionThreshold(address, value);
+    }
+
+    /**
+     * Number of iterations of the restitution solver. More iterations can lead to less box
+     * spinning.
+     */
+    public int getRestitutionIterations() {
+        checkNotNull();
+        return Raw.getRestitutionIterations(address);
+    }
+
+    /**
+     * Number of iterations of the restitution solver. More iterations can lead to less box
+     * spinning.
+     */
+    public void setRestitutionIterations(int value) {
+        checkNotNull();
+        Raw.setRestitutionIterations(address, value);
+    }
+
+    /**
+     * Enable full contact propagation in the restitution solver. Expensive. (Experimental)
+     */
+    public boolean getEnableRestitutionPropagation() {
+        checkNotNull();
+        return Raw.getEnableRestitutionPropagation(address);
+    }
+
+    /**
+     * Enable full contact propagation in the restitution solver. Expensive. (Experimental)
+     */
+    public void setEnableRestitutionPropagation(boolean value) {
+        checkNotNull();
+        Raw.setEnableRestitutionPropagation(address, value);
     }
 
     /**
@@ -124,7 +158,8 @@ public class b2WorldDef extends NativeObject {
     }
 
     /**
-     * Contact stiffness. Cycles per second. Increasing this increases the speed of overlap recovery, but can introduce jitter.
+     * Contact stiffness. Cycles per second. Increasing this increases the speed of overlap
+     * recovery, but can introduce jitter.
      */
     public float getContactHertz() {
         checkNotNull();
@@ -132,7 +167,8 @@ public class b2WorldDef extends NativeObject {
     }
 
     /**
-     * Contact stiffness. Cycles per second. Increasing this increases the speed of overlap recovery, but can introduce jitter.
+     * Contact stiffness. Cycles per second. Increasing this increases the speed of overlap
+     * recovery, but can introduce jitter.
      */
     public void setContactHertz(float value) {
         checkNotNull();
@@ -140,8 +176,8 @@ public class b2WorldDef extends NativeObject {
     }
 
     /**
-     * Contact bounciness. Non-dimensional. You can speed up overlap recovery by decreasing this with
-     * the trade-off that overlap resolution becomes more energetic.
+     * Contact bounciness. Non-dimensional. You can speed up overlap recovery by decreasing this
+     * with the trade-off that overlap resolution becomes more energetic.
      */
     public float getContactDampingRatio() {
         checkNotNull();
@@ -149,8 +185,8 @@ public class b2WorldDef extends NativeObject {
     }
 
     /**
-     * Contact bounciness. Non-dimensional. You can speed up overlap recovery by decreasing this with
-     * the trade-off that overlap resolution becomes more energetic.
+     * Contact bounciness. Non-dimensional. You can speed up overlap recovery by decreasing this
+     * with the trade-off that overlap resolution becomes more energetic.
      */
     public void setContactDampingRatio(float value) {
         checkNotNull();
@@ -158,23 +194,23 @@ public class b2WorldDef extends NativeObject {
     }
 
     /**
-     * This parameter controls how fast overlap is resolved and usually has units of meters per second. This only
-     * puts a cap on the resolution speed. The resolution speed is increased by increasing the hertz and/or
-     * decreasing the damping ratio.
+     * This parameter controls how fast overlap is resolved and usually has units of meters per
+     * second. This only puts a cap on the resolution speed. The resolution speed is increased by
+     * increasing the hertz and/or decreasing the damping ratio.
      */
-    public float getMaxContactPushSpeed() {
+    public float getContactSpeed() {
         checkNotNull();
-        return Raw.getMaxContactPushSpeed(address);
+        return Raw.getContactSpeed(address);
     }
 
     /**
-     * This parameter controls how fast overlap is resolved and usually has units of meters per second. This only
-     * puts a cap on the resolution speed. The resolution speed is increased by increasing the hertz and/or
-     * decreasing the damping ratio.
+     * This parameter controls how fast overlap is resolved and usually has units of meters per
+     * second. This only puts a cap on the resolution speed. The resolution speed is increased by
+     * increasing the hertz and/or decreasing the damping ratio.
      */
-    public void setMaxContactPushSpeed(float value) {
+    public void setContactSpeed(float value) {
         checkNotNull();
-        Raw.setMaxContactPushSpeed(address, value);
+        Raw.setContactSpeed(address, value);
     }
 
     /**
@@ -226,6 +262,32 @@ public class b2WorldDef extends NativeObject {
     }
 
     /**
+     * Number of workers for multithreading. Box2D performs best when using performance cores and
+     * accessing a single L3 cache (uniform memory). Efficiency cores and SMT provide little
+     * benefit and may even harm performance. This is clamped to the range [1, B2_MAX_WORKERS]. If
+     * task callbacks are provided then Box2D will use the user provided task system. If no task
+     * callbacks are installed then Box2D will run single-threaded with a worker count of 1, or use
+     * the internal scheduler with a worker count greater than 1.
+     */
+    public int getWorkerCount() {
+        checkNotNull();
+        return Raw.getWorkerCount(address);
+    }
+
+    /**
+     * Number of workers for multithreading. Box2D performs best when using performance cores and
+     * accessing a single L3 cache (uniform memory). Efficiency cores and SMT provide little
+     * benefit and may even harm performance. This is clamped to the range [1, B2_MAX_WORKERS]. If
+     * task callbacks are provided then Box2D will use the user provided task system. If no task
+     * callbacks are installed then Box2D will run single-threaded with a worker count of 1, or use
+     * the internal scheduler with a worker count greater than 1.
+     */
+    public void setWorkerCount(int value) {
+        checkNotNull();
+        Raw.setWorkerCount(address, value);
+    }
+
+    /**
      * User data
      */
     public NativeObject getUserData() {
@@ -241,6 +303,38 @@ public class b2WorldDef extends NativeObject {
         Raw.setUserData(address, value.getAddress());
     }
 
+    /**
+     * Optional initial capacities
+     */
+    public b2Capacity getCapacity() {
+        checkNotNull();
+        return b2Capacity.wrapPointer(Raw.getCapacity(address));
+    }
+
+    /**
+     * Optional initial capacities
+     */
+    public void setCapacity(b2Capacity value) {
+        checkNotNull();
+        Raw.setCapacity(address, value.getAddress());
+    }
+
+    /**
+     * Used internally to detect a valid definition. DO NOT SET.
+     */
+    public int getInternalValue() {
+        checkNotNull();
+        return Raw.getInternalValue(address);
+    }
+
+    /**
+     * Used internally to detect a valid definition. DO NOT SET.
+     */
+    public void setInternalValue(int value) {
+        checkNotNull();
+        Raw.setInternalValue(address, value);
+    }
+
     public static class Raw {
         public static native void b2WorldDef_placed(long address);
         public static native long b2WorldDef();
@@ -249,21 +343,31 @@ public class b2WorldDef extends NativeObject {
         public static native void setGravity(long address, long value);
         public static native float getRestitutionThreshold(long address);
         public static native void setRestitutionThreshold(long address, float value);
+        public static native int getRestitutionIterations(long address);
+        public static native void setRestitutionIterations(long address, int value);
+        public static native boolean getEnableRestitutionPropagation(long address);
+        public static native void setEnableRestitutionPropagation(long address, boolean value);
         public static native float getHitEventThreshold(long address);
         public static native void setHitEventThreshold(long address, float value);
         public static native float getContactHertz(long address);
         public static native void setContactHertz(long address, float value);
         public static native float getContactDampingRatio(long address);
         public static native void setContactDampingRatio(long address, float value);
-        public static native float getMaxContactPushSpeed(long address);
-        public static native void setMaxContactPushSpeed(long address, float value);
+        public static native float getContactSpeed(long address);
+        public static native void setContactSpeed(long address, float value);
         public static native float getMaximumLinearSpeed(long address);
         public static native void setMaximumLinearSpeed(long address, float value);
         public static native boolean getEnableSleep(long address);
         public static native void setEnableSleep(long address, boolean value);
         public static native boolean getEnableContinuous(long address);
         public static native void setEnableContinuous(long address, boolean value);
+        public static native int getWorkerCount(long address);
+        public static native void setWorkerCount(long address, int value);
         public static native long getUserData(long address);
         public static native void setUserData(long address, long value);
+        public static native long getCapacity(long address);
+        public static native void setCapacity(long address, long value);
+        public static native int getInternalValue(long address);
+        public static native void setInternalValue(long address, int value);
     }
 }

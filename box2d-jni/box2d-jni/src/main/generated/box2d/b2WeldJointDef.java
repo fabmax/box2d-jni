@@ -2,9 +2,8 @@ package box2d;
 
 
 /**
- * Weld joint definition
- * A weld joint connect to bodies together rigidly. This constraint provides springs to mimic
- * soft-body simulation.
+ * Weld joint definition Connects two bodies together rigidly. This constraint provides springs to
+ * mimic soft-body simulation.
  * @note The approximate solver in Box2D cannot hold many bodies together rigidly
  * @ingroup weld_joint
  */
@@ -76,115 +75,19 @@ public class b2WeldJointDef extends NativeObject {
     // Attributes
 
     /**
-     * Linear damping ratio, non-dimensional. Use 1 for critical damping.
+     * Base joint definition
      */
-    public float getAngularDampingRatio() {
+    public b2JointDef getBase() {
         checkNotNull();
-        return Raw.getAngularDampingRatio(address);
+        return b2JointDef.wrapPointer(Raw.getBase(address));
     }
 
     /**
-     * Linear damping ratio, non-dimensional. Use 1 for critical damping.
+     * Base joint definition
      */
-    public void setAngularDampingRatio(float value) {
+    public void setBase(b2JointDef value) {
         checkNotNull();
-        Raw.setAngularDampingRatio(address, value);
-    }
-
-    /**
-     * Angular stiffness as Hertz (cycles per second). Use zero for maximum stiffness.
-     */
-    public float getAngularHertz() {
-        checkNotNull();
-        return Raw.getAngularHertz(address);
-    }
-
-    /**
-     * Angular stiffness as Hertz (cycles per second). Use zero for maximum stiffness.
-     */
-    public void setAngularHertz(float value) {
-        checkNotNull();
-        Raw.setAngularHertz(address, value);
-    }
-
-    /**
-     * The first attached body
-     */
-    public b2BodyId getBodyIdA() {
-        checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdA(address));
-    }
-
-    /**
-     * The first attached body
-     */
-    public void setBodyIdA(b2BodyId value) {
-        checkNotNull();
-        Raw.setBodyIdA(address, value.getAddress());
-    }
-
-    /**
-     * The second attached body
-     */
-    public b2BodyId getBodyIdB() {
-        checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdB(address));
-    }
-
-    /**
-     * The second attached body
-     */
-    public void setBodyIdB(b2BodyId value) {
-        checkNotNull();
-        Raw.setBodyIdB(address, value.getAddress());
-    }
-
-    /**
-     * Set this flag to true if the attached bodies should collide
-     */
-    public boolean getCollideConnected() {
-        checkNotNull();
-        return Raw.getCollideConnected(address);
-    }
-
-    /**
-     * Set this flag to true if the attached bodies should collide
-     */
-    public void setCollideConnected(boolean value) {
-        checkNotNull();
-        Raw.setCollideConnected(address, value);
-    }
-
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public int getInternalValue() {
-        checkNotNull();
-        return Raw.getInternalValue(address);
-    }
-
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public void setInternalValue(int value) {
-        checkNotNull();
-        Raw.setInternalValue(address, value);
-    }
-
-    /**
-     * Linear damping ratio, non-dimensional. Use 1 for critical damping.
-     */
-    public float getLinearDampingRatio() {
-        checkNotNull();
-        return Raw.getLinearDampingRatio(address);
-    }
-
-    /**
-     * Linear damping ratio, non-dimensional. Use 1 for critical damping.
-     */
-    public void setLinearDampingRatio(float value) {
-        checkNotNull();
-        Raw.setLinearDampingRatio(address, value);
+        Raw.setBase(address, value.getAddress());
     }
 
     /**
@@ -204,98 +107,84 @@ public class b2WeldJointDef extends NativeObject {
     }
 
     /**
-     * The local anchor point relative to bodyA's origin
+     * Angular stiffness as Hertz (cycles per second). Use zero for maximum stiffness.
      */
-    public b2Vec2 getLocalAnchorA() {
+    public float getAngularHertz() {
         checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorA(address));
+        return Raw.getAngularHertz(address);
     }
 
     /**
-     * The local anchor point relative to bodyA's origin
+     * Angular stiffness as Hertz (cycles per second). Use zero for maximum stiffness.
      */
-    public void setLocalAnchorA(b2Vec2 value) {
+    public void setAngularHertz(float value) {
         checkNotNull();
-        Raw.setLocalAnchorA(address, value.getAddress());
+        Raw.setAngularHertz(address, value);
     }
 
     /**
-     * The local anchor point relative to bodyB's origin
+     * Linear damping ratio, non-dimensional. Use 1 for critical damping.
      */
-    public b2Vec2 getLocalAnchorB() {
+    public float getLinearDampingRatio() {
         checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorB(address));
+        return Raw.getLinearDampingRatio(address);
     }
 
     /**
-     * The local anchor point relative to bodyB's origin
+     * Linear damping ratio, non-dimensional. Use 1 for critical damping.
      */
-    public void setLocalAnchorB(b2Vec2 value) {
+    public void setLinearDampingRatio(float value) {
         checkNotNull();
-        Raw.setLocalAnchorB(address, value.getAddress());
+        Raw.setLinearDampingRatio(address, value);
     }
 
     /**
-     * The bodyB angle minus bodyA angle in the reference state (radians)
-     * todo maybe make this a b2Rot
+     * Angular damping ratio, non-dimensional. Use 1 for critical damping.
      */
-    public float getReferenceAngle() {
+    public float getAngularDampingRatio() {
         checkNotNull();
-        return Raw.getReferenceAngle(address);
+        return Raw.getAngularDampingRatio(address);
     }
 
     /**
-     * The bodyB angle minus bodyA angle in the reference state (radians)
-     * todo maybe make this a b2Rot
+     * Angular damping ratio, non-dimensional. Use 1 for critical damping.
      */
-    public void setReferenceAngle(float value) {
+    public void setAngularDampingRatio(float value) {
         checkNotNull();
-        Raw.setReferenceAngle(address, value);
+        Raw.setAngularDampingRatio(address, value);
     }
 
     /**
-     * User data pointer
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public NativeObject getUserData() {
+    public int getInternalValue() {
         checkNotNull();
-        return NativeObject.wrapPointer(Raw.getUserData(address));
+        return Raw.getInternalValue(address);
     }
 
     /**
-     * User data pointer
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public void setUserData(NativeObject value) {
+    public void setInternalValue(int value) {
         checkNotNull();
-        Raw.setUserData(address, value.getAddress());
+        Raw.setInternalValue(address, value);
     }
 
     public static class Raw {
         public static native void b2WeldJointDef_placed(long address);
         public static native long b2WeldJointDef();
         public static native void destroy(long address);
-        public static native float getAngularDampingRatio(long address);
-        public static native void setAngularDampingRatio(long address, float value);
-        public static native float getAngularHertz(long address);
-        public static native void setAngularHertz(long address, float value);
-        public static native long getBodyIdA(long address);
-        public static native void setBodyIdA(long address, long value);
-        public static native long getBodyIdB(long address);
-        public static native void setBodyIdB(long address, long value);
-        public static native boolean getCollideConnected(long address);
-        public static native void setCollideConnected(long address, boolean value);
-        public static native int getInternalValue(long address);
-        public static native void setInternalValue(long address, int value);
-        public static native float getLinearDampingRatio(long address);
-        public static native void setLinearDampingRatio(long address, float value);
+        public static native long getBase(long address);
+        public static native void setBase(long address, long value);
         public static native float getLinearHertz(long address);
         public static native void setLinearHertz(long address, float value);
-        public static native long getLocalAnchorA(long address);
-        public static native void setLocalAnchorA(long address, long value);
-        public static native long getLocalAnchorB(long address);
-        public static native void setLocalAnchorB(long address, long value);
-        public static native float getReferenceAngle(long address);
-        public static native void setReferenceAngle(long address, float value);
-        public static native long getUserData(long address);
-        public static native void setUserData(long address, long value);
+        public static native float getAngularHertz(long address);
+        public static native void setAngularHertz(long address, float value);
+        public static native float getLinearDampingRatio(long address);
+        public static native void setLinearDampingRatio(long address, float value);
+        public static native float getAngularDampingRatio(long address);
+        public static native void setAngularDampingRatio(long address, float value);
+        public static native int getInternalValue(long address);
+        public static native void setInternalValue(long address, int value);
     }
 }

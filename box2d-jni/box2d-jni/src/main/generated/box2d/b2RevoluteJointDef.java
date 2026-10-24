@@ -2,16 +2,8 @@ package box2d;
 
 
 /**
- * Revolute joint definition
- * This requires defining an anchor point where the bodies are joined.
- * The definition uses local anchor points so that the
- * initial configuration can violate the constraint slightly. You also need to
- * specify the initial relative angle for joint limits. This helps when saving
- * and loading a game.
- * The local anchor points are measured from the body's origin
- * rather than the center of mass because:
- * 1. you might not know where the center of mass will be
- * 2. if you add/remove shapes from a body and recompute the mass, the joints will be broken
+ * Revolute joint definition A point on body B is fixed to a point on body A. Allows relative
+ * rotation.
  * @ingroup revolute_joint
  */
 public class b2RevoluteJointDef extends NativeObject {
@@ -82,115 +74,35 @@ public class b2RevoluteJointDef extends NativeObject {
     // Attributes
 
     /**
-     * The first attached body
+     * Base joint definition
      */
-    public b2BodyId getBodyIdA() {
+    public b2JointDef getBase() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdA(address));
+        return b2JointDef.wrapPointer(Raw.getBase(address));
     }
 
     /**
-     * The first attached body
+     * Base joint definition
      */
-    public void setBodyIdA(b2BodyId value) {
+    public void setBase(b2JointDef value) {
         checkNotNull();
-        Raw.setBodyIdA(address, value.getAddress());
+        Raw.setBase(address, value.getAddress());
     }
 
     /**
-     * The second attached body
+     * The target angle for the joint in radians. The spring-damper will drive to this angle.
      */
-    public b2BodyId getBodyIdB() {
+    public float getTargetAngle() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdB(address));
+        return Raw.getTargetAngle(address);
     }
 
     /**
-     * The second attached body
+     * The target angle for the joint in radians. The spring-damper will drive to this angle.
      */
-    public void setBodyIdB(b2BodyId value) {
+    public void setTargetAngle(float value) {
         checkNotNull();
-        Raw.setBodyIdB(address, value.getAddress());
-    }
-
-    /**
-     * Set this flag to true if the attached bodies should collide
-     */
-    public boolean getCollideConnected() {
-        checkNotNull();
-        return Raw.getCollideConnected(address);
-    }
-
-    /**
-     * Set this flag to true if the attached bodies should collide
-     */
-    public void setCollideConnected(boolean value) {
-        checkNotNull();
-        Raw.setCollideConnected(address, value);
-    }
-
-    /**
-     * The spring damping ratio, non-dimensional
-     */
-    public float getDampingRatio() {
-        checkNotNull();
-        return Raw.getDampingRatio(address);
-    }
-
-    /**
-     * The spring damping ratio, non-dimensional
-     */
-    public void setDampingRatio(float value) {
-        checkNotNull();
-        Raw.setDampingRatio(address, value);
-    }
-
-    /**
-     * Scale the debug draw
-     */
-    public float getDrawSize() {
-        checkNotNull();
-        return Raw.getDrawSize(address);
-    }
-
-    /**
-     * Scale the debug draw
-     */
-    public void setDrawSize(float value) {
-        checkNotNull();
-        Raw.setDrawSize(address, value);
-    }
-
-    /**
-     * A flag to enable joint limits
-     */
-    public boolean getEnableLimit() {
-        checkNotNull();
-        return Raw.getEnableLimit(address);
-    }
-
-    /**
-     * A flag to enable joint limits
-     */
-    public void setEnableLimit(boolean value) {
-        checkNotNull();
-        Raw.setEnableLimit(address, value);
-    }
-
-    /**
-     * A flag to enable the joint motor
-     */
-    public boolean getEnableMotor() {
-        checkNotNull();
-        return Raw.getEnableMotor(address);
-    }
-
-    /**
-     * A flag to enable the joint motor
-     */
-    public void setEnableMotor(boolean value) {
-        checkNotNull();
-        Raw.setEnableMotor(address, value);
+        Raw.setTargetAngle(address, value);
     }
 
     /**
@@ -226,51 +138,35 @@ public class b2RevoluteJointDef extends NativeObject {
     }
 
     /**
-     * Used internally to detect a valid definition. DO NOT SET.
+     * The spring damping ratio, non-dimensional
      */
-    public int getInternalValue() {
+    public float getDampingRatio() {
         checkNotNull();
-        return Raw.getInternalValue(address);
+        return Raw.getDampingRatio(address);
     }
 
     /**
-     * Used internally to detect a valid definition. DO NOT SET.
+     * The spring damping ratio, non-dimensional
      */
-    public void setInternalValue(int value) {
+    public void setDampingRatio(float value) {
         checkNotNull();
-        Raw.setInternalValue(address, value);
+        Raw.setDampingRatio(address, value);
     }
 
     /**
-     * The local anchor point relative to bodyA's origin
+     * A flag to enable joint limits
      */
-    public b2Vec2 getLocalAnchorA() {
+    public boolean getEnableLimit() {
         checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorA(address));
+        return Raw.getEnableLimit(address);
     }
 
     /**
-     * The local anchor point relative to bodyA's origin
+     * A flag to enable joint limits
      */
-    public void setLocalAnchorA(b2Vec2 value) {
+    public void setEnableLimit(boolean value) {
         checkNotNull();
-        Raw.setLocalAnchorA(address, value.getAddress());
-    }
-
-    /**
-     * The local anchor point relative to bodyB's origin
-     */
-    public b2Vec2 getLocalAnchorB() {
-        checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorB(address));
-    }
-
-    /**
-     * The local anchor point relative to bodyB's origin
-     */
-    public void setLocalAnchorB(b2Vec2 value) {
-        checkNotNull();
-        Raw.setLocalAnchorB(address, value.getAddress());
+        Raw.setEnableLimit(address, value);
     }
 
     /**
@@ -287,6 +183,38 @@ public class b2RevoluteJointDef extends NativeObject {
     public void setLowerAngle(float value) {
         checkNotNull();
         Raw.setLowerAngle(address, value);
+    }
+
+    /**
+     * The upper angle for the joint limit in radians. Maximum of 0.99*pi radians.
+     */
+    public float getUpperAngle() {
+        checkNotNull();
+        return Raw.getUpperAngle(address);
+    }
+
+    /**
+     * The upper angle for the joint limit in radians. Maximum of 0.99*pi radians.
+     */
+    public void setUpperAngle(float value) {
+        checkNotNull();
+        Raw.setUpperAngle(address, value);
+    }
+
+    /**
+     * A flag to enable the joint motor
+     */
+    public boolean getEnableMotor() {
+        checkNotNull();
+        return Raw.getEnableMotor(address);
+    }
+
+    /**
+     * A flag to enable the joint motor
+     */
+    public void setEnableMotor(boolean value) {
+        checkNotNull();
+        Raw.setEnableMotor(address, value);
     }
 
     /**
@@ -322,94 +250,48 @@ public class b2RevoluteJointDef extends NativeObject {
     }
 
     /**
-     * The bodyB angle minus bodyA angle in the reference state (radians).
-     * This defines the zero angle for the joint limit.
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public float getReferenceAngle() {
+    public int getInternalValue() {
         checkNotNull();
-        return Raw.getReferenceAngle(address);
+        return Raw.getInternalValue(address);
     }
 
     /**
-     * The bodyB angle minus bodyA angle in the reference state (radians).
-     * This defines the zero angle for the joint limit.
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public void setReferenceAngle(float value) {
+    public void setInternalValue(int value) {
         checkNotNull();
-        Raw.setReferenceAngle(address, value);
-    }
-
-    /**
-     * The upper angle for the joint limit in radians. Maximum of 0.99*pi radians.
-     */
-    public float getUpperAngle() {
-        checkNotNull();
-        return Raw.getUpperAngle(address);
-    }
-
-    /**
-     * The upper angle for the joint limit in radians. Maximum of 0.99*pi radians.
-     */
-    public void setUpperAngle(float value) {
-        checkNotNull();
-        Raw.setUpperAngle(address, value);
-    }
-
-    /**
-     * User data pointer
-     */
-    public NativeObject getUserData() {
-        checkNotNull();
-        return NativeObject.wrapPointer(Raw.getUserData(address));
-    }
-
-    /**
-     * User data pointer
-     */
-    public void setUserData(NativeObject value) {
-        checkNotNull();
-        Raw.setUserData(address, value.getAddress());
+        Raw.setInternalValue(address, value);
     }
 
     public static class Raw {
         public static native void b2RevoluteJointDef_placed(long address);
         public static native long b2RevoluteJointDef();
         public static native void destroy(long address);
-        public static native long getBodyIdA(long address);
-        public static native void setBodyIdA(long address, long value);
-        public static native long getBodyIdB(long address);
-        public static native void setBodyIdB(long address, long value);
-        public static native boolean getCollideConnected(long address);
-        public static native void setCollideConnected(long address, boolean value);
-        public static native float getDampingRatio(long address);
-        public static native void setDampingRatio(long address, float value);
-        public static native float getDrawSize(long address);
-        public static native void setDrawSize(long address, float value);
-        public static native boolean getEnableLimit(long address);
-        public static native void setEnableLimit(long address, boolean value);
-        public static native boolean getEnableMotor(long address);
-        public static native void setEnableMotor(long address, boolean value);
+        public static native long getBase(long address);
+        public static native void setBase(long address, long value);
+        public static native float getTargetAngle(long address);
+        public static native void setTargetAngle(long address, float value);
         public static native boolean getEnableSpring(long address);
         public static native void setEnableSpring(long address, boolean value);
         public static native float getHertz(long address);
         public static native void setHertz(long address, float value);
-        public static native int getInternalValue(long address);
-        public static native void setInternalValue(long address, int value);
-        public static native long getLocalAnchorA(long address);
-        public static native void setLocalAnchorA(long address, long value);
-        public static native long getLocalAnchorB(long address);
-        public static native void setLocalAnchorB(long address, long value);
+        public static native float getDampingRatio(long address);
+        public static native void setDampingRatio(long address, float value);
+        public static native boolean getEnableLimit(long address);
+        public static native void setEnableLimit(long address, boolean value);
         public static native float getLowerAngle(long address);
         public static native void setLowerAngle(long address, float value);
+        public static native float getUpperAngle(long address);
+        public static native void setUpperAngle(long address, float value);
+        public static native boolean getEnableMotor(long address);
+        public static native void setEnableMotor(long address, boolean value);
         public static native float getMaxMotorTorque(long address);
         public static native void setMaxMotorTorque(long address, float value);
         public static native float getMotorSpeed(long address);
         public static native void setMotorSpeed(long address, float value);
-        public static native float getReferenceAngle(long address);
-        public static native void setReferenceAngle(long address, float value);
-        public static native float getUpperAngle(long address);
-        public static native void setUpperAngle(long address, float value);
-        public static native long getUserData(long address);
-        public static native void setUserData(long address, long value);
+        public static native int getInternalValue(long address);
+        public static native void setInternalValue(long address, int value);
     }
 }

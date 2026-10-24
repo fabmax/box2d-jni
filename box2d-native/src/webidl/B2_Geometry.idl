@@ -23,28 +23,28 @@ interface B2_Geometry {
     [Value] static b2MassData computeCapsuleMass([Const] b2Capsule shape, float density);
     [Value] static b2MassData computePolygonMass([Const] b2Polygon shape, float density);
 
-    // AABB computation functions
-    [Value] static b2AABB computeCircleAABB([Const] b2Circle shape, [Ref] b2Transform transform);
-    [Value] static b2AABB computeCapsuleAABB([Const] b2Capsule shape, [Ref] b2Transform transform);
-    [Value] static b2AABB computePolygonAABB([Const] b2Polygon shape, [Ref] b2Transform transform);
-    [Value] static b2AABB computeSegmentAABB([Const] b2Segment shape, [Ref] b2Transform transform);
+    // Bounding box computation functions
+    [Value] static b2AABB computeCircleBounds([Const] b2Circle shape, [Ref] b2Transform transform);
+    [Value] static b2AABB computeCapsuleBounds([Const] b2Capsule shape, [Ref] b2Transform transform);
+    [Value] static b2AABB computePolygonBounds([Const] b2Polygon shape, [Ref] b2Transform transform);
+    [Value] static b2AABB computeSegmentBounds([Const] b2Segment shape, [Ref] b2Transform transform);
 
     // Point-in-shape tests
-    static boolean pointInCircle([Ref] b2Vec2 point, [Const] b2Circle shape);
-    static boolean pointInCapsule([Ref] b2Vec2 point, [Const] b2Capsule shape);
-    static boolean pointInPolygon([Ref] b2Vec2 point, [Const] b2Polygon shape);
+    static boolean pointInCircle([Const] b2Circle shape, [Ref] b2Vec2 point);
+    static boolean pointInCapsule([Const] b2Capsule shape, [Ref] b2Vec2 point);
+    static boolean pointInPolygon([Const] b2Polygon shape, [Ref] b2Vec2 point);
 
     // Ray casting functions
-    [Value] static b2CastOutput rayCastCircle([Const] b2RayCastInput input, [Const] b2Circle shape);
-    [Value] static b2CastOutput rayCastCapsule([Const] b2RayCastInput input, [Const] b2Capsule shape);
-    [Value] static b2CastOutput rayCastSegment([Const] b2RayCastInput input, [Const] b2Segment shape, boolean oneSided);
-    [Value] static b2CastOutput rayCastPolygon([Const] b2RayCastInput input, [Const] b2Polygon shape);
+    [Value] static b2CastOutput castRayCircle([Const] b2Circle shape, [Const] b2RayCastInput input);
+    [Value] static b2CastOutput castRayCapsule([Const] b2Capsule shape, [Const] b2RayCastInput input);
+    [Value] static b2CastOutput castRaySegment([Const] b2Segment shape, [Const] b2RayCastInput input, boolean oneSided);
+    [Value] static b2CastOutput castRayPolygon([Const] b2Polygon shape, [Const] b2RayCastInput input);
 
     // Shape casting functions
-    [Value] static b2CastOutput shapeCastCircle([Const] b2ShapeCastInput input, [Const] b2Circle shape);
-    [Value] static b2CastOutput shapeCastCapsule([Const] b2ShapeCastInput input, [Const] b2Capsule shape);
-    [Value] static b2CastOutput shapeCastSegment([Const] b2ShapeCastInput input, [Const] b2Segment shape);
-    [Value] static b2CastOutput shapeCastPolygon([Const] b2ShapeCastInput input, [Const] b2Polygon shape);
+    [Value] static b2CastOutput castShapeCircle([Const] b2Circle shape, [Const] b2ShapeCastInput input);
+    [Value] static b2CastOutput castShapeCapsule([Const] b2Capsule shape, [Const] b2ShapeCastInput input);
+    [Value] static b2CastOutput castShapeSegment([Const] b2Segment shape, [Const] b2ShapeCastInput input);
+    [Value] static b2CastOutput castShapePolygon([Const] b2Polygon shape, [Const] b2ShapeCastInput input);
 
     // Hull computation and validation
     static void computeHull(b2Vec2Array points, [Ref] b2Hull result);

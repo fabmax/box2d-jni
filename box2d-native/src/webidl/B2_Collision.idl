@@ -1,17 +1,17 @@
 [NoDelete]
 interface B2_Collision {
-    [Value] static b2Manifold collideCircles([Const] b2Circle circleA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collideCapsuleAndCircle([Const] b2Capsule capsuleA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collideSegmentAndCircle([Const] b2Segment segmentA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collidePolygonAndCircle([Const] b2Polygon polygonA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collideCapsules([Const] b2Capsule capsuleA, [Ref] b2Transform xfA, [Const] b2Capsule capsuleB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collideSegmentAndCapsule([Const] b2Segment segmentA, [Ref] b2Transform xfA, [Const] b2Capsule capsuleB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collidePolygonAndCapsule([Const] b2Polygon polygonA, [Ref] b2Transform xfA, [Const] b2Capsule capsuleB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collidePolygons([Const] b2Polygon polygonA, [Ref] b2Transform xfA, [Const] b2Polygon polygonB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collideSegmentAndPolygon([Const] b2Segment segmentA, [Ref] b2Transform xfA, [Const] b2Polygon polygonB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collideChainSegmentAndCircle([Const] b2ChainSegment segmentA, [Ref] b2Transform xfA, [Const] b2Circle circleB, [Ref] b2Transform xfB);
-    [Value] static b2Manifold collideChainSegmentAndCapsule([Const] b2ChainSegment segmentA, [Ref] b2Transform xfA, [Const] b2Capsule capsuleB, [Ref] b2Transform xfB, b2SimplexCache cache);
-    [Value] static b2Manifold collideChainSegmentAndPolygon([Const] b2ChainSegment segmentA, [Ref] b2Transform xfA, [Const] b2Polygon polygonB, [Ref] b2Transform xfB, b2SimplexCache cache);
+    [Value] static b2LocalManifold collideCircles([Const] b2Circle circleA, [Const] b2Circle circleB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collideCapsuleAndCircle([Const] b2Capsule capsuleA, [Const] b2Circle circleB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collideSegmentAndCircle([Const] b2Segment segmentA, [Const] b2Circle circleB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collidePolygonAndCircle([Const] b2Polygon polygonA, [Const] b2Circle circleB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collideCapsules([Const] b2Capsule capsuleA, [Const] b2Capsule capsuleB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collideSegmentAndCapsule([Const] b2Segment segmentA, [Const] b2Capsule capsuleB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collidePolygonAndCapsule([Const] b2Polygon polygonA, [Const] b2Capsule capsuleB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collidePolygons([Const] b2Polygon polygonA, [Const] b2Polygon polygonB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collideSegmentAndPolygon([Const] b2Segment segmentA, [Const] b2Polygon polygonB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collideChainSegmentAndCircle([Const] b2ChainSegment segmentA, [Const] b2Circle circleB, [Ref] b2Transform xf);
+    [Value] static b2LocalManifold collideChainSegmentAndCapsule([Const] b2ChainSegment segmentA, [Const] b2Capsule capsuleB, [Ref] b2Transform xf, b2SimplexCache cache);
+    [Value] static b2LocalManifold collideChainSegmentAndPolygon([Const] b2ChainSegment segmentA, [Const] b2Polygon polygonB, [Ref] b2Transform xf, b2SimplexCache cache);
 };
 
 [StackAllocatable]
@@ -23,8 +23,8 @@ interface b2ManifoldPoint {
     attribute float normalImpulse;
     attribute float normalVelocity;
     attribute boolean persisted;
-    [Value] attribute b2Vec2 point;
     attribute float separation;
+    attribute float baseSeparation;
     attribute float tangentImpulse;
     attribute float totalNormalImpulse;
 };
@@ -36,4 +36,20 @@ interface b2Manifold {
     attribute long pointCount;
     [Value] attribute b2ManifoldPoint[] points;
     attribute float rollingImpulse;
+};
+
+[StackAllocatable]
+interface b2LocalManifoldPoint {
+    void b2LocalManifoldPoint();
+    [Value] attribute b2Vec2 point;
+    attribute float separation;
+    attribute unsigned short id;
+};
+
+[StackAllocatable]
+interface b2LocalManifold {
+    void b2LocalManifold();
+    [Value] attribute b2Vec2 normal;
+    [Value] attribute b2LocalManifoldPoint[] points;
+    attribute long pointCount;
 };

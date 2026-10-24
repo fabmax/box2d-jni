@@ -92,79 +92,79 @@ class B2_Geometry {
     }
 
     /// Compute the bounding box of a transformed circle
-    static inline b2AABB computeCircleAABB(const b2Circle* shape, b2Transform transform) {
-        return b2ComputeCircleAABB(shape, transform); 
+    static inline b2AABB computeCircleBounds(const b2Circle* shape, b2Transform transform) {
+        return b2ComputeCircleBounds(shape, transform);
     }
 
     /// Compute the bounding box of a transformed capsule
-    static inline b2AABB computeCapsuleAABB(const b2Capsule* shape, b2Transform transform) {
-        return b2ComputeCapsuleAABB(shape, transform); 
+    static inline b2AABB computeCapsuleBounds(const b2Capsule* shape, b2Transform transform) {
+        return b2ComputeCapsuleBounds(shape, transform);
     }
 
     /// Compute the bounding box of a transformed polygon
-    static inline b2AABB computePolygonAABB(const b2Polygon* shape, b2Transform transform) {
-        return b2ComputePolygonAABB(shape, transform); 
+    static inline b2AABB computePolygonBounds(const b2Polygon* shape, b2Transform transform) {
+        return b2ComputePolygonBounds(shape, transform);
     }
 
     /// Compute the bounding box of a transformed line segment
-    static inline b2AABB computeSegmentAABB(const b2Segment* shape, b2Transform transform) {
-        return b2ComputeSegmentAABB(shape, transform); 
+    static inline b2AABB computeSegmentBounds(const b2Segment* shape, b2Transform transform) {
+        return b2ComputeSegmentBounds(shape, transform);
     }
 
     /// Test a point for overlap with a circle in local space
-    static inline bool pointInCircle(b2Vec2 point, const b2Circle* shape) {
-        return b2PointInCircle(point, shape); 
+    static inline bool pointInCircle(const b2Circle* shape, b2Vec2 point) {
+        return b2PointInCircle(shape, point);
     }
 
     /// Test a point for overlap with a capsule in local space
-    static inline bool pointInCapsule(b2Vec2 point, const b2Capsule* shape) {
-        return b2PointInCapsule(point, shape); 
+    static inline bool pointInCapsule(const b2Capsule* shape, b2Vec2 point) {
+        return b2PointInCapsule(shape, point);
     }
 
     /// Test a point for overlap with a convex polygon in local space
-    static inline bool pointInPolygon(b2Vec2 point, const b2Polygon* shape) {
-        return b2PointInPolygon(point, shape); 
+    static inline bool pointInPolygon(const b2Polygon* shape, b2Vec2 point) {
+        return b2PointInPolygon(shape, point);
     }
 
-    /// Ray cast versus circle shape in local space. Initial overlap is treated as a miss.
-    static inline b2CastOutput rayCastCircle(const b2RayCastInput* input, const b2Circle* shape) {
-        return b2RayCastCircle(input, shape); 
+    /// Ray cast versus circle shape in local space.
+    static inline b2CastOutput castRayCircle(const b2Circle* shape, const b2RayCastInput* input) {
+        return b2CastRayCircle(shape, input);
     }
 
-    /// Ray cast versus capsule shape in local space. Initial overlap is treated as a miss.
-    static inline b2CastOutput rayCastCapsule(const b2RayCastInput* input, const b2Capsule* shape) {
-        return b2RayCastCapsule(input, shape); 
+    /// Ray cast versus capsule shape in local space.
+    static inline b2CastOutput castRayCapsule(const b2Capsule* shape, const b2RayCastInput* input) {
+        return b2CastRayCapsule(shape, input);
     }
 
-    /// Ray cast versus segment shape in local space. Optionally treat the segment as one-sided with hits from
-    /// the left side being treated as a miss.
-    static inline b2CastOutput rayCastSegment(const b2RayCastInput* input, const b2Segment* shape, bool oneSided) {
-        return b2RayCastSegment(input, shape, oneSided); 
+    /// Ray cast versus segment shape in local space. Optionally treat the segment as one-sided with
+    /// hits from the left side being treated as a miss.
+    static inline b2CastOutput castRaySegment(const b2Segment* shape, const b2RayCastInput* input, bool oneSided) {
+        return b2CastRaySegment(shape, input, oneSided);
     }
 
-    /// Ray cast versus polygon shape in local space. Initial overlap is treated as a miss.
-    static inline b2CastOutput rayCastPolygon(const b2RayCastInput* input, const b2Polygon* shape) {
-        return b2RayCastPolygon(input, shape); 
+    /// Ray cast versus polygon shape in local space.
+    static inline b2CastOutput castRayPolygon(const b2Polygon* shape, const b2RayCastInput* input) {
+        return b2CastRayPolygon(shape, input);
     }
 
-    /// Shape cast versus a circle. Initial overlap is treated as a miss.
-    static inline b2CastOutput shapeCastCircle(const b2ShapeCastInput* input, const b2Circle* shape) {
-        return b2ShapeCastCircle(input, shape); 
+    /// Shape cast versus a circle.
+    static inline b2CastOutput castShapeCircle(const b2Circle* shape, const b2ShapeCastInput* input) {
+        return b2CastShapeCircle(shape, input);
     }
 
-    /// Shape cast versus a capsule. Initial overlap is treated as a miss.
-    static inline b2CastOutput shapeCastCapsule(const b2ShapeCastInput* input, const b2Capsule* shape) {
-        return b2ShapeCastCapsule(input, shape); 
+    /// Shape cast versus a capsule.
+    static inline b2CastOutput castShapeCapsule(const b2Capsule* shape, const b2ShapeCastInput* input) {
+        return b2CastShapeCapsule(shape, input);
     }
 
-    /// Shape cast versus a line segment. Initial overlap is treated as a miss.
-    static inline b2CastOutput shapeCastSegment(const b2ShapeCastInput* input, const b2Segment* shape) {
-        return b2ShapeCastSegment(input, shape); 
+    /// Shape cast versus a line segment.
+    static inline b2CastOutput castShapeSegment(const b2Segment* shape, const b2ShapeCastInput* input) {
+        return b2CastShapeSegment(shape, input);
     }
 
-    /// Shape cast versus a convex polygon. Initial overlap is treated as a miss.
-    static inline b2CastOutput shapeCastPolygon(const b2ShapeCastInput* input, const b2Polygon* shape) {
-        return b2ShapeCastPolygon(input, shape); 
+    /// Shape cast versus a convex polygon.
+    static inline b2CastOutput castShapePolygon(const b2Polygon* shape, const b2ShapeCastInput* input) {
+        return b2CastShapePolygon(shape, input);
     }
 
     /// Compute the convex hull of a set of points. Returns an empty hull if it fails.

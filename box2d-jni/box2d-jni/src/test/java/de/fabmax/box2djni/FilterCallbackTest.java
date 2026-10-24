@@ -49,6 +49,7 @@ public class FilterCallbackTest {
             var shapeDef = b2ShapeDef.createAt(stack, MemoryStack::nmalloc);
             B2_Shape.defaultShapeDef(shapeDef);
             shapeDef.setDensity(1.0f);
+            shapeDef.setEnableCustomFiltering(true);
             var material = shapeDef.getMaterial();
             material.setFriction(0.3f);
             shapeDef.setMaterial(material);

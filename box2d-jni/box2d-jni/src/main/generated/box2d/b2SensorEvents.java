@@ -2,9 +2,9 @@ package box2d;
 
 
 /**
- * Sensor events are buffered in the Box2D world and are available
- * as begin/end overlap event arrays after the time step is complete.
- * Note: these may become invalid if bodies and/or shapes are destroyed
+ * Sensor events are buffered in the world and are available as begin/end overlap event arrays
+ * after the time step is complete. Note: these may become invalid if bodies and/or shapes are
+ * destroyed
  */
 public class b2SensorEvents extends NativeObject {
 

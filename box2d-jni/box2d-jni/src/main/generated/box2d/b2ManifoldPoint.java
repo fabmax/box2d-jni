@@ -2,11 +2,10 @@ package box2d;
 
 
 /**
- * A manifold point is a contact point belonging to a contact manifold.
- * It holds details related to the geometry and dynamics of the contact points.
- * Box2D uses speculative collision so some contact points may be separated.
- * You may use the totalNormalImpulse to determine if there was an interaction during
- * the time step.
+ * A manifold point is a contact point belonging to a contact manifold. It holds details related to
+ * the geometry and dynamics of the contact points. Box2D uses speculative collision so some
+ * contact points may be separated. You may use the totalNormalImpulse to determine if there was an
+ * interaction during the time step.
  */
 public class b2ManifoldPoint extends NativeObject {
 
@@ -76,8 +75,9 @@ public class b2ManifoldPoint extends NativeObject {
     // Attributes
 
     /**
-     * Location of the contact point relative to shapeA's origin in world space
-     * @note When used internally to the Box2D solver, this is relative to the body center of mass.
+     * Location of the contact point relative to bodyA's center of mass in world space. This can be
+     * converted to a world point using:
+     * b2Pos worldPointA = b2OffsetPos(b2Body_GetWorldCenter(myBodyIdA), anchorA);
      */
     public b2Vec2 getAnchorA() {
         checkNotNull();
@@ -85,8 +85,9 @@ public class b2ManifoldPoint extends NativeObject {
     }
 
     /**
-     * Location of the contact point relative to shapeA's origin in world space
-     * @note When used internally to the Box2D solver, this is relative to the body center of mass.
+     * Location of the contact point relative to bodyA's center of mass in world space. This can be
+     * converted to a world point using:
+     * b2Pos worldPointA = b2OffsetPos(b2Body_GetWorldCenter(myBodyIdA), anchorA);
      */
     public void setAnchorA(b2Vec2 value) {
         checkNotNull();
@@ -94,8 +95,7 @@ public class b2ManifoldPoint extends NativeObject {
     }
 
     /**
-     * Location of the contact point relative to shapeB's origin in world space
-     * @note When used internally to the Box2D solver, this is relative to the body center of mass.
+     * Similar for body B.
      */
     public b2Vec2 getAnchorB() {
         checkNotNull();
@@ -103,8 +103,7 @@ public class b2ManifoldPoint extends NativeObject {
     }
 
     /**
-     * Location of the contact point relative to shapeB's origin in world space
-     * @note When used internally to the Box2D solver, this is relative to the body center of mass.
+     * Similar for body B.
      */
     public void setAnchorB(b2Vec2 value) {
         checkNotNull();
@@ -144,8 +143,9 @@ public class b2ManifoldPoint extends NativeObject {
     }
 
     /**
-     * Relative normal velocity pre-solve. Used for hit events. If the normal impulse is
-     * zero then there was no hit. Negative means shapes are approaching.
+     * Relative normal velocity pre-solve. Negative when approaching. This is only computed if hit
+     * events are enabled. It may be computed otherwise as a side effect of SIMD bundling, but that
+     * is not guaranteed.
      */
     public float getNormalVelocity() {
         checkNotNull();
@@ -153,8 +153,9 @@ public class b2ManifoldPoint extends NativeObject {
     }
 
     /**
-     * Relative normal velocity pre-solve. Used for hit events. If the normal impulse is
-     * zero then there was no hit. Negative means shapes are approaching.
+     * Relative normal velocity pre-solve. Negative when approaching. This is only computed if hit
+     * events are enabled. It may be computed otherwise as a side effect of SIMD bundling, but that
+     * is not guaranteed.
      */
     public void setNormalVelocity(float value) {
         checkNotNull();
@@ -178,24 +179,6 @@ public class b2ManifoldPoint extends NativeObject {
     }
 
     /**
-     * Location of the contact point in world space. Subject to precision loss at large coordinates.
-     * @note Should only be used for debugging.
-     */
-    public b2Vec2 getPoint() {
-        checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getPoint(address));
-    }
-
-    /**
-     * Location of the contact point in world space. Subject to precision loss at large coordinates.
-     * @note Should only be used for debugging.
-     */
-    public void setPoint(b2Vec2 value) {
-        checkNotNull();
-        Raw.setPoint(address, value.getAddress());
-    }
-
-    /**
      * The separation of the contact point, negative if penetrating
      */
     public float getSeparation() {
@@ -209,6 +192,22 @@ public class b2ManifoldPoint extends NativeObject {
     public void setSeparation(float value) {
         checkNotNull();
         Raw.setSeparation(address, value);
+    }
+
+    /**
+     * Cached separation used for contact recycling
+     */
+    public float getBaseSeparation() {
+        checkNotNull();
+        return Raw.getBaseSeparation(address);
+    }
+
+    /**
+     * Cached separation used for contact recycling
+     */
+    public void setBaseSeparation(float value) {
+        checkNotNull();
+        Raw.setBaseSeparation(address, value);
     }
 
     /**
@@ -228,8 +227,9 @@ public class b2ManifoldPoint extends NativeObject {
     }
 
     /**
-     * The total normal impulse applied across sub-stepping and restitution. This is important
-     * to identify speculative contact points that had an interaction in the time step.
+     * The total normal impulse applied across sub-stepping and restitution. This is important to
+     * identify speculative contact points that had an interaction in the time step. This includes
+     * the warm starting impulse, the sub-step delta impulse, and the restitution impulse.
      */
     public float getTotalNormalImpulse() {
         checkNotNull();
@@ -237,8 +237,9 @@ public class b2ManifoldPoint extends NativeObject {
     }
 
     /**
-     * The total normal impulse applied across sub-stepping and restitution. This is important
-     * to identify speculative contact points that had an interaction in the time step.
+     * The total normal impulse applied across sub-stepping and restitution. This is important to
+     * identify speculative contact points that had an interaction in the time step. This includes
+     * the warm starting impulse, the sub-step delta impulse, and the restitution impulse.
      */
     public void setTotalNormalImpulse(float value) {
         checkNotNull();
@@ -261,10 +262,10 @@ public class b2ManifoldPoint extends NativeObject {
         public static native void setNormalVelocity(long address, float value);
         public static native boolean getPersisted(long address);
         public static native void setPersisted(long address, boolean value);
-        public static native long getPoint(long address);
-        public static native void setPoint(long address, long value);
         public static native float getSeparation(long address);
         public static native void setSeparation(long address, float value);
+        public static native float getBaseSeparation(long address);
+        public static native void setBaseSeparation(long address, float value);
         public static native float getTangentImpulse(long address);
         public static native void setTangentImpulse(long address, float value);
         public static native float getTotalNormalImpulse(long address);

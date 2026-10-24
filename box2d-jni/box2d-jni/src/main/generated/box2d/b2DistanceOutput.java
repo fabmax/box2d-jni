@@ -2,7 +2,7 @@ package box2d;
 
 
 /**
- * Output for b2ShapeDistance
+ * Output for b2ComputeShapeDistance
  */
 public class b2DistanceOutput extends NativeObject {
 
@@ -82,7 +82,7 @@ public class b2DistanceOutput extends NativeObject {
     }
 
     /**
-     * &lt; Closest point on shapeA
+     * &lt; Closest point on shapeA, in shape A's frame
      */
     public b2Vec2 getPointB() {
         checkNotNull();
@@ -90,7 +90,7 @@ public class b2DistanceOutput extends NativeObject {
     }
 
     /**
-     * &lt; Closest point on shapeA
+     * &lt; Closest point on shapeA, in shape A's frame
      */
     public void setPointB(b2Vec2 value) {
         checkNotNull();
@@ -98,7 +98,7 @@ public class b2DistanceOutput extends NativeObject {
     }
 
     /**
-     * &lt; Closest point on shapeB
+     * &lt; Closest point on shapeB, in shape A's frame
      */
     public b2Vec2 getNormal() {
         checkNotNull();
@@ -106,7 +106,7 @@ public class b2DistanceOutput extends NativeObject {
     }
 
     /**
-     * &lt; Closest point on shapeB
+     * &lt; Closest point on shapeB, in shape A's frame
      */
     public void setNormal(b2Vec2 value) {
         checkNotNull();
@@ -114,7 +114,7 @@ public class b2DistanceOutput extends NativeObject {
     }
 
     /**
-     * &lt; Normal vector that points from A to B. Invalid if distance is zero.
+     * &lt; A to B normal in shape A's frame. Invalid if distance is zero.
      */
     public float getDistance() {
         checkNotNull();
@@ -122,7 +122,7 @@ public class b2DistanceOutput extends NativeObject {
     }
 
     /**
-     * &lt; Normal vector that points from A to B. Invalid if distance is zero.
+     * &lt; A to B normal in shape A's frame. Invalid if distance is zero.
      */
     public void setDistance(float value) {
         checkNotNull();

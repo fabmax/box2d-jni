@@ -43,17 +43,32 @@ public class b2PreSolveFcnImpl extends b2PreSolveFcnI {
     /*
      * Called from native code
      */
-    private boolean _preSolveFcn(long shapeIdA, long shapeIdB, long manifold) {
-        return preSolveFcn(shapeIdA, shapeIdB, b2Manifold.wrapPointer(manifold));
+    private void _preSolveFcn(long shapeIdA, long shapeIdB, long manifold) {
+        preSolveFcn(shapeIdA, shapeIdB, b2Manifold.wrapPointer(manifold));
     }
 
     /**
      * @param shapeIdA WebIDL type: unsigned long long
      * @param shapeIdB WebIDL type: unsigned long long
      * @param manifold WebIDL type: {@link b2Manifold}
+     */
+    public void preSolveFcn(long shapeIdA, long shapeIdB, b2Manifold manifold) { }
+
+    /*
+     * Called from native code
+     */
+    private boolean _preContinuousFcn(long shapeIdA, long shapeIdB, long point, long normal) {
+        return preContinuousFcn(shapeIdA, shapeIdB, b2Vec2.wrapPointer(point), b2Vec2.wrapPointer(normal));
+    }
+
+    /**
+     * @param shapeIdA WebIDL type: unsigned long long
+     * @param shapeIdB WebIDL type: unsigned long long
+     * @param point    WebIDL type: {@link b2Vec2} [Ref]
+     * @param normal   WebIDL type: {@link b2Vec2} [Ref]
      * @return WebIDL type: boolean
      */
-    public boolean preSolveFcn(long shapeIdA, long shapeIdB, b2Manifold manifold) {
+    public boolean preContinuousFcn(long shapeIdA, long shapeIdB, b2Vec2 point, b2Vec2 normal) {
         return false;
     }
 
