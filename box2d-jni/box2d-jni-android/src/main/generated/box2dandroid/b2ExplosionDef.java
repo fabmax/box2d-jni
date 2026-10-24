@@ -2,8 +2,8 @@ package box2dandroid;
 
 
 /**
- * The explosion definition is used to configure options for explosions. Explosions
- * consider shape geometry when computing the impulse.
+ * The explosion definition is used to configure options for explosions. Explosions consider shape
+ * geometry when computing the impulse.
  * @ingroup world
  */
 public class b2ExplosionDef extends NativeObject {
@@ -90,9 +90,9 @@ public class b2ExplosionDef extends NativeObject {
     }
 
     /**
-     * Impulse per unit length. This applies an impulse according to the shape perimeter that
-     * is facing the explosion. Explosions only apply to circles, capsules, and polygons. This
-     * may be negative for implosions.
+     * Impulse per unit length. This applies an impulse according to the shape perimeter that is
+     * facing the explosion. Explosions only apply to circles, capsules, and polygons. This may be
+     * negative for implosions.
      */
     public float getImpulsePerLength() {
         checkNotNull();
@@ -100,9 +100,9 @@ public class b2ExplosionDef extends NativeObject {
     }
 
     /**
-     * Impulse per unit length. This applies an impulse according to the shape perimeter that
-     * is facing the explosion. Explosions only apply to circles, capsules, and polygons. This
-     * may be negative for implosions.
+     * Impulse per unit length. This applies an impulse according to the shape perimeter that is
+     * facing the explosion. Explosions only apply to circles, capsules, and polygons. This may be
+     * negative for implosions.
      */
     public void setImpulsePerLength(float value) {
         checkNotNull();

@@ -2,10 +2,9 @@ package box2dandroid;
 
 
 /**
- * An end touch event is generated when two shapes stop touching.
- * You will get an end event if you do anything that destroys contacts previous to the last
- * world step. These include things like setting the transform, destroying a body
- * or shape, or changing a filter or body type.
+ * An end touch event is generated when two shapes stop touching. You will get an end event if you
+ * do anything that destroys contacts previous to the last world step. These include things like
+ * setting the transform, destroying a body or shape, or changing a filter or body type.
  */
 public class b2ContactEndTouchEvent extends NativeObject {
 
@@ -110,6 +109,24 @@ public class b2ContactEndTouchEvent extends NativeObject {
         Raw.setShapeIdB(address, value.getAddress());
     }
 
+    /**
+     * Id of the contact.
+     * @warning this contact may have been destroyed
+     */
+    public b2ContactId getContactId() {
+        checkNotNull();
+        return b2ContactId.wrapPointer(Raw.getContactId(address));
+    }
+
+    /**
+     * Id of the contact.
+     * @warning this contact may have been destroyed
+     */
+    public void setContactId(b2ContactId value) {
+        checkNotNull();
+        Raw.setContactId(address, value.getAddress());
+    }
+
     public static class Raw {
         public static native void b2ContactEndTouchEvent_placed(long address);
         public static native long b2ContactEndTouchEvent();
@@ -118,5 +135,7 @@ public class b2ContactEndTouchEvent extends NativeObject {
         public static native void setShapeIdA(long address, long value);
         public static native long getShapeIdB(long address);
         public static native void setShapeIdB(long address, long value);
+        public static native long getContactId(long address);
+        public static native void setContactId(long address, long value);
     }
 }

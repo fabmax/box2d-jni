@@ -77,8 +77,15 @@ public class B2_Math extends NativeObject {
     /**
      * Is this a valid rotation? Not NaN or infinity. Is normalized.
      */
-    public static boolean isValidRotation(b2Rot q) {
-        return Raw.isValidRotation(q.getAddress());
+    public static boolean isValidRot(b2Rot q) {
+        return Raw.isValidRot(q.getAddress());
+    }
+
+    /**
+     * Is this a valid transform? Not NaN or infinity. Rotation is normalized.
+     */
+    public static boolean isValidTransform(b2Transform t) {
+        return Raw.isValidTransform(t.getAddress());
     }
 
     /**
@@ -102,7 +109,8 @@ public class B2_Math extends NativeObject {
         public static native float getLengthUnitsPerMeter();
         public static native boolean isValidFloat(float a);
         public static native boolean isValidVec2(long v);
-        public static native boolean isValidRotation(long q);
+        public static native boolean isValidRot(long q);
+        public static native boolean isValidTransform(long t);
         public static native boolean isValidAABB(long aabb);
         public static native boolean isValidPlane(long a);
     }

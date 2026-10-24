@@ -43,18 +43,18 @@ public class b2RestitutionCallbackImpl extends b2RestitutionCallbackI {
     /*
      * Called from native code
      */
-    private float _restitutionCallback(float restitutionA, int userMaterialIdA, float restitutionB, int userMaterialIdB) {
+    private float _restitutionCallback(float restitutionA, long userMaterialIdA, float restitutionB, long userMaterialIdB) {
         return restitutionCallback(restitutionA, userMaterialIdA, restitutionB, userMaterialIdB);
     }
 
     /**
      * @param restitutionA    WebIDL type: float
-     * @param userMaterialIdA WebIDL type: long
+     * @param userMaterialIdA WebIDL type: unsigned long long
      * @param restitutionB    WebIDL type: float
-     * @param userMaterialIdB WebIDL type: long
+     * @param userMaterialIdB WebIDL type: unsigned long long
      * @return WebIDL type: float
      */
-    public float restitutionCallback(float restitutionA, int userMaterialIdA, float restitutionB, int userMaterialIdB) {
+    public float restitutionCallback(float restitutionA, long userMaterialIdA, float restitutionB, long userMaterialIdB) {
         return 0.0f;
     }
 

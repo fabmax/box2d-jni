@@ -2,8 +2,8 @@ package box2dandroid;
 
 
 /**
- * These are collision planes that can be fed to b2SolvePlanes. Normally
- * this is assembled by the user from plane results in b2PlaneResult
+ * These are collision planes that can be fed to b2SolvePlanes. Normally this is assembled by the
+ * user from plane results in b2PlaneResult.
  */
 public class b2CollisionPlane extends NativeObject {
 
@@ -73,7 +73,8 @@ public class b2CollisionPlane extends NativeObject {
     // Attributes
 
     /**
-     * Indicates if b2ClipVector should clip against this plane. Should be false for soft collision.
+     * Indicates if b2ClipVector should clip against this plane. Should be false for soft
+     * collision.
      */
     public boolean getClipVelocity() {
         checkNotNull();
@@ -81,7 +82,8 @@ public class b2CollisionPlane extends NativeObject {
     }
 
     /**
-     * Indicates if b2ClipVector should clip against this plane. Should be false for soft collision.
+     * Indicates if b2ClipVector should clip against this plane. Should be false for soft
+     * collision.
      */
     public void setClipVelocity(boolean value) {
         checkNotNull();
@@ -89,7 +91,7 @@ public class b2CollisionPlane extends NativeObject {
     }
 
     /**
-     * The collision plane between the mover and some shape
+     * The collision plane between the mover and some shape.
      */
     public b2Plane getPlane() {
         checkNotNull();
@@ -97,7 +99,7 @@ public class b2CollisionPlane extends NativeObject {
     }
 
     /**
-     * The collision plane between the mover and some shape
+     * The collision plane between the mover and some shape.
      */
     public void setPlane(b2Plane value) {
         checkNotNull();
@@ -121,8 +123,8 @@ public class b2CollisionPlane extends NativeObject {
     }
 
     /**
-     * Setting this to FLT_MAX makes the plane as rigid as possible. Lower values can
-     * make the plane collision soft. Usually in meters.
+     * Setting this to FLT_MAX makes the plane as rigid as possible. Lower values can make the
+     * plane collision soft. Usually in meters.
      */
     public float getPushLimit() {
         checkNotNull();
@@ -130,8 +132,8 @@ public class b2CollisionPlane extends NativeObject {
     }
 
     /**
-     * Setting this to FLT_MAX makes the plane as rigid as possible. Lower values can
-     * make the plane collision soft. Usually in meters.
+     * Setting this to FLT_MAX makes the plane as rigid as possible. Lower values can make the
+     * plane collision soft. Usually in meters.
      */
     public void setPushLimit(float value) {
         checkNotNull();

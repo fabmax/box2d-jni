@@ -43,7 +43,7 @@ public class b2CastResultFcnImpl extends b2CastResultFcnI {
     /*
      * Called from native code
      */
-    private boolean _castResultFcn(long shapeId, long point, long normal, float fraction) {
+    private float _castResultFcn(long shapeId, long point, long normal, float fraction) {
         return castResultFcn(shapeId, b2Vec2.wrapPointer(point), b2Vec2.wrapPointer(normal), fraction);
     }
 
@@ -52,10 +52,10 @@ public class b2CastResultFcnImpl extends b2CastResultFcnI {
      * @param point    WebIDL type: {@link b2Vec2} [Ref]
      * @param normal   WebIDL type: {@link b2Vec2} [Ref]
      * @param fraction WebIDL type: float
-     * @return WebIDL type: boolean
+     * @return WebIDL type: float
      */
-    public boolean castResultFcn(long shapeId, b2Vec2 point, b2Vec2 normal, float fraction) {
-        return false;
+    public float castResultFcn(long shapeId, b2Vec2 point, b2Vec2 normal, float fraction) {
+        return 0.0f;
     }
 
 }

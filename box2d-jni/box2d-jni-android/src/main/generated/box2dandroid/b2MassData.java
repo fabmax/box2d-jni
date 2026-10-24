@@ -104,7 +104,7 @@ public class b2MassData extends NativeObject {
     }
 
     /**
-     * The rotational inertia of the shape about the local origin.
+     * The rotational inertia of the shape about the shape center.
      */
     public float getRotationalInertia() {
         checkNotNull();
@@ -112,7 +112,7 @@ public class b2MassData extends NativeObject {
     }
 
     /**
-     * The rotational inertia of the shape about the local origin.
+     * The rotational inertia of the shape about the shape center.
      */
     public void setRotationalInertia(float value) {
         checkNotNull();

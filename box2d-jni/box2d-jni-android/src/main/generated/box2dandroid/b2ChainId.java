@@ -2,7 +2,7 @@ package box2dandroid;
 
 
 /**
- * Chain id references a chain instances. This should be treated as an opaque handle.
+ * Chain id references a chain instance. This should be treated as an opaque handle.
  */
 public class b2ChainId extends NativeObject {
 

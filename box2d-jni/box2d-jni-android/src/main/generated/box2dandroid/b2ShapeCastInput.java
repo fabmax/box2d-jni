@@ -2,9 +2,9 @@ package box2dandroid;
 
 
 /**
- * Low level shape cast input in generic form. This allows casting an arbitrary point
- * cloud wrap with a radius. For example, a circle is a single point with a non-zero radius.
- * A capsule is two points with a non-zero radius. A box is four points with a zero radius.
+ * Low level shape cast input in generic form. This allows casting an arbitrary point cloud wrapped
+ * with a radius. For example, a circle is a single point with a non-zero radius. A capsule is two
+ * points with a non-zero radius. A box is four points with a zero radius.
  */
 public class b2ShapeCastInput extends NativeObject {
 
@@ -74,7 +74,8 @@ public class b2ShapeCastInput extends NativeObject {
     // Attributes
 
     /**
-     * Allow shape cast to encroach when initially touching. This only works if the radius is greater than zero.
+     * Allow shape cast to encroach when initially touching. This only works if the radius is
+     * greater than zero.
      */
     public boolean getCanEncroach() {
         checkNotNull();
@@ -82,7 +83,8 @@ public class b2ShapeCastInput extends NativeObject {
     }
 
     /**
-     * Allow shape cast to encroach when initially touching. This only works if the radius is greater than zero.
+     * Allow shape cast to encroach when initially touching. This only works if the radius is
+     * greater than zero.
      */
     public void setCanEncroach(boolean value) {
         checkNotNull();

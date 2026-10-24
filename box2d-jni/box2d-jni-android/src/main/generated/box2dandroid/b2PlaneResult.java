@@ -2,7 +2,8 @@ package box2dandroid;
 
 
 /**
- * These are the collision planes returned from b2World_CollideMover
+ * These are the collision planes returned from b2World_CollideMover. The plane and point are
+ * relative to the query origin, matching the mover capsule.
  */
 public class b2PlaneResult extends NativeObject {
 
@@ -103,6 +104,22 @@ public class b2PlaneResult extends NativeObject {
         Raw.setPlane(address, value.getAddress());
     }
 
+    /**
+     * The collision point on the shape.
+     */
+    public b2Vec2 getPoint() {
+        checkNotNull();
+        return b2Vec2.wrapPointer(Raw.getPoint(address));
+    }
+
+    /**
+     * The collision point on the shape.
+     */
+    public void setPoint(b2Vec2 value) {
+        checkNotNull();
+        Raw.setPoint(address, value.getAddress());
+    }
+
     public static class Raw {
         public static native void b2PlaneResult_placed(long address);
         public static native long b2PlaneResult();
@@ -111,5 +128,7 @@ public class b2PlaneResult extends NativeObject {
         public static native void setHit(long address, boolean value);
         public static native long getPlane(long address);
         public static native void setPlane(long address, long value);
+        public static native long getPoint(long address);
+        public static native void setPoint(long address, long value);
     }
 }

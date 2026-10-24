@@ -58,10 +58,18 @@ public class B2_Transform extends NativeObject {
         Raw.invMulTransforms(A.getAddress(), B.getAddress(), result.getAddress());
     }
 
+    /**
+     * Is this a valid transform? Not NaN or infinity. Rotation is normalized.
+     */
+    public static boolean isValid(b2Transform t) {
+        return Raw.isValid(t.getAddress());
+    }
+
     public static class Raw {
         public static native void transformPoint(long t, long p, long result);
         public static native void invTransformPoint(long t, long p, long result);
         public static native void mulTransforms(long A, long B, long result);
         public static native void invMulTransforms(long A, long B, long result);
+        public static native boolean isValid(long t);
     }
 }

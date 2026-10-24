@@ -43,18 +43,18 @@ public class b2FrictionCallbackImpl extends b2FrictionCallbackI {
     /*
      * Called from native code
      */
-    private float _frictionCallback(float frictionA, int userMaterialIdA, float frictionB, int userMaterialIdB) {
+    private float _frictionCallback(float frictionA, long userMaterialIdA, float frictionB, long userMaterialIdB) {
         return frictionCallback(frictionA, userMaterialIdA, frictionB, userMaterialIdB);
     }
 
     /**
      * @param frictionA       WebIDL type: float
-     * @param userMaterialIdA WebIDL type: long
+     * @param userMaterialIdA WebIDL type: unsigned long long
      * @param frictionB       WebIDL type: float
-     * @param userMaterialIdB WebIDL type: long
+     * @param userMaterialIdB WebIDL type: unsigned long long
      * @return WebIDL type: float
      */
-    public float frictionCallback(float frictionA, int userMaterialIdA, float frictionB, int userMaterialIdB) {
+    public float frictionCallback(float frictionA, long userMaterialIdA, float frictionB, long userMaterialIdB) {
         return 0.0f;
     }
 

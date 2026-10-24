@@ -2,11 +2,9 @@ package box2dandroid;
 
 
 /**
- * Prismatic joint definition
- * This requires defining a line of motion using an axis and an anchor point.
- * The definition uses local anchor points and a local axis so that the initial
- * configuration can violate the constraint slightly. The joint translation is zero
- * when the local anchor points coincide in world space.
+ * Prismatic joint definition Body B may slide along the x-axis in local frame A. Body B cannot
+ * rotate relative to body A. The joint translation is zero when the local frame origins coincide
+ * in world space.
  * @ingroup prismatic_joint
  */
 public class b2PrismaticJointDef extends NativeObject {
@@ -77,99 +75,19 @@ public class b2PrismaticJointDef extends NativeObject {
     // Attributes
 
     /**
-     * The first attached body
+     * Base joint definition
      */
-    public b2BodyId getBodyIdA() {
+    public b2JointDef getBase() {
         checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdA(address));
+        return b2JointDef.wrapPointer(Raw.getBase(address));
     }
 
     /**
-     * The first attached body
+     * Base joint definition
      */
-    public void setBodyIdA(b2BodyId value) {
+    public void setBase(b2JointDef value) {
         checkNotNull();
-        Raw.setBodyIdA(address, value.getAddress());
-    }
-
-    /**
-     * The second attached body
-     */
-    public b2BodyId getBodyIdB() {
-        checkNotNull();
-        return b2BodyId.wrapPointer(Raw.getBodyIdB(address));
-    }
-
-    /**
-     * The second attached body
-     */
-    public void setBodyIdB(b2BodyId value) {
-        checkNotNull();
-        Raw.setBodyIdB(address, value.getAddress());
-    }
-
-    /**
-     * Set this flag to true if the attached bodies should collide
-     */
-    public boolean getCollideConnected() {
-        checkNotNull();
-        return Raw.getCollideConnected(address);
-    }
-
-    /**
-     * Set this flag to true if the attached bodies should collide
-     */
-    public void setCollideConnected(boolean value) {
-        checkNotNull();
-        Raw.setCollideConnected(address, value);
-    }
-
-    /**
-     * The spring damping ratio, non-dimensional
-     */
-    public float getDampingRatio() {
-        checkNotNull();
-        return Raw.getDampingRatio(address);
-    }
-
-    /**
-     * The spring damping ratio, non-dimensional
-     */
-    public void setDampingRatio(float value) {
-        checkNotNull();
-        Raw.setDampingRatio(address, value);
-    }
-
-    /**
-     * Enable/disable the joint limit
-     */
-    public boolean getEnableLimit() {
-        checkNotNull();
-        return Raw.getEnableLimit(address);
-    }
-
-    /**
-     * Enable/disable the joint limit
-     */
-    public void setEnableLimit(boolean value) {
-        checkNotNull();
-        Raw.setEnableLimit(address, value);
-    }
-
-    /**
-     * Enable/disable the joint motor
-     */
-    public boolean getEnableMotor() {
-        checkNotNull();
-        return Raw.getEnableMotor(address);
-    }
-
-    /**
-     * Enable/disable the joint motor
-     */
-    public void setEnableMotor(boolean value) {
-        checkNotNull();
-        Raw.setEnableMotor(address, value);
+        Raw.setBase(address, value.getAddress());
     }
 
     /**
@@ -205,67 +123,53 @@ public class b2PrismaticJointDef extends NativeObject {
     }
 
     /**
-     * Used internally to detect a valid definition. DO NOT SET.
+     * The spring damping ratio, non-dimensional
      */
-    public int getInternalValue() {
+    public float getDampingRatio() {
         checkNotNull();
-        return Raw.getInternalValue(address);
+        return Raw.getDampingRatio(address);
     }
 
     /**
-     * Used internally to detect a valid definition. DO NOT SET.
+     * The spring damping ratio, non-dimensional
      */
-    public void setInternalValue(int value) {
+    public void setDampingRatio(float value) {
         checkNotNull();
-        Raw.setInternalValue(address, value);
+        Raw.setDampingRatio(address, value);
     }
 
     /**
-     * The local anchor point relative to bodyA's origin
+     * The target translation for the joint in meters. The spring-damper will drive to this
+     * translation.
      */
-    public b2Vec2 getLocalAnchorA() {
+    public float getTargetTranslation() {
         checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorA(address));
+        return Raw.getTargetTranslation(address);
     }
 
     /**
-     * The local anchor point relative to bodyA's origin
+     * The target translation for the joint in meters. The spring-damper will drive to this
+     * translation.
      */
-    public void setLocalAnchorA(b2Vec2 value) {
+    public void setTargetTranslation(float value) {
         checkNotNull();
-        Raw.setLocalAnchorA(address, value.getAddress());
+        Raw.setTargetTranslation(address, value);
     }
 
     /**
-     * The local anchor point relative to bodyB's origin
+     * Enable/disable the joint limit
      */
-    public b2Vec2 getLocalAnchorB() {
+    public boolean getEnableLimit() {
         checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorB(address));
+        return Raw.getEnableLimit(address);
     }
 
     /**
-     * The local anchor point relative to bodyB's origin
+     * Enable/disable the joint limit
      */
-    public void setLocalAnchorB(b2Vec2 value) {
+    public void setEnableLimit(boolean value) {
         checkNotNull();
-        Raw.setLocalAnchorB(address, value.getAddress());
-    }
-
-    /**
-     * The local translation unit axis in bodyA
-     */
-    public b2Vec2 getLocalAxisA() {
-        checkNotNull();
-        return b2Vec2.wrapPointer(Raw.getLocalAxisA(address));
-    }
-
-    /**
-     * The local translation unit axis in bodyA
-     */
-    public void setLocalAxisA(b2Vec2 value) {
-        checkNotNull();
-        Raw.setLocalAxisA(address, value.getAddress());
+        Raw.setEnableLimit(address, value);
     }
 
     /**
@@ -282,6 +186,38 @@ public class b2PrismaticJointDef extends NativeObject {
     public void setLowerTranslation(float value) {
         checkNotNull();
         Raw.setLowerTranslation(address, value);
+    }
+
+    /**
+     * The upper translation limit
+     */
+    public float getUpperTranslation() {
+        checkNotNull();
+        return Raw.getUpperTranslation(address);
+    }
+
+    /**
+     * The upper translation limit
+     */
+    public void setUpperTranslation(float value) {
+        checkNotNull();
+        Raw.setUpperTranslation(address, value);
+    }
+
+    /**
+     * Enable/disable the joint motor
+     */
+    public boolean getEnableMotor() {
+        checkNotNull();
+        return Raw.getEnableMotor(address);
+    }
+
+    /**
+     * Enable/disable the joint motor
+     */
+    public void setEnableMotor(boolean value) {
+        checkNotNull();
+        Raw.setEnableMotor(address, value);
     }
 
     /**
@@ -317,92 +253,48 @@ public class b2PrismaticJointDef extends NativeObject {
     }
 
     /**
-     * The constrained angle between the bodies: bodyB_angle - bodyA_angle
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public float getReferenceAngle() {
+    public int getInternalValue() {
         checkNotNull();
-        return Raw.getReferenceAngle(address);
+        return Raw.getInternalValue(address);
     }
 
     /**
-     * The constrained angle between the bodies: bodyB_angle - bodyA_angle
+     * Used internally to detect a valid definition. DO NOT SET.
      */
-    public void setReferenceAngle(float value) {
+    public void setInternalValue(int value) {
         checkNotNull();
-        Raw.setReferenceAngle(address, value);
-    }
-
-    /**
-     * The upper translation limit
-     */
-    public float getUpperTranslation() {
-        checkNotNull();
-        return Raw.getUpperTranslation(address);
-    }
-
-    /**
-     * The upper translation limit
-     */
-    public void setUpperTranslation(float value) {
-        checkNotNull();
-        Raw.setUpperTranslation(address, value);
-    }
-
-    /**
-     * User data pointer
-     */
-    public NativeObject getUserData() {
-        checkNotNull();
-        return NativeObject.wrapPointer(Raw.getUserData(address));
-    }
-
-    /**
-     * User data pointer
-     */
-    public void setUserData(NativeObject value) {
-        checkNotNull();
-        Raw.setUserData(address, value.getAddress());
+        Raw.setInternalValue(address, value);
     }
 
     public static class Raw {
         public static native void b2PrismaticJointDef_placed(long address);
         public static native long b2PrismaticJointDef();
         public static native void destroy(long address);
-        public static native long getBodyIdA(long address);
-        public static native void setBodyIdA(long address, long value);
-        public static native long getBodyIdB(long address);
-        public static native void setBodyIdB(long address, long value);
-        public static native boolean getCollideConnected(long address);
-        public static native void setCollideConnected(long address, boolean value);
-        public static native float getDampingRatio(long address);
-        public static native void setDampingRatio(long address, float value);
-        public static native boolean getEnableLimit(long address);
-        public static native void setEnableLimit(long address, boolean value);
-        public static native boolean getEnableMotor(long address);
-        public static native void setEnableMotor(long address, boolean value);
+        public static native long getBase(long address);
+        public static native void setBase(long address, long value);
         public static native boolean getEnableSpring(long address);
         public static native void setEnableSpring(long address, boolean value);
         public static native float getHertz(long address);
         public static native void setHertz(long address, float value);
-        public static native int getInternalValue(long address);
-        public static native void setInternalValue(long address, int value);
-        public static native long getLocalAnchorA(long address);
-        public static native void setLocalAnchorA(long address, long value);
-        public static native long getLocalAnchorB(long address);
-        public static native void setLocalAnchorB(long address, long value);
-        public static native long getLocalAxisA(long address);
-        public static native void setLocalAxisA(long address, long value);
+        public static native float getDampingRatio(long address);
+        public static native void setDampingRatio(long address, float value);
+        public static native float getTargetTranslation(long address);
+        public static native void setTargetTranslation(long address, float value);
+        public static native boolean getEnableLimit(long address);
+        public static native void setEnableLimit(long address, boolean value);
         public static native float getLowerTranslation(long address);
         public static native void setLowerTranslation(long address, float value);
+        public static native float getUpperTranslation(long address);
+        public static native void setUpperTranslation(long address, float value);
+        public static native boolean getEnableMotor(long address);
+        public static native void setEnableMotor(long address, boolean value);
         public static native float getMaxMotorForce(long address);
         public static native void setMaxMotorForce(long address, float value);
         public static native float getMotorSpeed(long address);
         public static native void setMotorSpeed(long address, float value);
-        public static native float getReferenceAngle(long address);
-        public static native void setReferenceAngle(long address, float value);
-        public static native float getUpperTranslation(long address);
-        public static native void setUpperTranslation(long address, float value);
-        public static native long getUserData(long address);
-        public static native void setUserData(long address, long value);
+        public static native int getInternalValue(long address);
+        public static native void setInternalValue(long address, int value);
     }
 }

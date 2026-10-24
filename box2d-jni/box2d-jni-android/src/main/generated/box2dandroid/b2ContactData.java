@@ -2,8 +2,9 @@ package box2dandroid;
 
 
 /**
- * The contact data for two shapes. By convention the manifold normal points
- * from shape A to shape B.
+ * The contact data for two shapes. By convention the manifold normal points from shape A to shape
+ * B.
+ * @ingroup contact
  */
 public class b2ContactData extends NativeObject {
 
@@ -72,31 +73,67 @@ public class b2ContactData extends NativeObject {
 
     // Attributes
 
+    /**
+     * The contact id. You may hold onto this to track a contact across time steps. This id may
+     * become orphaned. Use b2Contact_IsValid before using it for other functions.
+     */
+    public b2ContactId getContactId() {
+        checkNotNull();
+        return b2ContactId.wrapPointer(Raw.getContactId(address));
+    }
+
+    /**
+     * The contact id. You may hold onto this to track a contact across time steps. This id may
+     * become orphaned. Use b2Contact_IsValid before using it for other functions.
+     */
+    public void setContactId(b2ContactId value) {
+        checkNotNull();
+        Raw.setContactId(address, value.getAddress());
+    }
+
+    /**
+     * The manifold copied from the contact.
+     */
     public b2Manifold getManifold() {
         checkNotNull();
         return b2Manifold.wrapPointer(Raw.getManifold(address));
     }
 
+    /**
+     * The manifold copied from the contact.
+     */
     public void setManifold(b2Manifold value) {
         checkNotNull();
         Raw.setManifold(address, value.getAddress());
     }
 
+    /**
+     * The first shape id.
+     */
     public b2ShapeId getShapeIdA() {
         checkNotNull();
         return b2ShapeId.wrapPointer(Raw.getShapeIdA(address));
     }
 
+    /**
+     * The first shape id.
+     */
     public void setShapeIdA(b2ShapeId value) {
         checkNotNull();
         Raw.setShapeIdA(address, value.getAddress());
     }
 
+    /**
+     * The second shape id.
+     */
     public b2ShapeId getShapeIdB() {
         checkNotNull();
         return b2ShapeId.wrapPointer(Raw.getShapeIdB(address));
     }
 
+    /**
+     * The second shape id.
+     */
     public void setShapeIdB(b2ShapeId value) {
         checkNotNull();
         Raw.setShapeIdB(address, value.getAddress());
@@ -106,6 +143,8 @@ public class b2ContactData extends NativeObject {
         public static native void b2ContactData_placed(long address);
         public static native long b2ContactData();
         public static native void destroy(long address);
+        public static native long getContactId(long address);
+        public static native void setContactId(long address, long value);
         public static native long getManifold(long address);
         public static native void setManifold(long address, long value);
         public static native long getShapeIdA(long address);

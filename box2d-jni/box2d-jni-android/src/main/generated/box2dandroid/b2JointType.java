@@ -5,7 +5,8 @@ public enum b2JointType {
     b2_distanceJoint(getb2_distanceJoint()),
     b2_filterJoint(getb2_filterJoint()),
     b2_motorJoint(getb2_motorJoint()),
-    b2_mouseJoint(getb2_mouseJoint()),
+    b2_moverJoint(getb2_moverJoint()),
+    b2_pogoJoint(getb2_pogoJoint()),
     b2_prismaticJoint(getb2_prismaticJoint()),
     b2_revoluteJoint(getb2_revoluteJoint()),
     b2_weldJoint(getb2_weldJoint()),
@@ -34,10 +35,16 @@ public enum b2JointType {
         return _getb2_motorJoint();
     }
 
-    private static native int _getb2_mouseJoint();
-    private static int getb2_mouseJoint() {
+    private static native int _getb2_moverJoint();
+    private static int getb2_moverJoint() {
         de.fabmax.box2dandroid.Loader.load();
-        return _getb2_mouseJoint();
+        return _getb2_moverJoint();
+    }
+
+    private static native int _getb2_pogoJoint();
+    private static int getb2_pogoJoint() {
+        de.fabmax.box2dandroid.Loader.load();
+        return _getb2_pogoJoint();
     }
 
     private static native int _getb2_prismaticJoint();

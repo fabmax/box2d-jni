@@ -43,16 +43,27 @@ public class B2_Shape extends NativeObject {
     /**
      * Create a line segment shape and attach it to a body. The shape definition and geometry are fully cloned.
      * Contacts are not created until the next time step.
-     * @return the shape id for accessing the shape
+     * @return the shape id or b2_nullShapeId if the segment is too short.
      */
     public static long createSegmentShape(long bodyId, b2ShapeDef def, b2Segment segment) {
         return Raw.createSegmentShape(bodyId, def.getAddress(), segment.getAddress());
     }
 
     /**
+     * Create a chain segment shape and attach it to a body. The shape definition and geometry are
+     * fully cloned. The segment is not owned by any chain shape (b2Shape_GetParentChain returns
+     * b2_nullChainId). Contacts are not created until the next time step. The chainId on the segment
+     * is ignored. This uses more memory than using a chain shape, so I don't recommend using this.
+     * @return the shape id, or b2_nullShapeId if the segment is too short.
+     */
+    public static long createChainSegmentShape(long bodyId, b2ShapeDef def, b2ChainSegment chainSegment) {
+        return Raw.createChainSegmentShape(bodyId, def.getAddress(), chainSegment.getAddress());
+    }
+
+    /**
      * Create a capsule shape and attach it to a body. The shape definition and geometry are fully cloned.
      * Contacts are not created until the next time step.
-     * @return the shape id for accessing the shape
+     * @return the shape id for accessing the shape, this will be b2_nullShapeId if the length is too small.
      */
     public static long createCapsuleShape(long bodyId, b2ShapeDef def, b2Capsule capsule) {
         return Raw.createCapsuleShape(bodyId, def.getAddress(), capsule.getAddress());
@@ -171,17 +182,17 @@ public class B2_Shape extends NativeObject {
     }
 
     /**
-     * Set the shape material identifier
+     * Set the user material identifier
      */
-    public static void setMaterial(long shapeId, int material) {
-        Raw.setMaterial(shapeId, material);
+    public static void setUserMaterial(long shapeId, long material) {
+        Raw.setUserMaterial(shapeId, material);
     }
 
     /**
-     * Get the shape material identifier
+     * Get the user material identifier
      */
-    public static int getMaterial(long shapeId) {
-        return Raw.getMaterial(shapeId);
+    public static long getUserMaterial(long shapeId) {
+        return Raw.getUserMaterial(shapeId);
     }
 
     /**
@@ -273,17 +284,18 @@ public class B2_Shape extends NativeObject {
     }
 
     /**
-     * Test a point for overlap with a shape
+     * Test a world point for overlap with a shape
      */
     public static boolean testPoint(long shapeId, b2Vec2 point) {
         return Raw.testPoint(shapeId, point.getAddress());
     }
 
     /**
-     * Ray cast a shape directly
+     * Ray cast a single shape. The ray starts at the origin and extends by the translation. The output
+     * point is a world position.
      */
-    public static b2CastOutput rayCast(long shapeId, b2RayCastInput input) {
-        return b2CastOutput.wrapPointer(Raw.rayCast(shapeId, input.getAddress()));
+    public static b2CastOutput castRay(long shapeId, b2Vec2 origin, b2Vec2 translation) {
+        return b2CastOutput.wrapPointer(Raw.castRay(shapeId, origin.getAddress(), translation.getAddress()));
     }
 
     /**
@@ -354,6 +366,15 @@ public class B2_Shape extends NativeObject {
     }
 
     /**
+     * Allows you to change a shape to be a loose chain segment or update the current chain segment.
+     * The resulting shape does not belong to a chain shape. Asserts if the shape is already a chain
+     * segment owned by a chain shape (chainId != B2_NULL_INDEX).
+     */
+    public static void setChainSegment(long shapeId, b2ChainSegment chainSegment) {
+        Raw.setChainSegment(shapeId, chainSegment.getAddress());
+    }
+
+    /**
      * Get the parent chain id if the shape type is a chain segment, otherwise
      * returns b2_nullChainId.
      */
@@ -382,49 +403,64 @@ public class B2_Shape extends NativeObject {
      * Get the maximum capacity required for retrieving all the overlapped shapes on a sensor shape.
      * This returns 0 if the provided shape is not a sensor.
      * @param shapeId the id of a sensor shape
-     * @returns the required capacity to get all the overlaps in b2Shape_GetSensorOverlaps
+     * @returns the required capacity to get all the overlaps in b2Shape_GetSensorData
      */
     public static int getSensorCapacity(long shapeId) {
         return Raw.getSensorCapacity(shapeId);
     }
 
     /**
-     * Get the overlapped shapes for a sensor shape.
+     * Get the overlap data for a sensor shape computed during the previous world step.
      * @param shapeId the id of a sensor shape
-     * @param overlaps a user allocated array that is filled with the overlapping shapes
+     * @param visitorIds a user allocated array that is filled with the overlapping shapes (visitors)
      * @returns the number of elements filled in the provided array
      * @warning do not ignore the return value, it specifies the valid number of elements
      * @warning overlaps may contain destroyed shapes so use b2Shape_IsValid to confirm each overlap
      */
-    public static int getSensorOverlaps(long shapeId, b2ShapeIdArray overlaps) {
-        return Raw.getSensorOverlaps(shapeId, overlaps.getAddress());
+    public static int getSensorData(long shapeId, b2ShapeIdArray visitorIds) {
+        return Raw.getSensorData(shapeId, visitorIds.getAddress());
     }
 
     /**
      * Get the current world AABB
      */
-    public static b2AABB getAABB(long shapeId) {
-        return b2AABB.wrapPointer(Raw.getAABB(shapeId));
+    public static b2AABB getBounds(long shapeId) {
+        return b2AABB.wrapPointer(Raw.getBounds(shapeId));
     }
 
     /**
-     * Get the mass data for a shape
+     * Compute the mass data for a shape
      */
-    public static b2MassData getMassData(long shapeId) {
-        return b2MassData.wrapPointer(Raw.getMassData(shapeId));
+    public static b2MassData computeMassData(long shapeId) {
+        return b2MassData.wrapPointer(Raw.computeMassData(shapeId));
     }
 
     /**
-     * Get the closest point on a shape to a target point. Target and result are in world space.
+     * Get the closest point on a shape to a target point. Target and result are world positions.
      */
     public static b2Vec2 getClosestPoint(long shapeId, b2Vec2 target) {
         return b2Vec2.wrapPointer(Raw.getClosestPoint(shapeId, target.getAddress()));
+    }
+
+    /**
+     * Apply a wind force to the body for this shape using the density of air. This considers the
+     * projected area of the shape in the wind direction. This also considers the relative velocity of
+     * the shape.
+     * @param shapeId the shape id
+     * @param wind the wind velocity in world space
+     * @param drag the drag coefficient, the force that opposes the relative velocity
+     * @param lift the lift coefficient, the force that is perpendicular to the relative velocity
+     * @param wake should this wake the body
+     */
+    public static void applyWind(long shapeId, b2Vec2 wind, float drag, float lift, boolean wake) {
+        Raw.applyWind(shapeId, wind.getAddress(), drag, lift, wake);
     }
 
     public static class Raw {
         public static native void defaultShapeDef(long result);
         public static native long createCircleShape(long bodyId, long def, long circle);
         public static native long createSegmentShape(long bodyId, long def, long segment);
+        public static native long createChainSegmentShape(long bodyId, long def, long chainSegment);
         public static native long createCapsuleShape(long bodyId, long def, long capsule);
         public static native long createPolygonShape(long bodyId, long def, long polygon);
         public static native void destroyShape(long shapeId, boolean updateBodyMass);
@@ -441,8 +477,8 @@ public class B2_Shape extends NativeObject {
         public static native float getFriction(long shapeId);
         public static native void setRestitution(long shapeId, float restitution);
         public static native float getRestitution(long shapeId);
-        public static native void setMaterial(long shapeId, int material);
-        public static native int getMaterial(long shapeId);
+        public static native void setUserMaterial(long shapeId, long material);
+        public static native long getUserMaterial(long shapeId);
         public static native void setSurfaceMaterial(long shapeId, long surfaceMaterial);
         public static native long getSurfaceMaterial(long shapeId);
         public static native long getFilter(long shapeId);
@@ -456,7 +492,7 @@ public class B2_Shape extends NativeObject {
         public static native void enableHitEvents(long shapeId, boolean flag);
         public static native boolean areHitEventsEnabled(long shapeId);
         public static native boolean testPoint(long shapeId, long point);
-        public static native long rayCast(long shapeId, long input);
+        public static native long castRay(long shapeId, long origin, long translation);
         public static native long getCircle(long shapeId);
         public static native long getSegment(long shapeId);
         public static native long getChainSegment(long shapeId);
@@ -466,13 +502,15 @@ public class B2_Shape extends NativeObject {
         public static native void setCapsule(long shapeId, long capsule);
         public static native void setSegment(long shapeId, long segment);
         public static native void setPolygon(long shapeId, long polygon);
+        public static native void setChainSegment(long shapeId, long chainSegment);
         public static native long getParentChain(long shapeId);
         public static native int getContactCapacity(long shapeId);
         public static native int getContactData(long shapeId, long contactData);
         public static native int getSensorCapacity(long shapeId);
-        public static native int getSensorOverlaps(long shapeId, long overlaps);
-        public static native long getAABB(long shapeId);
-        public static native long getMassData(long shapeId);
+        public static native int getSensorData(long shapeId, long visitorIds);
+        public static native long getBounds(long shapeId);
+        public static native long computeMassData(long shapeId);
         public static native long getClosestPoint(long shapeId, long target);
+        public static native void applyWind(long shapeId, long wind, float drag, float lift, boolean wake);
     }
 }

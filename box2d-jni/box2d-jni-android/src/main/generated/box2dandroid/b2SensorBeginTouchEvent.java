@@ -88,7 +88,7 @@ public class b2SensorBeginTouchEvent extends NativeObject {
     }
 
     /**
-     * The id of the dynamic shape that began touching the sensor shape
+     * The id of the shape that began touching the sensor shape
      */
     public b2ShapeId getVisitorShapeId() {
         checkNotNull();
@@ -96,7 +96,7 @@ public class b2SensorBeginTouchEvent extends NativeObject {
     }
 
     /**
-     * The id of the dynamic shape that began touching the sensor shape
+     * The id of the shape that began touching the sensor shape
      */
     public void setVisitorShapeId(b2ShapeId value) {
         checkNotNull();

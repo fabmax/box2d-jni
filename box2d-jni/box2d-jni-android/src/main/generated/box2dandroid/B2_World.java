@@ -33,8 +33,9 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * Create a world for rigid body simulation. A world contains bodies, shapes, and constraints. You make create
-     * up to 128 worlds. Each world is completely independent and may be simulated in parallel.
+     * Create a world for rigid body simulation. A world contains bodies, shapes, and constraints. You
+     * may create up to B2_MAX_WORLDS worlds. Each world is completely independent and may be simulated
+     * in parallel.
      * @return the world id.
      */
     public static long createWorld(b2WorldDef def) {
@@ -56,13 +57,23 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * Simulate a world for one time step. This performs collision detection, integration, and constraint solution.
+     * Simulate a world for one time step. This performs collision detection, integration, and
+     * constraint solution.
      * @param worldId The world to simulate
      * @param timeStep The amount of time to simulate, this should be a fixed number. Usually 1/60.
-     * @param subStepCount The number of sub-steps, increasing the sub-step count can increase accuracy. Usually 4.
+     * @param subStepCount The number of sub-steps, increasing the sub-step count can increase
+     * accuracy. Usually 4.
      */
     public static void step(long worldId, float timeStep, int subStepCount) {
         Raw.step(worldId, timeStep, subStepCount);
+    }
+
+    /**
+     * Use this to initialize your drawing interface. This allows you to implement a subset of the
+     * drawing functions.
+     */
+    public static void defaultDebugDraw(b2DebugDraw result) {
+        Raw.defaultDebugDraw(result.getAddress());
     }
 
     /**
@@ -73,43 +84,64 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * Get the body events for the current time step. The event data is transient. Do not store a reference to this data.
+     * Call this to get the world bounds based on the union of all shape bounds.
+     */
+    public static b2AABB getBounds(long worldId) {
+        return b2AABB.wrapPointer(Raw.getBounds(worldId));
+    }
+
+    /**
+     * Get the body events for the current time step. The event data is transient. Do not store a
+     * reference to this data.
      */
     public static b2BodyEvents getBodyEvents(long worldId) {
         return b2BodyEvents.wrapPointer(Raw.getBodyEvents(worldId));
     }
 
     /**
-     * Get sensor events for the current time step. The event data is transient. Do not store a reference to this data.
+     * Get sensor events for the current time step. The event data is transient. Do not store a
+     * reference to this data.
      */
     public static b2SensorEvents getSensorEvents(long worldId) {
         return b2SensorEvents.wrapPointer(Raw.getSensorEvents(worldId));
     }
 
     /**
-     * Get contact events for this current time step. The event data is transient. Do not store a reference to this data.
+     * Get contact events for the current time step. The event data is transient. Do not store a
+     * reference to this data.
      */
     public static b2ContactEvents getContactEvents(long worldId) {
         return b2ContactEvents.wrapPointer(Raw.getContactEvents(worldId));
     }
 
     /**
-     * Overlap test for all shapes that *potentially* overlap the provided AABB
+     * Get the joint events for the current time step. The event data is transient. Do not store a
+     * reference to this data.
      */
-    public static b2TreeStats overlapAABB(long worldId, b2AABB aabb, b2QueryFilter filter, b2OverlapResultFcnI fcn) {
-        return b2TreeStats.wrapPointer(Raw.overlapAABB(worldId, aabb.getAddress(), filter.getAddress(), fcn.getAddress()));
+    public static b2JointEvents getJointEvents(long worldId) {
+        return b2JointEvents.wrapPointer(Raw.getJointEvents(worldId));
     }
 
     /**
-     * Overlap test for all shapes that overlap the provided shape proxy.
+     * Overlap test for all shapes that *potentially* overlap the provided AABB. The AABB is relative
+     * to the origin, which keeps the test precise far from the world origin in large world mode. Near
+     * the origin pass b2Pos_zero and a world AABB.
      */
-    public static b2TreeStats overlapShape(long worldId, b2ShapeProxy proxy, b2QueryFilter filter, b2OverlapResultFcnI fcn) {
-        return b2TreeStats.wrapPointer(Raw.overlapShape(worldId, proxy.getAddress(), filter.getAddress(), fcn.getAddress()));
+    public static b2TreeStats overlapAABB(long worldId, b2Vec2 origin, b2AABB aabb, b2QueryFilter filter, b2OverlapResultFcnI fcn) {
+        return b2TreeStats.wrapPointer(Raw.overlapAABB(worldId, origin.getAddress(), aabb.getAddress(), filter.getAddress(), fcn.getAddress()));
     }
 
     /**
-     * Cast a ray into the world to collect shapes in the path of the ray.
-     * Your callback function controls whether you get the closest point, any point, or n-points.
+     * Overlap test for all shapes that overlap the provided shape proxy. The proxy points are relative
+     * to the origin. Near the origin pass b2Pos_zero and world points.
+     */
+    public static b2TreeStats overlapShape(long worldId, b2Vec2 origin, b2ShapeProxy proxy, b2QueryFilter filter, b2OverlapResultFcnI fcn) {
+        return b2TreeStats.wrapPointer(Raw.overlapShape(worldId, origin.getAddress(), proxy.getAddress(), filter.getAddress(), fcn.getAddress()));
+    }
+
+    /**
+     * Cast a ray into the world to collect shapes in the path of the ray. Your callback function
+     * controls whether you get the closest point, any point, or n-points.
      * @note The callback function may receive shapes in any order
      * @param worldId The world to cast the ray against
      * @param origin The start point of the ray
@@ -123,34 +155,38 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * Cast a ray into the world to collect the closest hit. This is a convenience function. Ignores initial overlap.
-     * This is less general than b2World_CastRay() and does not allow for custom filtering.
+     * Cast a ray into the world to collect the closest hit. This is a convenience function. Ignores
+     * initial overlap. This is less general than b2World_CastRay() and does not allow for custom
+     * filtering.
      */
     public static b2RayResult castRayClosest(long worldId, b2Vec2 origin, b2Vec2 translation, b2QueryFilter filter) {
         return b2RayResult.wrapPointer(Raw.castRayClosest(worldId, origin.getAddress(), translation.getAddress(), filter.getAddress()));
     }
 
     /**
-     * Cast a shape through the world. Similar to a cast ray except that a shape is cast instead of a point.
+     * Cast a shape through the world. Similar to a ray cast except that a shape is cast instead of a
+     * point. The proxy points are relative to the origin. Callback points are world positions.
      */
-    public static b2TreeStats castShape(long worldId, b2ShapeProxy proxy, b2Vec2 translation, b2QueryFilter filter, b2CastResultFcnI fcn) {
-        return b2TreeStats.wrapPointer(Raw.castShape(worldId, proxy.getAddress(), translation.getAddress(), filter.getAddress(), fcn.getAddress()));
+    public static b2TreeStats castShape(long worldId, b2Vec2 origin, b2ShapeProxy proxy, b2Vec2 translation, b2QueryFilter filter, b2CastResultFcnI fcn) {
+        return b2TreeStats.wrapPointer(Raw.castShape(worldId, origin.getAddress(), proxy.getAddress(), translation.getAddress(), filter.getAddress(), fcn.getAddress()));
     }
 
     /**
-     * Cast a capsule mover through the world. This is a special shape cast that handles sliding along other shapes while reducing
-     * clipping.
+     * Cast a capsule mover through the world. This is a special shape cast that handles sliding along
+     * other shapes while reducing clipping. The mover capsule is relative to the origin. Near the
+     * origin pass b2Pos_zero and a world capsule. Returns the translation fraction at the first hit.
      */
-    public static float castMover(long worldId, b2Capsule mover, b2Vec2 translation, b2QueryFilter filter) {
-        return Raw.castMover(worldId, mover.getAddress(), translation.getAddress(), filter.getAddress());
+    public static float castMover(long worldId, b2Vec2 origin, b2Capsule mover, b2Vec2 translation, b2QueryFilter filter) {
+        return Raw.castMover(worldId, origin.getAddress(), mover.getAddress(), translation.getAddress(), filter.getAddress());
     }
 
     /**
-     * Collide a capsule mover with the world, gathering collision planes that can be fed to b2SolvePlanes. Useful for
-     * kinematic character movement.
+     * Collide a capsule mover with the world, gathering collision planes that can be fed to
+     * b2SolvePlanes. Useful for kinematic character movement. The mover capsule and the resulting
+     * planes are relative to the origin.
      */
-    public static void collideMover(long worldId, b2Capsule mover, b2QueryFilter filter, b2PlaneResultFcnI fcn) {
-        Raw.collideMover(worldId, mover.getAddress(), filter.getAddress(), fcn.getAddress());
+    public static void collideMover(long worldId, b2Vec2 origin, b2Capsule mover, b2QueryFilter filter, b2PlaneResultFcnI fcn) {
+        Raw.collideMover(worldId, origin.getAddress(), mover.getAddress(), filter.getAddress(), fcn.getAddress());
     }
 
     /**
@@ -170,9 +206,9 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * Enable/disable continuous collision between dynamic and static bodies. Generally you should keep continuous
-     * collision enabled to prevent fast moving objects from going through static objects. The performance gain from
-     * disabling continuous collision is minor.
+     * Enable/disable continuous collision between dynamic and static bodies. Generally you should keep
+     * continuous collision enabled to prevent fast moving objects from going through static objects.
+     * The performance gain from disabling continuous collision is minor.
      * @see b2WorldDef
      */
     public static void enableContinuous(long worldId, boolean flag) {
@@ -187,8 +223,8 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * Adjust the restitution threshold. It is recommended not to make this value very small
-     * because it will prevent bodies from sleeping. Usually in meters per second.
+     * Adjust the restitution threshold. It is recommended not to make this value very small because it
+     * will prevent bodies from sleeping. Usually in meters per second.
      * @see b2WorldDef
      */
     public static void setRestitutionThreshold(long worldId, float value) {
@@ -196,30 +232,58 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * Get the the restitution speed threshold. Usually in meters per second.
+     * Get the restitution speed threshold. Usually in meters per second.
      */
     public static float getRestitutionThreshold(long worldId) {
         return Raw.getRestitutionThreshold(worldId);
     }
 
     /**
-     * Adjust the hit event threshold. This controls the collision speed needed to generate a b2ContactHitEvent.
-     * Usually in meters per second.
+     * Set the number of iterations used by the restitution solver.
+     */
+    public static void setRestitutionIterations(long worldId, int iterations) {
+        Raw.setRestitutionIterations(worldId, iterations);
+    }
+
+    /**
+     * Get the number of iterations used by the restitution solver.
+     */
+    public static int getRestitutionIterations(long worldId) {
+        return Raw.getRestitutionIterations(worldId);
+    }
+
+    /**
+     * Enable/disable restitution propagation.
+     */
+    public static void enableRestitutionPropagation(long worldId, boolean flag) {
+        Raw.enableRestitutionPropagation(worldId, flag);
+    }
+
+    /**
+     * Is restitution propagation enabled?
+     */
+    public static boolean isRestitutionPropagationEnabled(long worldId) {
+        return Raw.isRestitutionPropagationEnabled(worldId);
+    }
+
+    /**
+     * Adjust the hit event threshold. This controls the collision speed needed to generate a
+     * b2ContactHitEvent. Usually in meters per second.
      */
     public static void setHitEventThreshold(long worldId, float value) {
         Raw.setHitEventThreshold(worldId, value);
     }
 
     /**
-     * Get the the hit event speed threshold. Usually in meters per second.
+     * Get the hit event speed threshold. Usually in meters per second.
      */
     public static float getHitEventThreshold(long worldId) {
         return Raw.getHitEventThreshold(worldId);
     }
 
     /**
-     * Set the gravity vector for the entire world. Box2D has no concept of an up direction and this
-     * is left as a decision for the application. Usually in m/s^2.
+     * Set the gravity vector for the entire world. Box2D has no concept of an up direction and this is
+     * left as a decision for the application. Usually in m/s^2.
      * @see b2WorldDef
      */
     public static void setGravity(long worldId, b2Vec2 gravity) {
@@ -241,7 +305,7 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * Register the pre-solve callback. This is optional.
+     * Register the pre-solve and pre-continuous callbacks. This is optional.
      */
     public static void setPreSolveCallback(long worldId, b2PreSolveFcnI fcn) {
         Raw.setPreSolveCallback(worldId, fcn.getAddress());
@@ -283,22 +347,58 @@ public class B2_World extends NativeObject {
     }
 
     /**
+     * Get the contact tuning stiffness (cycles per second).
+     */
+    public static float getContactTuningHertz(long worldId) {
+        return Raw.getContactTuningHertz(worldId);
+    }
+
+    /**
+     * Get the contact tuning damping ratio (non-dimensional).
+     */
+    public static float getContactTuningDampingRatio(long worldId) {
+        return Raw.getContactTuningDampingRatio(worldId);
+    }
+
+    /**
+     * Get the contact tuning maximum push out speed (meters per second).
+     */
+    public static float getContactTuningPushSpeed(long worldId) {
+        return Raw.getContactTuningPushSpeed(worldId);
+    }
+
+    /**
+     * Set the contact point recycling distance. Setting this to zero disables contact point recycling.
+     * Usually in meters.
+     */
+    public static void setContactRecycleDistance(long worldId, float recycleDistance) {
+        Raw.setContactRecycleDistance(worldId, recycleDistance);
+    }
+
+    /**
+     * Get the contact point recycling distance. Usually in meters.
+     */
+    public static float getContactRecycleDistance(long worldId) {
+        return Raw.getContactRecycleDistance(worldId);
+    }
+
+    /**
      * Set the maximum linear speed. Usually in m/s.
      */
-    public static void setMaximumLinearSpeed(long worldId, float maximumLinearSpeed) {
-        Raw.setMaximumLinearSpeed(worldId, maximumLinearSpeed);
+    public static void setMaxLinearSpeed(long worldId, float maximumLinearSpeed) {
+        Raw.setMaxLinearSpeed(worldId, maximumLinearSpeed);
     }
 
     /**
      * Get the maximum linear speed. Usually in m/s.
      */
-    public static float getMaximumLinearSpeed(long worldId) {
-        return Raw.getMaximumLinearSpeed(worldId);
+    public static float getMaxLinearSpeed(long worldId) {
+        return Raw.getMaxLinearSpeed(worldId);
     }
 
     /**
-     * Enable/disable constraint warm starting. Advanced feature for testing. Disabling
-     * warm starting greatly reduces stability and provides no performance gain.
+     * Enable/disable constraint warm starting. Advanced feature for testing. Disabling warm starting
+     * greatly reduces stability and provides no performance gain.
      */
     public static void enableWarmStarting(long worldId, boolean flag) {
         Raw.enableWarmStarting(worldId, flag);
@@ -309,6 +409,20 @@ public class B2_World extends NativeObject {
      */
     public static boolean isWarmStartingEnabled(long worldId) {
         return Raw.isWarmStartingEnabled(worldId);
+    }
+
+    /**
+     * Set the worker count. Must be in the range [1, B2_MAX_WORKERS]
+     */
+    public static void setWorkerCount(long worldId, int count) {
+        Raw.setWorkerCount(worldId, count);
+    }
+
+    /**
+     * Get the worker count.
+     */
+    public static int getWorkerCount(long worldId) {
+        return Raw.getWorkerCount(worldId);
     }
 
     /**
@@ -333,10 +447,25 @@ public class B2_World extends NativeObject {
     }
 
     /**
+     * Get max capacity. This can be used with b2WorldDef to avoid run-time allocations and copies
+     */
+    public static b2Capacity getMaxCapacity(long worldId) {
+        return b2Capacity.wrapPointer(Raw.getMaxCapacity(worldId));
+    }
+
+    /**
      * Dump memory stats to box2d_memory.txt
      */
     public static void dumpMemoryStats(long worldId) {
         Raw.dumpMemoryStats(worldId);
+    }
+
+    /**
+     * Compute a hash of the simulation state. Use this to detect desyncs, for example in rollback
+     * resimulation.
+     */
+    public static long getStateHash(long worldId) {
+        return Raw.getStateHash(worldId);
     }
 
     /**
@@ -361,10 +490,10 @@ public class B2_World extends NativeObject {
     }
 
     /**
-     * This is for internal testing
+     * Force SSE2 to be used even when AVX2 is available. This is for testing.
      */
-    public static void enableSpeculative(long worldId, boolean flag) {
-        Raw.enableSpeculative(worldId, flag);
+    public static void enableSSE2Fallback(long worldId, boolean flag) {
+        Raw.enableSSE2Fallback(worldId, flag);
     }
 
     public static class Raw {
@@ -373,23 +502,30 @@ public class B2_World extends NativeObject {
         public static native void destroyWorld(long worldId);
         public static native boolean isValid(long worldId);
         public static native void step(long worldId, float timeStep, int subStepCount);
+        public static native void defaultDebugDraw(long result);
         public static native void draw(long worldId, long draw, long callbacks);
+        public static native long getBounds(long worldId);
         public static native long getBodyEvents(long worldId);
         public static native long getSensorEvents(long worldId);
         public static native long getContactEvents(long worldId);
-        public static native long overlapAABB(long worldId, long aabb, long filter, long fcn);
-        public static native long overlapShape(long worldId, long proxy, long filter, long fcn);
+        public static native long getJointEvents(long worldId);
+        public static native long overlapAABB(long worldId, long origin, long aabb, long filter, long fcn);
+        public static native long overlapShape(long worldId, long origin, long proxy, long filter, long fcn);
         public static native long castRay(long worldId, long origin, long translation, long filter, long fcn);
         public static native long castRayClosest(long worldId, long origin, long translation, long filter);
-        public static native long castShape(long worldId, long proxy, long translation, long filter, long fcn);
-        public static native float castMover(long worldId, long mover, long translation, long filter);
-        public static native void collideMover(long worldId, long mover, long filter, long fcn);
+        public static native long castShape(long worldId, long origin, long proxy, long translation, long filter, long fcn);
+        public static native float castMover(long worldId, long origin, long mover, long translation, long filter);
+        public static native void collideMover(long worldId, long origin, long mover, long filter, long fcn);
         public static native void enableSleeping(long worldId, boolean flag);
         public static native boolean isSleepingEnabled(long worldId);
         public static native void enableContinuous(long worldId, boolean flag);
         public static native boolean isContinuousEnabled(long worldId);
         public static native void setRestitutionThreshold(long worldId, float value);
         public static native float getRestitutionThreshold(long worldId);
+        public static native void setRestitutionIterations(long worldId, int iterations);
+        public static native int getRestitutionIterations(long worldId);
+        public static native void enableRestitutionPropagation(long worldId, boolean flag);
+        public static native boolean isRestitutionPropagationEnabled(long worldId);
         public static native void setHitEventThreshold(long worldId, float value);
         public static native float getHitEventThreshold(long worldId);
         public static native void setGravity(long worldId, long gravity);
@@ -400,17 +536,26 @@ public class B2_World extends NativeObject {
         public static native void setRestitutionCallback(long worldId, long callback);
         public static native void explode(long worldId, long explosionDef);
         public static native void setContactTuning(long worldId, float hertz, float dampingRatio, float pushSpeed);
-        public static native void setMaximumLinearSpeed(long worldId, float maximumLinearSpeed);
-        public static native float getMaximumLinearSpeed(long worldId);
+        public static native float getContactTuningHertz(long worldId);
+        public static native float getContactTuningDampingRatio(long worldId);
+        public static native float getContactTuningPushSpeed(long worldId);
+        public static native void setContactRecycleDistance(long worldId, float recycleDistance);
+        public static native float getContactRecycleDistance(long worldId);
+        public static native void setMaxLinearSpeed(long worldId, float maximumLinearSpeed);
+        public static native float getMaxLinearSpeed(long worldId);
         public static native void enableWarmStarting(long worldId, boolean flag);
         public static native boolean isWarmStartingEnabled(long worldId);
+        public static native void setWorkerCount(long worldId, int count);
+        public static native int getWorkerCount(long worldId);
         public static native int getAwakeBodyCount(long worldId);
         public static native long getProfile(long worldId);
         public static native long getCounters(long worldId);
+        public static native long getMaxCapacity(long worldId);
         public static native void dumpMemoryStats(long worldId);
+        public static native long getStateHash(long worldId);
         public static native void setUserData(long worldId, long userData);
         public static native long getUserData(long worldId);
         public static native void rebuildStaticTree(long worldId);
-        public static native void enableSpeculative(long worldId, boolean flag);
+        public static native void enableSSE2Fallback(long worldId, boolean flag);
     }
 }

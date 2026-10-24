@@ -2,8 +2,8 @@ package box2dandroid;
 
 
 /**
- * Result from b2World_RayCastClosest
- * If there is initial overlap the fraction and normal will be zero while the point is an arbitrary point in the overlap region.
+ * Result from b2World_CastRayClosest If there is initial overlap the fraction and normal will be
+ * zero while the point is an arbitrary point in the overlap region.
  * @ingroup world
  */
 public class b2RayResult extends NativeObject {
@@ -73,71 +73,113 @@ public class b2RayResult extends NativeObject {
 
     // Attributes
 
+    /**
+     * The fraction of the input ray.
+     */
     public float getFraction() {
         checkNotNull();
         return Raw.getFraction(address);
     }
 
+    /**
+     * The fraction of the input ray.
+     */
     public void setFraction(float value) {
         checkNotNull();
         Raw.setFraction(address, value);
     }
 
+    /**
+     * Did the ray hit? If false, all other data is invalid.
+     */
     public boolean getHit() {
         checkNotNull();
         return Raw.getHit(address);
     }
 
+    /**
+     * Did the ray hit? If false, all other data is invalid.
+     */
     public void setHit(boolean value) {
         checkNotNull();
         Raw.setHit(address, value);
     }
 
+    /**
+     * The number of BVH leaves visited. Diagnostic.
+     */
     public int getLeafVisits() {
         checkNotNull();
         return Raw.getLeafVisits(address);
     }
 
+    /**
+     * The number of BVH leaves visited. Diagnostic.
+     */
     public void setLeafVisits(int value) {
         checkNotNull();
         Raw.setLeafVisits(address, value);
     }
 
+    /**
+     * The number of BVH nodes visited. Diagnostic.
+     */
     public int getNodeVisits() {
         checkNotNull();
         return Raw.getNodeVisits(address);
     }
 
+    /**
+     * The number of BVH nodes visited. Diagnostic.
+     */
     public void setNodeVisits(int value) {
         checkNotNull();
         Raw.setNodeVisits(address, value);
     }
 
+    /**
+     * The unit normal vector at the point of contact.
+     */
     public b2Vec2 getNormal() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getNormal(address));
     }
 
+    /**
+     * The unit normal vector at the point of contact.
+     */
     public void setNormal(b2Vec2 value) {
         checkNotNull();
         Raw.setNormal(address, value.getAddress());
     }
 
+    /**
+     * The point of contact, on the surface of the hit shape.
+     */
     public b2Vec2 getPoint() {
         checkNotNull();
         return b2Vec2.wrapPointer(Raw.getPoint(address));
     }
 
+    /**
+     * The point of contact, on the surface of the hit shape.
+     */
     public void setPoint(b2Vec2 value) {
         checkNotNull();
         Raw.setPoint(address, value.getAddress());
     }
 
+    /**
+     * The shape hit.
+     */
     public b2ShapeId getShapeId() {
         checkNotNull();
         return b2ShapeId.wrapPointer(Raw.getShapeId(address));
     }
 
+    /**
+     * The shape hit.
+     */
     public void setShapeId(b2ShapeId value) {
         checkNotNull();
         Raw.setShapeId(address, value.getAddress());

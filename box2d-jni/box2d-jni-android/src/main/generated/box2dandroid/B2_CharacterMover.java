@@ -26,7 +26,8 @@ public class B2_CharacterMover extends NativeObject {
 
     /**
      * Solves the position of a mover that satisfies the given collision planes.
-     * @param targetDelta the desired movement from the position used to generate the collision planes
+     * @param targetDelta the desired translation from the position used to generate the collision
+     * planes
      * @param planes the collision planes
      */
     public static b2PlaneSolverResult solvePlanes(b2Vec2 targetDelta, b2CollisionPlaneArray planes) {

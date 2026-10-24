@@ -98,18 +98,19 @@ public class B2_Body extends NativeObject {
 
     /**
      * Set the world transform of a body. This acts as a teleport and is fairly expensive.
-     * @note Generally you should create a body with then intended transform.
+     * @note Generally you should create a body with the intended transform.
      */
     public static void setTransform(long bodyId, b2Vec2 position, b2Rot rotation) {
         Raw.setTransform(bodyId, position.getAddress(), rotation.getAddress());
     }
 
     /**
-     * Get the current world AABB that contains all the attached shapes. Note that this may not encompass the body origin.
-     * If there are no shapes attached then the returned AABB is empty and centered on the body origin.
+     * Get the current world AABB that contains all the attached shapes. Note that this may not
+     * encompass the body origin. If there are no shapes attached then the returned AABB is empty and
+     * centered on the body origin.
      */
-    public static b2AABB computeAABB(long bodyId) {
-        return b2AABB.wrapPointer(Raw.computeAABB(bodyId));
+    public static b2AABB computeBounds(long bodyId) {
+        return b2AABB.wrapPointer(Raw.computeBounds(bodyId));
     }
 
     /**
@@ -169,13 +170,16 @@ public class B2_Body extends NativeObject {
     }
 
     /**
-     * Set the velocity to reach the given transform after a given time step.
-     * The result will be close but maybe not exact. This is meant for kinematic bodies.
-     * The target is not applied if the velocity would be below the sleep threshold.
-     * This will automatically wake the body if asleep.
+     * Set the velocity to reach the given transform after a given time step. The result will be close
+     * but may not be exact. This is meant for kinematic bodies. The target is not applied if the
+     * velocity would be below the sleep threshold and the body is currently asleep.
+     * @param bodyId The body id
+     * @param target The target transform for the body
+     * @param timeStep The time step of the next call to b2World_Step
+     * @param wake Option to wake the body or not
      */
-    public static void setTargetTransform(long bodyId, b2Transform target, float timeStep) {
-        Raw.setTargetTransform(bodyId, target.getAddress(), timeStep);
+    public static void setTargetTransform(long bodyId, b2Transform target, float timeStep, boolean wake) {
+        Raw.setTargetTransform(bodyId, target.getAddress(), timeStep, wake);
     }
 
     /**
@@ -225,6 +229,16 @@ public class B2_Body extends NativeObject {
      */
     public static void applyTorque(long bodyId, float torque, boolean wake) {
         Raw.applyTorque(bodyId, torque, wake);
+    }
+
+    /**
+     * Clear the force and torque on this body. Forces and torques are automatically cleared after each
+     * world step. So this only needs to be called if the application wants to remove the effect of
+     * previous calls to apply forces and torques before the world step is called.
+     * @param bodyId The body id
+     */
+    public static void clearForces(long bodyId) {
+        Raw.clearForces(bodyId);
     }
 
     /**
@@ -284,23 +298,24 @@ public class B2_Body extends NativeObject {
     }
 
     /**
-     * Get the center of mass position of the body in local space
+     * Get the center of mass position of the body in local space.
      */
-    public static b2Vec2 getLocalCenterOfMass(long bodyId) {
-        return b2Vec2.wrapPointer(Raw.getLocalCenterOfMass(bodyId));
+    public static b2Vec2 getLocalCenter(long bodyId) {
+        return b2Vec2.wrapPointer(Raw.getLocalCenter(bodyId));
     }
 
     /**
-     * Get the center of mass position of the body in world space
+     * Get the center of mass position of the body in world space.
      */
-    public static b2Vec2 getWorldCenterOfMass(long bodyId) {
-        return b2Vec2.wrapPointer(Raw.getWorldCenterOfMass(bodyId));
+    public static b2Vec2 getWorldCenter(long bodyId) {
+        return b2Vec2.wrapPointer(Raw.getWorldCenter(bodyId));
     }
 
     /**
-     * Override the body's mass properties. Normally this is computed automatically using the
-     * shape geometry and density. This information is lost if a shape is added or removed or if the
-     * body type changes.
+     * Override the body's mass properties. Normally this is computed automatically using the shape
+     * geometry and density. This information is lost if a shape is added or removed or if the body
+     * type changes. If motion locks are used to fix rotation then the rotational inertia value is
+     * ignored and rotational inertia remains fixed at zero.
      */
     public static void setMassData(long bodyId, b2MassData massData) {
         Raw.setMassData(bodyId, massData.getAddress());
@@ -314,15 +329,13 @@ public class B2_Body extends NativeObject {
     }
 
     /**
-     * This update the mass properties to the sum of the mass properties of the shapes.
-     * This normally does not need to be called unless you called SetMassData to override
-     * the mass and you later want to reset the mass.
-     * You may also use this when automatic mass computation has been disabled.
-     * You should call this regardless of body type.
-     * Note that sensor shapes may have mass.
+     * This updates the mass properties to the sum of the mass properties of the shapes. This normally
+     * does not need to be called unless you called b2Body_SetMassData to override the mass and you
+     * later want to reset the mass. You may also use this when automatic mass computation has been
+     * disabled. You should call this regardless of body type. Note that sensor shapes may have mass.
      */
-    public static void applyMassFromShapes(long bodyId) {
-        Raw.applyMassFromShapes(bodyId);
+    public static void updateMassFromShapes(long bodyId) {
+        Raw.updateMassFromShapes(bodyId);
     }
 
     /**
@@ -384,17 +397,25 @@ public class B2_Body extends NativeObject {
     }
 
     /**
-     * Enable or disable sleeping for this body. If sleeping is disabled the body will wake.
+     * Wake bodies touching this body. Works for static bodies.
      */
-    public static void enableSleep(long bodyId, boolean enableSleep) {
-        Raw.enableSleep(bodyId, enableSleep);
+    public static void wakeTouching(long bodyId) {
+        Raw.wakeTouching(bodyId);
+    }
+
+    /**
+     * Enable or disable sleeping for this body. If sleeping is disabled the body will wake (and the
+     * entire island).
+     */
+    public static void enableSleeping(long bodyId, boolean enableSleep) {
+        Raw.enableSleeping(bodyId, enableSleep);
     }
 
     /**
      * Returns true if sleeping is enabled for this body
      */
-    public static boolean isSleepEnabled(long bodyId) {
-        return Raw.isSleepEnabled(bodyId);
+    public static boolean isSleepingEnabled(long bodyId) {
+        return Raw.isSleepingEnabled(bodyId);
     }
 
     /**
@@ -409,6 +430,21 @@ public class B2_Body extends NativeObject {
      */
     public static float getSleepThreshold(long bodyId) {
         return Raw.getSleepThreshold(bodyId);
+    }
+
+    /**
+     * Set the continuous collision safety factor. Smaller is safer but can lead to hitching.
+     * Recommended range [0.01, 0.5]. Non-dimensional.
+     */
+    public static void setSafetyFactor(long bodyId, float safetyFactor) {
+        Raw.setSafetyFactor(bodyId, safetyFactor);
+    }
+
+    /**
+     * Get the continuous collision safety factor. Non-dimensional.
+     */
+    public static float getSafetyFactor(long bodyId) {
+        return Raw.getSafetyFactor(bodyId);
     }
 
     /**
@@ -433,22 +469,23 @@ public class B2_Body extends NativeObject {
     }
 
     /**
-     * Set this body to have fixed rotation. This causes the mass to be reset in all cases.
+     * Set the motion locks on this body. This causes mass properties to be recomputed because fixed
+     * rotation sets the rotational inertia to zero.
      */
-    public static void setFixedRotation(long bodyId, boolean flag) {
-        Raw.setFixedRotation(bodyId, flag);
+    public static void setMotionLocks(long bodyId, b2MotionLocks locks) {
+        Raw.setMotionLocks(bodyId, locks.getAddress());
     }
 
     /**
-     * Does this body have fixed rotation?
+     * Get the motion locks for this body.
      */
-    public static boolean isFixedRotation(long bodyId) {
-        return Raw.isFixedRotation(bodyId);
+    public static b2MotionLocks getMotionLocks(long bodyId) {
+        return b2MotionLocks.wrapPointer(Raw.getMotionLocks(bodyId));
     }
 
     /**
-     * Set this body to be a bullet. A bullet does continuous collision detection
-     * against dynamic bodies (but not other bullets).
+     * Set this body to be a bullet. A bullet does continuous collision detection against dynamic
+     * and kinematic bodies (but not other bullets). This only works on dynamic bodies.
      */
     public static void setBullet(long bodyId, boolean flag) {
         Raw.setBullet(bodyId, flag);
@@ -459,6 +496,23 @@ public class B2_Body extends NativeObject {
      */
     public static boolean isBullet(long bodyId) {
         return Raw.isBullet(bodyId);
+    }
+
+    /**
+     * Enable or disable contact recycling for this body. Contact recycling is a performance
+     * optimization that reuses contact manifolds when bodies move slightly. Disabling it can avoid
+     * ghost collisions on characters at the cost of higher per-step work. Existing contacts retain
+     * their prior setting; only contacts created after this call see the new value.
+     */
+    public static void enableContactRecycling(long bodyId, boolean flag) {
+        Raw.enableContactRecycling(bodyId, flag);
+    }
+
+    /**
+     * Is contact recycling enabled on this body?
+     */
+    public static boolean isContactRecyclingEnabled(long bodyId) {
+        return Raw.isContactRecyclingEnabled(bodyId);
     }
 
     /**
@@ -531,14 +585,35 @@ public class B2_Body extends NativeObject {
     }
 
     /**
-     * Set the body name. Up to 31 characters excluding 0 termination.
+     * The minimum distance from any point on the body shapes to the center of mass.
+     */
+    public static float getMinExtent(long bodyId) {
+        return Raw.getMinExtent(bodyId);
+    }
+
+    /**
+     * The maximum distance from any point on the body shapes to the center of mass.
+     */
+    public static float getMaxExtent(long bodyId) {
+        return Raw.getMaxExtent(bodyId);
+    }
+
+    /**
+     * The maximum distance from any point on the body shapes to the body origin. Conservative.
+     */
+    public static float getMaxExtentFromOrigin(long bodyId) {
+        return Raw.getMaxExtentFromOrigin(bodyId);
+    }
+
+    /**
+     * Set the body name. See B2_NAME_LENGTH.
      */
     public static void setName(long bodyId, String name) {
         Raw.setName(bodyId, name);
     }
 
     /**
-     * Get the body name. May be null.
+     * Get the body name.
      */
     public static String getName(long bodyId) {
         return Raw.getName(bodyId);
@@ -569,7 +644,7 @@ public class B2_Body extends NativeObject {
         public static native long getRotation(long bodyId);
         public static native long getTransform(long bodyId);
         public static native void setTransform(long bodyId, long position, long rotation);
-        public static native long computeAABB(long bodyId);
+        public static native long computeBounds(long bodyId);
         public static native long getLocalPoint(long bodyId, long worldPoint);
         public static native long getWorldPoint(long bodyId, long localPoint);
         public static native long getLocalVector(long bodyId, long worldVector);
@@ -578,22 +653,23 @@ public class B2_Body extends NativeObject {
         public static native float getAngularVelocity(long bodyId);
         public static native void setLinearVelocity(long bodyId, long linearVelocity);
         public static native void setAngularVelocity(long bodyId, float angularVelocity);
-        public static native void setTargetTransform(long bodyId, long target, float timeStep);
+        public static native void setTargetTransform(long bodyId, long target, float timeStep, boolean wake);
         public static native long getLocalPointVelocity(long bodyId, long localPoint);
         public static native long getWorldPointVelocity(long bodyId, long worldPoint);
         public static native void applyForce(long bodyId, long force, long point, boolean wake);
         public static native void applyForceToCenter(long bodyId, long force, boolean wake);
         public static native void applyTorque(long bodyId, float torque, boolean wake);
+        public static native void clearForces(long bodyId);
         public static native void applyLinearImpulse(long bodyId, long impulse, long point, boolean wake);
         public static native void applyLinearImpulseToCenter(long bodyId, long impulse, boolean wake);
         public static native void applyAngularImpulse(long bodyId, float impulse, boolean wake);
         public static native float getMass(long bodyId);
         public static native float getRotationalInertia(long bodyId);
-        public static native long getLocalCenterOfMass(long bodyId);
-        public static native long getWorldCenterOfMass(long bodyId);
+        public static native long getLocalCenter(long bodyId);
+        public static native long getWorldCenter(long bodyId);
         public static native void setMassData(long bodyId, long massData);
         public static native long getMassData(long bodyId);
-        public static native void applyMassFromShapes(long bodyId);
+        public static native void updateMassFromShapes(long bodyId);
         public static native void setLinearDamping(long bodyId, float linearDamping);
         public static native float getLinearDamping(long bodyId);
         public static native void setAngularDamping(long bodyId, float angularDamping);
@@ -602,17 +678,22 @@ public class B2_Body extends NativeObject {
         public static native float getGravityScale(long bodyId);
         public static native boolean isAwake(long bodyId);
         public static native void setAwake(long bodyId, boolean awake);
-        public static native void enableSleep(long bodyId, boolean enableSleep);
-        public static native boolean isSleepEnabled(long bodyId);
+        public static native void wakeTouching(long bodyId);
+        public static native void enableSleeping(long bodyId, boolean enableSleep);
+        public static native boolean isSleepingEnabled(long bodyId);
         public static native void setSleepThreshold(long bodyId, float sleepThreshold);
         public static native float getSleepThreshold(long bodyId);
+        public static native void setSafetyFactor(long bodyId, float safetyFactor);
+        public static native float getSafetyFactor(long bodyId);
         public static native boolean isEnabled(long bodyId);
         public static native void disable(long bodyId);
         public static native void enable(long bodyId);
-        public static native void setFixedRotation(long bodyId, boolean flag);
-        public static native boolean isFixedRotation(long bodyId);
+        public static native void setMotionLocks(long bodyId, long locks);
+        public static native long getMotionLocks(long bodyId);
         public static native void setBullet(long bodyId, boolean flag);
         public static native boolean isBullet(long bodyId);
+        public static native void enableContactRecycling(long bodyId, boolean flag);
+        public static native boolean isContactRecyclingEnabled(long bodyId);
         public static native long getWorld(long bodyId);
         public static native int getShapeCount(long bodyId);
         public static native int getShapes(long bodyId, long shapeArray);
@@ -622,6 +703,9 @@ public class B2_Body extends NativeObject {
         public static native void enableHitEvents(long bodyId, boolean flag);
         public static native int getContactCapacity(long bodyId);
         public static native int getContactData(long bodyId, long contactData);
+        public static native float getMinExtent(long bodyId);
+        public static native float getMaxExtent(long bodyId);
+        public static native float getMaxExtentFromOrigin(long bodyId);
         public static native void setName(long bodyId, String name);
         public static native String getName(long bodyId);
         public static native void setUserData(long bodyId, long userData);

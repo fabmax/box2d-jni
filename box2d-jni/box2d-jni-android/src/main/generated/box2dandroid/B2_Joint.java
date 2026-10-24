@@ -28,7 +28,7 @@ public class B2_Joint extends NativeObject {
     // Functions
 
     /**
-     * Destroy a joint
+     * Destroy a joint.
      */
     public static void destroyJoint(long jointId) {
         Raw.destroyJoint(jointId);
@@ -70,59 +70,31 @@ public class B2_Joint extends NativeObject {
     }
 
     /**
-     * Get the local anchor on bodyA
+     * Set the local frame on bodyA
      */
-    public static b2Vec2 getLocalAnchorA(long jointId) {
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorA(jointId));
+    public static void setLocalFrameA(long jointId, b2Transform localFrame) {
+        Raw.setLocalFrameA(jointId, localFrame.getAddress());
     }
 
     /**
-     * Get the local anchor on bodyB
+     * Get the local frame on bodyA
      */
-    public static b2Vec2 getLocalAnchorB(long jointId) {
-        return b2Vec2.wrapPointer(Raw.getLocalAnchorB(jointId));
+    public static b2Transform getLocalFrameA(long jointId) {
+        return b2Transform.wrapPointer(Raw.getLocalFrameA(jointId));
     }
 
     /**
-     * Set the local anchor on bodyA
+     * Set the local frame on bodyB
      */
-    public static void setLocalAnchorA(long jointId, b2Vec2 localAnchor) {
-        Raw.setLocalAnchorA(jointId, localAnchor.getAddress());
+    public static void setLocalFrameB(long jointId, b2Transform localFrame) {
+        Raw.setLocalFrameB(jointId, localFrame.getAddress());
     }
 
     /**
-     * Set the local anchor on bodyB
+     * Get the local frame on bodyB
      */
-    public static void setLocalAnchorB(long jointId, b2Vec2 localAnchor) {
-        Raw.setLocalAnchorB(jointId, localAnchor.getAddress());
-    }
-
-    /**
-     * Get the reference angle for this joint (in radians)
-     */
-    public static float getReferenceAngle(long jointId) {
-        return Raw.getReferenceAngle(jointId);
-    }
-
-    /**
-     * Set the reference angle for this joint (in radians)
-     */
-    public static void setReferenceAngle(long jointId, float angleInRadians) {
-        Raw.setReferenceAngle(jointId, angleInRadians);
-    }
-
-    /**
-     * Set the local axis on bodyA
-     */
-    public static void setLocalAxisA(long jointId, b2Vec2 localAxis) {
-        Raw.setLocalAxisA(jointId, localAxis.getAddress());
-    }
-
-    /**
-     * Get the local axis on bodyA
-     */
-    public static b2Vec2 getLocalAxisA(long jointId) {
-        return b2Vec2.wrapPointer(Raw.getLocalAxisA(jointId));
+    public static b2Transform getLocalFrameB(long jointId) {
+        return b2Transform.wrapPointer(Raw.getLocalFrameB(jointId));
     }
 
     /**
@@ -154,7 +126,7 @@ public class B2_Joint extends NativeObject {
     }
 
     /**
-     * Wake the bodies connect to this joint
+     * Wake the bodies connected to this joint
      */
     public static void wakeBodies(long jointId) {
         Raw.wakeBodies(jointId);
@@ -175,14 +147,16 @@ public class B2_Joint extends NativeObject {
     }
 
     /**
-     * Get the linear separation between anchor points for this joint
+     * Get the current linear separation error for this joint. Does not consider admissible movement.
+     * Usually in meters.
      */
     public static float getLinearSeparation(long jointId) {
         return Raw.getLinearSeparation(jointId);
     }
 
     /**
-     * Get the angular separation for this joint
+     * Get the current angular separation error for this joint. Does not consider admissible movement.
+     * Radians.
      */
     public static float getAngularSeparation(long jointId) {
         return Raw.getAngularSeparation(jointId);
@@ -212,6 +186,34 @@ public class B2_Joint extends NativeObject {
         Raw.setConstraintTuning(jointId, hertz, dampingRatio);
     }
 
+    /**
+     * Set the force threshold for joint events (Newtons)
+     */
+    public static void setForceThreshold(long jointId, float threshold) {
+        Raw.setForceThreshold(jointId, threshold);
+    }
+
+    /**
+     * Get the force threshold for joint events (Newtons)
+     */
+    public static float getForceThreshold(long jointId) {
+        return Raw.getForceThreshold(jointId);
+    }
+
+    /**
+     * Set the torque threshold for joint events (N-m)
+     */
+    public static void setTorqueThreshold(long jointId, float threshold) {
+        Raw.setTorqueThreshold(jointId, threshold);
+    }
+
+    /**
+     * Get the torque threshold for joint events (N-m)
+     */
+    public static float getTorqueThreshold(long jointId) {
+        return Raw.getTorqueThreshold(jointId);
+    }
+
     public static class Raw {
         public static native void destroyJoint(long jointId);
         public static native boolean isValid(long jointId);
@@ -219,14 +221,10 @@ public class B2_Joint extends NativeObject {
         public static native long getBodyA(long jointId);
         public static native long getBodyB(long jointId);
         public static native int getWorld(long jointId);
-        public static native long getLocalAnchorA(long jointId);
-        public static native long getLocalAnchorB(long jointId);
-        public static native void setLocalAnchorA(long jointId, long localAnchor);
-        public static native void setLocalAnchorB(long jointId, long localAnchor);
-        public static native float getReferenceAngle(long jointId);
-        public static native void setReferenceAngle(long jointId, float angleInRadians);
-        public static native void setLocalAxisA(long jointId, long localAxis);
-        public static native long getLocalAxisA(long jointId);
+        public static native void setLocalFrameA(long jointId, long localFrame);
+        public static native long getLocalFrameA(long jointId);
+        public static native void setLocalFrameB(long jointId, long localFrame);
+        public static native long getLocalFrameB(long jointId);
         public static native void setCollideConnected(long jointId, boolean shouldCollide);
         public static native boolean getCollideConnected(long jointId);
         public static native void setUserData(long jointId, long userData);
@@ -239,5 +237,9 @@ public class B2_Joint extends NativeObject {
         public static native float getConstraintTuningHertz(long jointId);
         public static native float getConstraintTuningDampingRatio(long jointId);
         public static native void setConstraintTuning(long jointId, float hertz, float dampingRatio);
+        public static native void setForceThreshold(long jointId, float threshold);
+        public static native float getForceThreshold(long jointId);
+        public static native void setTorqueThreshold(long jointId, float threshold);
+        public static native float getTorqueThreshold(long jointId);
     }
 }

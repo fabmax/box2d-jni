@@ -2,7 +2,8 @@ package box2dandroid;
 
 
 /**
- * Surface materials allow chain shapes to have per segment surface properties.
+ * The surface material groups together parameters related to the shape surface, which is the 2D
+ * boundary. Surface materials allow chain shapes to have per segment properties.
  * @ingroup shape
  */
 public class b2SurfaceMaterial extends NativeObject {
@@ -158,7 +159,7 @@ public class b2SurfaceMaterial extends NativeObject {
      * User material identifier. This is passed with query results and to friction and restitution
      * combining functions. It is not used internally.
      */
-    public int getUserMaterialId() {
+    public long getUserMaterialId() {
         checkNotNull();
         return Raw.getUserMaterialId(address);
     }
@@ -167,7 +168,7 @@ public class b2SurfaceMaterial extends NativeObject {
      * User material identifier. This is passed with query results and to friction and restitution
      * combining functions. It is not used internally.
      */
-    public void setUserMaterialId(int value) {
+    public void setUserMaterialId(long value) {
         checkNotNull();
         Raw.setUserMaterialId(address, value);
     }
@@ -186,7 +187,7 @@ public class b2SurfaceMaterial extends NativeObject {
         public static native void setRollingResistance(long address, float value);
         public static native float getTangentSpeed(long address);
         public static native void setTangentSpeed(long address, float value);
-        public static native int getUserMaterialId(long address);
-        public static native void setUserMaterialId(long address, int value);
+        public static native long getUserMaterialId(long address);
+        public static native void setUserMaterialId(long address, long value);
     }
 }

@@ -2,21 +2,22 @@ package box2dandroid;
 
 
 /**
- * Used to create a chain of line segments. This is designed to eliminate ghost collisions with some limitations.
+ * Used to create a chain of line segments. This is designed to eliminate ghost collisions with
+ * some limitations.
  * - chains are one-sided
  * - chains have no mass and should be used on static bodies
  * - chains have a counter-clockwise winding order (normal points right of segment direction)
  * - chains are either a loop or open
- * - a chain must have at least 4 points
  * - the distance between any two points must be greater than B2_LINEAR_SLOP
  * - a chain shape should not self intersect (this is not validated)
- * - an open chain shape has NO COLLISION on the first and final edge
- * - you may overlap two open chains on their first three and/or last three points to get smooth collision
+ * - an open chain shape needs a leading and trailing ghost point.
+ * - you may overlap two open chains using the ghost points to get smooth collision.
  * - a chain shape creates multiple line segment shapes on the body
  * https://en.wikipedia.org/wiki/Polygonal_chain
  * Must be initialized using b2DefaultChainDef().
- * @warning Do not use chain shapes unless you understand the limitations. This is an advanced feature.
- * @ingroup shape
+ * @warning Do not use chain shapes unless you understand the limitations. This is an advanced
+ * feature.
+ * @ingroup chain
  */
 public class b2ChainDef extends NativeObject {
 
@@ -102,7 +103,8 @@ public class b2ChainDef extends NativeObject {
     }
 
     /**
-     * An array of at least 4 points. These are cloned and may be temporary.
+     * Array of chain points. Each consecutive pair forms a segment. For a loop the last and first
+     * point form a segment. Cloned.
      */
     public b2Vec2 getPoints() {
         checkNotNull();
@@ -110,7 +112,8 @@ public class b2ChainDef extends NativeObject {
     }
 
     /**
-     * An array of at least 4 points. These are cloned and may be temporary.
+     * Array of chain points. Each consecutive pair forms a segment. For a loop the last and first
+     * point form a segment. Cloned.
      */
     public void setPoints(b2Vec2 value) {
         checkNotNull();
@@ -118,23 +121,61 @@ public class b2ChainDef extends NativeObject {
     }
 
     /**
-     * The point count, must be 4 or more.
+     * The point count. At least 2 for an open chain and at least 3 for a loop.
+     * segmentCount = isLoop ? pointCount : pointCount - 1
      */
-    public int getCount() {
+    public int getPointCount() {
         checkNotNull();
-        return Raw.getCount(address);
+        return Raw.getPointCount(address);
     }
 
     /**
-     * The point count, must be 4 or more.
+     * The point count. At least 2 for an open chain and at least 3 for a loop.
+     * segmentCount = isLoop ? pointCount : pointCount - 1
      */
-    public void setCount(int value) {
+    public void setPointCount(int value) {
         checkNotNull();
-        Raw.setCount(address, value);
+        Raw.setPointCount(address, value);
     }
 
     /**
-     * Surface materials for each segment. These are cloned.
+     * Leading ghost point for an open chain. Distance from first point must be greater than
+     * B2_LINEAR_SLOP. Ignored for loops.
+     */
+    public b2Vec2 getGhost1() {
+        checkNotNull();
+        return b2Vec2.wrapPointer(Raw.getGhost1(address));
+    }
+
+    /**
+     * Leading ghost point for an open chain. Distance from first point must be greater than
+     * B2_LINEAR_SLOP. Ignored for loops.
+     */
+    public void setGhost1(b2Vec2 value) {
+        checkNotNull();
+        Raw.setGhost1(address, value.getAddress());
+    }
+
+    /**
+     * Ending ghost point for an open chain. Distance from last point must be greater than
+     * B2_LINEAR_SLOP. Ignored for loops.
+     */
+    public b2Vec2 getGhost2() {
+        checkNotNull();
+        return b2Vec2.wrapPointer(Raw.getGhost2(address));
+    }
+
+    /**
+     * Ending ghost point for an open chain. Distance from last point must be greater than
+     * B2_LINEAR_SLOP. Ignored for loops.
+     */
+    public void setGhost2(b2Vec2 value) {
+        checkNotNull();
+        Raw.setGhost2(address, value.getAddress());
+    }
+
+    /**
+     * One material for the whole chain or one for each segment. Cloned.
      */
     public b2SurfaceMaterial getMaterials() {
         checkNotNull();
@@ -142,7 +183,7 @@ public class b2ChainDef extends NativeObject {
     }
 
     /**
-     * Surface materials for each segment. These are cloned.
+     * One material for the whole chain or one for each segment. Cloned.
      */
     public void setMaterials(b2SurfaceMaterial value) {
         checkNotNull();
@@ -150,8 +191,7 @@ public class b2ChainDef extends NativeObject {
     }
 
     /**
-     * The material count. Must be 1 or count. This allows you to provide one
-     * material for all segments or a unique material per segment.
+     * The material count. Must be 1 or the segment count.
      */
     public int getMaterialCount() {
         checkNotNull();
@@ -159,8 +199,7 @@ public class b2ChainDef extends NativeObject {
     }
 
     /**
-     * The material count. Must be 1 or count. This allows you to provide one
-     * material for all segments or a unique material per segment.
+     * The material count. Must be 1 or the segment count.
      */
     public void setMaterialCount(int value) {
         checkNotNull();
@@ -184,7 +223,7 @@ public class b2ChainDef extends NativeObject {
     }
 
     /**
-     * Indicates a closed chain formed by connecting the first and last points
+     * Indicates a closed chain formed by connecting the first and last point.
      */
     public boolean getIsLoop() {
         checkNotNull();
@@ -192,7 +231,7 @@ public class b2ChainDef extends NativeObject {
     }
 
     /**
-     * Indicates a closed chain formed by connecting the first and last points
+     * Indicates a closed chain formed by connecting the first and last point.
      */
     public void setIsLoop(boolean value) {
         checkNotNull();
@@ -239,8 +278,12 @@ public class b2ChainDef extends NativeObject {
         public static native void setUserData(long address, long value);
         public static native long getPoints(long address);
         public static native void setPoints(long address, long value);
-        public static native int getCount(long address);
-        public static native void setCount(long address, int value);
+        public static native int getPointCount(long address);
+        public static native void setPointCount(long address, int value);
+        public static native long getGhost1(long address);
+        public static native void setGhost1(long address, long value);
+        public static native long getGhost2(long address);
+        public static native void setGhost2(long address, long value);
         public static native long getMaterials(long address);
         public static native void setMaterials(long address, long value);
         public static native int getMaterialCount(long address);
