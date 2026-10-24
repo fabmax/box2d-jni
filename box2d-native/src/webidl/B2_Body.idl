@@ -139,7 +139,6 @@ interface b2BodyDef {
     attribute boolean isEnabled;
     attribute boolean allowFastRotation;
     attribute boolean enableContactRecycling;
-    attribute long internalValue;
 };
 
 [StackAllocatable]

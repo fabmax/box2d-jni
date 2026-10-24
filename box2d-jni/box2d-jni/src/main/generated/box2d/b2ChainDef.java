@@ -254,22 +254,6 @@ public class b2ChainDef extends NativeObject {
         Raw.setEnableSensorEvents(address, value);
     }
 
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public int getInternalValue() {
-        checkNotNull();
-        return Raw.getInternalValue(address);
-    }
-
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public void setInternalValue(int value) {
-        checkNotNull();
-        Raw.setInternalValue(address, value);
-    }
-
     public static class Raw {
         public static native void b2ChainDef_placed(long address);
         public static native long b2ChainDef();
@@ -294,7 +278,5 @@ public class b2ChainDef extends NativeObject {
         public static native void setIsLoop(long address, boolean value);
         public static native boolean getEnableSensorEvents(long address);
         public static native void setEnableSensorEvents(long address, boolean value);
-        public static native int getInternalValue(long address);
-        public static native void setInternalValue(long address, int value);
     }
 }

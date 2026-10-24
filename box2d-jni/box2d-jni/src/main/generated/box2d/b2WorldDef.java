@@ -319,22 +319,6 @@ public class b2WorldDef extends NativeObject {
         Raw.setCapacity(address, value.getAddress());
     }
 
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public int getInternalValue() {
-        checkNotNull();
-        return Raw.getInternalValue(address);
-    }
-
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public void setInternalValue(int value) {
-        checkNotNull();
-        Raw.setInternalValue(address, value);
-    }
-
     public static class Raw {
         public static native void b2WorldDef_placed(long address);
         public static native long b2WorldDef();
@@ -367,7 +351,5 @@ public class b2WorldDef extends NativeObject {
         public static native void setUserData(long address, long value);
         public static native long getCapacity(long address);
         public static native void setCapacity(long address, long value);
-        public static native int getInternalValue(long address);
-        public static native void setInternalValue(long address, int value);
     }
 }

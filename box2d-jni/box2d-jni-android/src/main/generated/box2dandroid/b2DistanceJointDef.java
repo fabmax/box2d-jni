@@ -283,22 +283,6 @@ public class b2DistanceJointDef extends NativeObject {
         Raw.setMotorSpeed(address, value);
     }
 
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public int getInternalValue() {
-        checkNotNull();
-        return Raw.getInternalValue(address);
-    }
-
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public void setInternalValue(int value) {
-        checkNotNull();
-        Raw.setInternalValue(address, value);
-    }
-
     public static class Raw {
         public static native void b2DistanceJointDef_placed(long address);
         public static native long b2DistanceJointDef();
@@ -329,7 +313,5 @@ public class b2DistanceJointDef extends NativeObject {
         public static native void setMaxMotorForce(long address, float value);
         public static native float getMotorSpeed(long address);
         public static native void setMotorSpeed(long address, float value);
-        public static native int getInternalValue(long address);
-        public static native void setInternalValue(long address, int value);
     }
 }

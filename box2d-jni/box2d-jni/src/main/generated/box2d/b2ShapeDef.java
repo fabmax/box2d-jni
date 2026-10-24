@@ -294,22 +294,6 @@ public class b2ShapeDef extends NativeObject {
         Raw.setUpdateBodyMass(address, value);
     }
 
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public int getInternalValue() {
-        checkNotNull();
-        return Raw.getInternalValue(address);
-    }
-
-    /**
-     * Used internally to detect a valid definition. DO NOT SET.
-     */
-    public void setInternalValue(int value) {
-        checkNotNull();
-        Raw.setInternalValue(address, value);
-    }
-
     public static class Raw {
         public static native void b2ShapeDef_placed(long address);
         public static native long b2ShapeDef();
@@ -338,7 +322,5 @@ public class b2ShapeDef extends NativeObject {
         public static native void setInvokeContactCreation(long address, boolean value);
         public static native boolean getUpdateBodyMass(long address);
         public static native void setUpdateBodyMass(long address, boolean value);
-        public static native int getInternalValue(long address);
-        public static native void setInternalValue(long address, int value);
     }
 }

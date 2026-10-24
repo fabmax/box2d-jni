@@ -92,7 +92,6 @@ interface b2DistanceJointDef {
     attribute boolean enableMotor;
     attribute float maxMotorForce;
     attribute float motorSpeed;
-    attribute long internalValue;
 };
 
 [NoDelete]
@@ -105,7 +104,6 @@ interface B2_FilterJoint {
 interface b2FilterJointDef {
     void b2FilterJointDef();
     [Value] attribute b2JointDef base;
-    attribute long internalValue;
 };
 
 [NoDelete]
@@ -149,7 +147,6 @@ interface b2MotorJointDef {
     attribute float angularHertz;
     attribute float angularDampingRatio;
     attribute float maxSpringTorque;
-    attribute long internalValue;
 };
 
 [NoDelete]
@@ -169,7 +166,6 @@ interface b2MoverJointDef {
     [Value] attribute b2JointDef base;
     [Value] attribute b2Vec2 linearVelocity;
     [Value] attribute b2Vec2 maxVelocityForce;
-    attribute long internalValue;
 };
 
 [NoDelete]
@@ -200,7 +196,6 @@ interface b2PogoJointDef {
     attribute float maxCompressionForce;
     attribute float impulse;
     attribute float velocity;
-    attribute long internalValue;
 };
 
 [NoDelete]
@@ -246,7 +241,6 @@ interface b2PrismaticJointDef {
     attribute boolean enableMotor;
     attribute float maxMotorForce;
     attribute float motorSpeed;
-    attribute long internalValue;
 };
 
 [NoDelete]
@@ -292,7 +286,6 @@ interface b2RevoluteJointDef {
     attribute boolean enableMotor;
     attribute float maxMotorTorque;
     attribute float motorSpeed;
-    attribute long internalValue;
 };
 
 [NoDelete]
@@ -318,7 +311,6 @@ interface b2WeldJointDef {
     attribute float angularHertz;
     attribute float linearDampingRatio;
     attribute float angularDampingRatio;
-    attribute long internalValue;
 };
 
 [NoDelete]
@@ -359,7 +351,6 @@ interface b2WheelJointDef {
     attribute boolean enableMotor;
     attribute float maxMotorTorque;
     attribute float motorSpeed;
-    attribute long internalValue;
 };
 
 enum b2JointType {
