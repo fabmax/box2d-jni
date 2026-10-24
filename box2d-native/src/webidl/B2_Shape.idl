@@ -122,7 +122,6 @@ interface b2ShapeDef {
     attribute boolean enablePreSolveEvents;
     attribute boolean invokeContactCreation;
     attribute boolean updateBodyMass;
-    attribute long internalValue;
 };
 
 [StackAllocatable]
@@ -138,7 +137,6 @@ interface b2ChainDef {
     [Value] attribute b2Filter filter;
     attribute boolean isLoop;
     attribute boolean enableSensorEvents;
-    attribute long internalValue;
 };
 
 [StackAllocatable]

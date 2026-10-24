@@ -281,7 +281,6 @@ interface b2WorldDef {
     attribute long workerCount;
     attribute VoidPtr userData;
     [Value] attribute b2Capacity capacity;
-    attribute long internalValue;
 };
 
 [StackAllocatable]
