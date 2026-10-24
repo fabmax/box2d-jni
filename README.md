@@ -16,15 +16,15 @@ The library is published on maven central, so you can easily add this to your de
 ```
 dependencies {
     // java bindings
-    implementation("de.fabmax.box2d-jni:box2d-jni:1.0.0")
+    implementation("de.fabmax.box2d-jni:box2d-jni:2.0.0")
     
     // native libraries - you can add the one matching your system or all
-    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:1.0.0:natives-windows")
-    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:1.0.0:natives-windows-arm64")
-    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:1.0.0:natives-linux")
-    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:1.0.0:natives-linux-arm64")
-    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:1.0.0:natives-macos")
-    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:1.0.0:natives-macos-arm64")
+    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:2.0.0:natives-windows")
+    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:2.0.0:natives-windows-arm64")
+    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:2.0.0:natives-linux")
+    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:2.0.0:natives-linux-arm64")
+    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:2.0.0:natives-macos")
+    runtimeOnly("de.fabmax.box2d-jni:box2d-jni:2.0.0:natives-macos-arm64")
 }
 ```
 
@@ -33,13 +33,13 @@ The Android version of the library is packaged as a single `aar` archive contain
 and native libs:
 ```
 dependencies {
-    implementation("de.fabmax.box2d-jni:box2d-jni-android:1.0.0")
+    implementation("de.fabmax.box2d-jni:box2d-jni-android:2.0.0")
 }
 ```
 
 ## Library Coverage
 
-The library covers the full API of `box2d` in version `3.3.1`.
+The library covers the full API of `box2d` in version `3.2.0`.
 
 The detailed list of mapped functions is given by the [interface definition files](box2d-native/src/webidl).
 These are used to generate the corresponding [Java classes](box2d-jni/box2d-jni/src/main/generated/box2d).
